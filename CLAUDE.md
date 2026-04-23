@@ -1,6 +1,18 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## AI Behavior Rules
+
+**Always:**
+- Provide clear, concise, technically accurate responses
+- Follow required output schemas and formats
+- Ask for clarification only when essential
+- Provide actionable and specific insights when asked
+
+**Never:**
+- Invent system behavior or hallucinate design details not provided
+- Produce speculative or fictional logs
+- Output code invalid in Kotlin/Android contexts (unless explicitly asked)
+- Provide harmful instructions or security-sensitive details
 
 ## Build & Development Commands
 
@@ -76,6 +88,12 @@ Relationships: ShoppingList → many ShoppingListItems → each references one P
 
 ---
 
+## Build Setup Notes
+
+**AGP 9.2.0 bundles Kotlin compilation** — do NOT apply `org.jetbrains.kotlin.android` separately; doing so causes an "extension 'kotlin' already registered" conflict. Only `compose-compiler` (`org.jetbrains.kotlin.plugin.compose`) needs to be applied explicitly. Use `buildFeatures { compose = true }` inside `android {}` (no `composeOptions` block — that was Kotlin 1.x only).
+
+---
+
 ## Testing Strategy (ADR-008)
 
 Pragmatic coverage only: ViewModel unit tests, Repository tests, light DAO tests. No extensive UI test suite.
@@ -92,7 +110,7 @@ Feature flags (simple local toggles) should gate Reports, Sync, and Scanner modu
 
 Full ADR history: `docs/cartio_app_adr.md` | Roadmap: `docs/cartio_app_implementation_roadmap.md`
 
-## Feature Implementation Workflow
+## Feature Development Workflow
 
 Follow these steps **in order**. Do not skip or reorder. Do not write code until step 7.
 
