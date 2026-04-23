@@ -1,0 +1,45 @@
+# Build outputs
+build/
+.gradle/
+*.apk
+*.aab
+*.aar
+*.dex
+*.class
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+local.properties
+
+# Generated files
+**/generated/
+**/kapt/
+**/ksp/
+app/build/
+**/build/
+
+# Room database schema (generated)
+app/schemas/
+
+# Gradle wrapper (binaries)
+gradle/wrapper/gradle-wrapper.jar
+
+# Logs and temp
+*.log
+*.tmp
+*.bak
+*.swp
+captures/
+lint/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Signing configs (keep out of context)
+*.jks
+*.keystore
+keystore.properties
