@@ -32,6 +32,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -85,6 +86,7 @@ fun ShoppingListScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {},
+                modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
                 shape = RoundedCornerShape(16.dp),
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
@@ -92,6 +94,7 @@ fun ShoppingListScreen(
                 Icon(Icons.Rounded.Add, contentDescription = "Add list")
             }
         },
+        contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background
     ) { scaffoldPadding ->
         val combinedPadding = PaddingValues(

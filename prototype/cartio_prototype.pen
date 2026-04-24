@@ -184,7 +184,7 @@
                       "name": "tab1Icon",
                       "width": 18,
                       "height": 18,
-                      "iconFontName": "home",
+                      "iconFontName": "shopping_cart",
                       "iconFontFamily": "Material Symbols Rounded",
                       "fill": "$--on-surface"
                     },
@@ -193,7 +193,7 @@
                       "id": "0wRqm",
                       "name": "tab1Label",
                       "fill": "$--on-surface",
-                      "content": "HOME",
+                      "content": "SHOPPING",
                       "fontFamily": "Inter",
                       "fontSize": 10,
                       "fontWeight": "600",
@@ -219,7 +219,7 @@
                       "name": "tab2Icon",
                       "width": 18,
                       "height": 18,
-                      "iconFontName": "list_alt",
+                      "iconFontName": "bar_chart",
                       "iconFontFamily": "Material Symbols Rounded",
                       "fill": "$--font-secondary"
                     },
@@ -228,42 +228,7 @@
                       "id": "6nx0J",
                       "name": "tab2Label",
                       "fill": "$--font-secondary",
-                      "content": "LISTS",
-                      "fontFamily": "Inter",
-                      "fontSize": 10,
-                      "fontWeight": "600",
-                      "letterSpacing": 0.5
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "fsbK2",
-                  "name": "tab3",
-                  "width": "fill_container",
-                  "height": "fill_container",
-                  "cornerRadius": 26,
-                  "layout": "vertical",
-                  "gap": 4,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "Ex9H5",
-                      "name": "tab3Icon",
-                      "width": 18,
-                      "height": 18,
-                      "iconFontName": "favorite",
-                      "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--font-secondary"
-                    },
-                    {
-                      "type": "text",
-                      "id": "tM9Hj",
-                      "name": "tab3Label",
-                      "fill": "$--font-secondary",
-                      "content": "FAVORITES",
+                      "content": "REPORTS",
                       "fontFamily": "Inter",
                       "fontSize": 10,
                       "fontWeight": "600",
@@ -1130,7 +1095,7 @@
                       "name": "t1i",
                       "width": 18,
                       "height": 18,
-                      "iconFontName": "home",
+                      "iconFontName": "shopping_cart",
                       "iconFontFamily": "Material Symbols Rounded",
                       "fill": "$--on-primary"
                     },
@@ -1139,7 +1104,7 @@
                       "id": "GlkvD",
                       "name": "t1l",
                       "fill": "$--on-primary",
-                      "content": "HOME",
+                      "content": "SHOPPING",
                       "fontFamily": "Inter",
                       "fontSize": 10,
                       "fontWeight": "600",
@@ -1150,7 +1115,7 @@
                 {
                   "type": "frame",
                   "id": "uvjk0",
-                  "name": "Lists Tab",
+                  "name": "Reports Tab",
                   "width": "fill_container",
                   "height": "fill_container",
                   "cornerRadius": 26,
@@ -1165,7 +1130,7 @@
                       "name": "t2i",
                       "width": 18,
                       "height": 18,
-                      "iconFontName": "list_alt",
+                      "iconFontName": "bar_chart",
                       "iconFontFamily": "Material Symbols Rounded",
                       "fill": "$--outline"
                     },
@@ -1174,42 +1139,7 @@
                       "id": "lSeYp",
                       "name": "t2l",
                       "fill": "$--outline",
-                      "content": "LISTS",
-                      "fontFamily": "Inter",
-                      "fontSize": 10,
-                      "fontWeight": "600",
-                      "letterSpacing": 0.5
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "c1HGb",
-                  "name": "Favorites Tab",
-                  "width": "fill_container",
-                  "height": "fill_container",
-                  "cornerRadius": 26,
-                  "layout": "vertical",
-                  "gap": 4,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "4lbWl",
-                      "name": "t3i",
-                      "width": 18,
-                      "height": 18,
-                      "iconFontName": "favorite",
-                      "iconFontFamily": "Material Symbols Rounded",
-                      "fill": "$--outline"
-                    },
-                    {
-                      "type": "text",
-                      "id": "JHO71",
-                      "name": "t3l",
-                      "fill": "$--outline",
-                      "content": "FAVS",
+                      "content": "REPORTS",
                       "fontFamily": "Inter",
                       "fontSize": 10,
                       "fontWeight": "600",
