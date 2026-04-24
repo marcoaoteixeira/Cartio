@@ -92,6 +92,12 @@ Relationships: ShoppingList → many ShoppingListItems → each references one P
 
 **AGP 9.2.0 bundles Kotlin compilation** — do NOT apply `org.jetbrains.kotlin.android` separately; doing so causes an "extension 'kotlin' already registered" conflict. Only `compose-compiler` (`org.jetbrains.kotlin.plugin.compose`) needs to be applied explicitly. Use `buildFeatures { compose = true }` inside `android {}` (no `composeOptions` block — that was Kotlin 1.x only).
 
+**Verified working dependency versions (AGP 9.2.0 + Gradle 9.4.1):**
+- Hilt: `2.59.2` — minimum required for AGP 9.x (2.58 and earlier fail with "Android BaseExtension not found")
+- KSP: `2.3.7` — new standalone versioning (no longer tied to Kotlin version like `2.1.20-1.0.32`)
+- compose-compiler plugin: `2.3.0` — must match the Kotlin version bundled in Gradle 9.4.1
+- `hilt-navigation-compose`: `1.2.0`, `room`: `2.7.1`, `navigation-compose`: `2.9.0`
+
 ---
 
 ## Testing Strategy (ADR-008)
