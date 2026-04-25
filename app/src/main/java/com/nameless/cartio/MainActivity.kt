@@ -56,9 +56,17 @@ class MainActivity : ComponentActivity() {
                     Triple(CartioDestinations.Settings, Icons.Rounded.Settings, "Settings")
                 )
 
+                val topLevelRoutes = setOf(
+                    CartioDestinations.Shopping.route,
+                    CartioDestinations.Reports.route,
+                    CartioDestinations.Settings.route
+                )
+                val showBottomBar = currentRoute in topLevelRoutes
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
+                        if (!showBottomBar) return@Scaffold
                         Box(
                             modifier = Modifier
                                 .navigationBarsPadding()
@@ -84,7 +92,7 @@ class MainActivity : ComponentActivity() {
                                             .weight(1f)
                                             .clip(RoundedCornerShape(30.dp))
                                             .background(
-                                                if (selected) MaterialTheme.colorScheme.primary
+                                                if (selected) MaterialTheme.colorScheme.tertiary
                                                 else Color.Transparent
                                             )
                                             .clickable {
