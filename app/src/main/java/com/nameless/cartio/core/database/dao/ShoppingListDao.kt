@@ -34,4 +34,7 @@ interface ShoppingListDao {
 
     @Query("DELETE FROM shopping_lists WHERE id = :id")
     suspend fun deleteById(id: Long)
+
+    @Query("DELETE FROM shopping_lists")
+    suspend fun clearAll()
 }

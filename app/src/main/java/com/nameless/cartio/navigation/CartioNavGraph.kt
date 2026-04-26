@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.nameless.cartio.features.reports.ReportsScreen
-import com.nameless.cartio.features.settings.SettingsScreen
+import com.nameless.cartio.features.settings.ui.SettingsScreen
 import com.nameless.cartio.features.shopping.ui.ShoppingListDetailScreen
 import com.nameless.cartio.features.shopping.ui.ShoppingListScreen
 
