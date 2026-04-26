@@ -1,6 +1,7 @@
 package com.nameless.cartio.features.settings.ui
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Article
-import androidx.compose.material.icons.rounded.Article
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Info
@@ -169,19 +169,7 @@ fun SettingsScreen(
                         title = "Cartio",
                         subtitle = "Version ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})",
                         showDivider = true,
-                        onClick = {
-                            val marketIntent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=${context.packageName}")
-                            ).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            try {
-                                context.startActivity(marketIntent)
-                            } catch (_: ActivityNotFoundException) {
-                                context.startActivity(
-                                    Intent(Intent.ACTION_VIEW, Uri.parse(AppConfig.PLAY_STORE_URL))
-                                )
-                            }
-                        }
+                        onClick = { openPlayStore(context) }
                     )
                     SettingsListItem(
                         icon = {
@@ -220,6 +208,18 @@ fun SettingsScreen(
 
             item { Spacer(modifier = Modifier.height(8.dp)) }
         }
+    }
+}
+
+private fun openPlayStore(context: Context) {
+    val market = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("market://details?id=${context.packageName}")
+    ).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_TASK)
+    try {
+        context.startActivity(market)
+    } catch (_: ActivityNotFoundException) {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AppConfig.PLAY_STORE_URL)))
     }
 }
 
