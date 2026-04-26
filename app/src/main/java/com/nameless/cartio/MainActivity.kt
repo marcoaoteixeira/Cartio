@@ -26,15 +26,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nameless.cartio.core.ui.theme.CartioTheme
+import com.nameless.cartio.features.splash.ui.CartioSplashScreen
 import com.nameless.cartio.navigation.CartioDestinations
 import com.nameless.cartio.navigation.CartioNavGraph
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,100 +47,107 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             CartioTheme {
-                val navController = rememberNavController()
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
+                var splashCompleted by rememberSaveable { mutableStateOf(false) }
 
-                val navItems = listOf(
-                    Triple(CartioDestinations.Shopping, Icons.Rounded.ShoppingCart, "Shopping"),
-                    Triple(CartioDestinations.Reports, Icons.Rounded.BarChart, "Reports"),
-                    Triple(CartioDestinations.Settings, Icons.Rounded.Settings, "Settings")
-                )
+                if (!splashCompleted) {
+                    CartioSplashScreen(onComplete = { splashCompleted = true })
+                } else {
+                    val navController = rememberNavController()
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentRoute = navBackStackEntry?.destination?.route
 
-                val topLevelRoutes = setOf(
-                    CartioDestinations.Shopping.route,
-                    CartioDestinations.Reports.route,
-                    CartioDestinations.Settings.route
-                )
-                val showBottomBar = currentRoute in topLevelRoutes
+                    val navItems = listOf(
+                        Triple(CartioDestinations.Shopping, Icons.Rounded.ShoppingCart, "Shopping"),
+                        Triple(CartioDestinations.Reports, Icons.Rounded.BarChart, "Reports"),
+                        Triple(CartioDestinations.Settings, Icons.Rounded.Settings, "Settings")
+                    )
 
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    bottomBar = {
-                        if (!showBottomBar) return@Scaffold
-                        Box(
-                            modifier = Modifier
-                                .navigationBarsPadding()
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                                .clip(RoundedCornerShape(36.dp))
-                                .border(
-                                    1.dp,
-                                    MaterialTheme.colorScheme.outlineVariant,
-                                    RoundedCornerShape(36.dp)
-                                )
-                                .background(MaterialTheme.colorScheme.surface)
-                        ) {
-                            Row(
+                    val topLevelRoutes = setOf(
+                        CartioDestinations.Shopping.route,
+                        CartioDestinations.Reports.route,
+                        CartioDestinations.Settings.route
+                    )
+                    val showBottomBar = currentRoute in topLevelRoutes
+
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        bottomBar = {
+                            if (!showBottomBar) return@Scaffold
+                            Box(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(4.dp),
-                                horizontalArrangement = Arrangement.SpaceEvenly
+                                    .navigationBarsPadding()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                                    .clip(RoundedCornerShape(36.dp))
+                                    .border(
+                                        1.dp,
+                                        MaterialTheme.colorScheme.outlineVariant,
+                                        RoundedCornerShape(36.dp)
+                                    )
+                                    .background(MaterialTheme.colorScheme.surface)
                             ) {
-                                navItems.forEach { (destination, icon, label) ->
-                                    val selected = currentRoute == destination.route
-                                    Box(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .clip(RoundedCornerShape(30.dp))
-                                            .background(
-                                                if (selected) MaterialTheme.colorScheme.tertiary
-                                                else Color.Transparent
-                                            )
-                                            .clickable {
-                                                navController.navigate(destination.route) {
-                                                    popUpTo(CartioDestinations.Shopping.route) {
-                                                        saveState = true
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(4.dp),
+                                    horizontalArrangement = Arrangement.SpaceEvenly
+                                ) {
+                                    navItems.forEach { (destination, icon, label) ->
+                                        val selected = currentRoute == destination.route
+                                        Box(
+                                            modifier = Modifier
+                                                .weight(1f)
+                                                .clip(RoundedCornerShape(30.dp))
+                                                .background(
+                                                    if (selected) MaterialTheme.colorScheme.tertiary
+                                                    else Color.Transparent
+                                                )
+                                                .clickable {
+                                                    navController.navigate(destination.route) {
+                                                        popUpTo(CartioDestinations.Shopping.route) {
+                                                            saveState = true
+                                                        }
+                                                        launchSingleTop = true
+                                                        restoreState = true
                                                     }
-                                                    launchSingleTop = true
-                                                    restoreState = true
                                                 }
-                                            }
-                                            .padding(vertical = 10.dp, horizontal = 8.dp),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Column(
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                                                .padding(vertical = 10.dp, horizontal = 8.dp),
+                                            contentAlignment = Alignment.Center
                                         ) {
-                                            Icon(
-                                                icon,
-                                                contentDescription = label,
-                                                modifier = Modifier.size(22.dp),
-                                                tint = if (selected) MaterialTheme.colorScheme.onPrimary
-                                                       else MaterialTheme.colorScheme.outline
-                                            )
-                                            Text(
-                                                text = label.uppercase(),
-                                                color = if (selected) MaterialTheme.colorScheme.onPrimary
-                                                        else MaterialTheme.colorScheme.outline,
-                                                style = MaterialTheme.typography.labelSmall,
-                                                fontWeight = FontWeight.SemiBold
-                                            )
+                                            Column(
+                                                horizontalAlignment = Alignment.CenterHorizontally,
+                                                verticalArrangement = Arrangement.spacedBy(2.dp)
+                                            ) {
+                                                Icon(
+                                                    icon,
+                                                    contentDescription = label,
+                                                    modifier = Modifier.size(22.dp),
+                                                    tint = if (selected) MaterialTheme.colorScheme.onPrimary
+                                                           else MaterialTheme.colorScheme.outline
+                                                )
+                                                Text(
+                                                    text = label.uppercase(),
+                                                    color = if (selected) MaterialTheme.colorScheme.onPrimary
+                                                            else MaterialTheme.colorScheme.outline,
+                                                    style = MaterialTheme.typography.labelSmall,
+                                                    fontWeight = FontWeight.SemiBold
+                                                )
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                    ) { innerPadding ->
+                        CartioNavGraph(
+                            navController = navController,
+                            innerPadding = innerPadding
+                        )
                     }
-                ) { innerPadding ->
-                    CartioNavGraph(
-                        navController = navController,
-                        innerPadding = innerPadding
-                    )
                 }
             }
         }

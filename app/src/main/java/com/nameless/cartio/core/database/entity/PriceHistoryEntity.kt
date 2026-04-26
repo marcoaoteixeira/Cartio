@@ -22,6 +22,6 @@ data class PriceHistoryEntity(
     val id: Long = 0,
     val productId: Long,
     val price: Double,
-    val store: String? = null,
+    val measureUnit: MeasureUnit,
     val recordedAt: Long
 )

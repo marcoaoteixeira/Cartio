@@ -51,6 +51,9 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
+    // Splash Screen
+    implementation(libs.androidx.core.splashscreen)
+
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
