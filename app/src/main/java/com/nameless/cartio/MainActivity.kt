@@ -5,44 +5,56 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BarChart
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.ShoppingCart
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.nameless.cartio.BuildConfig
 import com.nameless.cartio.core.ui.theme.CartioTheme
 import com.nameless.cartio.features.splash.ui.CartioSplashScreen
 import com.nameless.cartio.navigation.CartioDestinations
 import com.nameless.cartio.navigation.CartioNavGraph
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -60,96 +72,159 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentRoute = navBackStackEntry?.destination?.route
+                    val drawerState = rememberDrawerState(DrawerValue.Closed)
+                    val scope = rememberCoroutineScope()
 
                     val navItems = listOf(
-                        Triple(CartioDestinations.Shopping, Icons.Rounded.ShoppingCart, "Shopping"),
-                        Triple(CartioDestinations.Reports, Icons.Rounded.BarChart, "Reports"),
-                        Triple(CartioDestinations.Settings, Icons.Rounded.Settings, "Settings")
+                        NavDrawerItem(CartioDestinations.Shopping, Icons.Rounded.ShoppingCart, "Shopping", "Lists, items, prices"),
+                        NavDrawerItem(CartioDestinations.Reports, Icons.Rounded.BarChart, "Reports", "Spend & trends"),
+                        NavDrawerItem(CartioDestinations.Settings, Icons.Rounded.Settings, "Settings", "Sync, data, about"),
                     )
 
-                    val topLevelRoutes = setOf(
-                        CartioDestinations.Shopping.route,
-                        CartioDestinations.Reports.route,
-                        CartioDestinations.Settings.route
-                    )
-                    val showBottomBar = currentRoute in topLevelRoutes
-
-                    Scaffold(
-                        modifier = Modifier.fillMaxSize(),
-                        bottomBar = {
-                            if (!showBottomBar) return@Scaffold
-                            Box(
-                                modifier = Modifier
-                                    .navigationBarsPadding()
-                                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                                    .clip(RoundedCornerShape(36.dp))
-                                    .border(
-                                        1.dp,
-                                        MaterialTheme.colorScheme.outlineVariant,
-                                        RoundedCornerShape(36.dp)
-                                    )
-                                    .background(MaterialTheme.colorScheme.surface)
-                            ) {
-                                Row(
+                    ModalNavigationDrawer(
+                        drawerState = drawerState,
+                        drawerContent = {
+                            ModalDrawerSheet {
+                                Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(4.dp),
-                                    horizontalArrangement = Arrangement.SpaceEvenly
+                                        .background(MaterialTheme.colorScheme.primary)
+                                        .statusBarsPadding()
+                                        .padding(24.dp)
                                 ) {
-                                    navItems.forEach { (destination, icon, label) ->
-                                        val selected = currentRoute == destination.route
+                                    Column {
                                         Box(
                                             modifier = Modifier
-                                                .weight(1f)
-                                                .clip(RoundedCornerShape(30.dp))
-                                                .background(
-                                                    if (selected) MaterialTheme.colorScheme.tertiary
-                                                    else Color.Transparent
-                                                )
-                                                .clickable {
-                                                    navController.navigate(destination.route) {
-                                                        popUpTo(CartioDestinations.Shopping.route) {
-                                                            saveState = true
-                                                        }
-                                                        launchSingleTop = true
-                                                        restoreState = true
-                                                    }
-                                                }
-                                                .padding(vertical = 10.dp, horizontal = 8.dp),
+                                                .size(56.dp)
+                                                .clip(RoundedCornerShape(14.dp))
+                                                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f)),
                                             contentAlignment = Alignment.Center
                                         ) {
-                                            Column(
-                                                horizontalAlignment = Alignment.CenterHorizontally,
-                                                verticalArrangement = Arrangement.spacedBy(2.dp)
-                                            ) {
-                                                Icon(
-                                                    icon,
-                                                    contentDescription = label,
-                                                    modifier = Modifier.size(22.dp),
-                                                    tint = if (selected) MaterialTheme.colorScheme.onPrimary
-                                                           else MaterialTheme.colorScheme.outline
-                                                )
-                                                Text(
-                                                    text = label.uppercase(),
-                                                    color = if (selected) MaterialTheme.colorScheme.onPrimary
-                                                            else MaterialTheme.colorScheme.outline,
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                    fontWeight = FontWeight.SemiBold
-                                                )
-                                            }
+                                            Icon(
+                                                Icons.Rounded.ShoppingCart,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onPrimary,
+                                                modifier = Modifier.size(28.dp)
+                                            )
                                         }
+                                        Spacer(modifier = Modifier.height(16.dp))
+                                        Text(
+                                            text = "Cartio",
+                                            style = MaterialTheme.typography.headlineSmall,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.onPrimary
+                                        )
+                                        Text(
+                                            text = "Your grocery intelligence",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                                        )
                                     }
                                 }
+
+                                Column(modifier = Modifier.weight(1f).padding(vertical = 12.dp)) {
+                                    navItems.forEach { item ->
+                                        DrawerNavItem(
+                                            item = item,
+                                            selected = currentRoute == item.destination.route,
+                                            primaryColor = MaterialTheme.colorScheme.primary,
+                                            onSurfaceColor = MaterialTheme.colorScheme.onSurface,
+                                            outlineColor = MaterialTheme.colorScheme.outline,
+                                            onClick = {
+                                                scope.launch { drawerState.close() }
+                                                navController.navigate(item.destination.route) {
+                                                    popUpTo(CartioDestinations.Shopping.route) { saveState = true }
+                                                    launchSingleTop = true
+                                                    restoreState = true
+                                                }
+                                            }
+                                        )
+                                    }
+                                }
+
+                                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                                Text(
+                                    text = "cartio · v${BuildConfig.VERSION_NAME}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.outline,
+                                    modifier = Modifier
+                                        .padding(horizontal = 24.dp, vertical = 16.dp)
+                                        .navigationBarsPadding()
+                                )
                             }
                         }
-                    ) { innerPadding ->
-                        CartioNavGraph(
-                            navController = navController,
-                            innerPadding = innerPadding
-                        )
+                    ) {
+                        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                            CartioNavGraph(
+                                navController = navController,
+                                innerPadding = innerPadding,
+                                onOpenDrawer = { scope.launch { drawerState.open() } }
+                            )
+                        }
                     }
                 }
             }
+        }
+    }
+}
+
+private data class NavDrawerItem(
+    val destination: CartioDestinations,
+    val icon: ImageVector,
+    val label: String,
+    val subtitle: String
+)
+
+@Composable
+private fun DrawerNavItem(
+    item: NavDrawerItem,
+    selected: Boolean,
+    primaryColor: Color,
+    onSurfaceColor: Color,
+    outlineColor: Color,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 4.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(if (selected) primaryColor.copy(alpha = 0.08f) else Color.Transparent)
+            .clickable(onClick = onClick)
+            .padding(end = 12.dp, top = 12.dp, bottom = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (selected) {
+            Box(
+                modifier = Modifier
+                    .width(3.dp)
+                    .height(36.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(primaryColor)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+        } else {
+            Spacer(modifier = Modifier.width(15.dp))
+        }
+        Icon(
+            item.icon,
+            contentDescription = item.label,
+            tint = if (selected) primaryColor else outlineColor,
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Column {
+            Text(
+                text = item.label,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+                color = if (selected) primaryColor else onSurfaceColor
+            )
+            Text(
+                text = item.subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = outlineColor
+            )
         }
     }
 }

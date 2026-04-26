@@ -32,6 +32,7 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.PointOfSale
 import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
@@ -174,6 +175,16 @@ fun ShoppingListDetailScreen(
                                 expanded = showMoreMenu,
                                 onDismissRequest = { showMoreMenu = false }
                             ) {
+                                DropdownMenuItem(
+                                    text = { Text("Register expenses") },
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Rounded.PointOfSale,
+                                            contentDescription = null
+                                        )
+                                    },
+                                    onClick = { showMoreMenu = false }
+                                )
                                 DropdownMenuItem(
                                     text = { Text("Delete") },
                                     leadingIcon = {

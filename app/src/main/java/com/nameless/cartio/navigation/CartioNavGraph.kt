@@ -15,7 +15,8 @@ import com.nameless.cartio.features.shopping.ui.ShoppingListScreen
 @Composable
 fun CartioNavGraph(
     navController: NavHostController,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    onOpenDrawer: () -> Unit = {}
 ) {
     NavHost(
         navController = navController,
@@ -24,16 +25,17 @@ fun CartioNavGraph(
         composable(CartioDestinations.Shopping.route) {
             ShoppingListScreen(
                 innerPadding = innerPadding,
+                onOpenDrawer = onOpenDrawer,
                 onNavigateToDetail = { listId ->
                     navController.navigate(CartioDestinations.ShoppingListDetail.routeFor(listId))
                 }
             )
         }
         composable(CartioDestinations.Reports.route) {
-            ReportsScreen(innerPadding = innerPadding)
+            ReportsScreen(innerPadding = innerPadding, onOpenDrawer = onOpenDrawer)
         }
         composable(CartioDestinations.Settings.route) {
-            SettingsScreen(innerPadding = innerPadding)
+            SettingsScreen(innerPadding = innerPadding, onOpenDrawer = onOpenDrawer)
         }
         composable(
             route = CartioDestinations.ShoppingListDetail.route,

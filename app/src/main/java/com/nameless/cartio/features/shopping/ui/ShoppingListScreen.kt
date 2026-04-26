@@ -24,6 +24,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.ShoppingCart
@@ -69,6 +70,7 @@ import java.util.Locale
 @Composable
 fun ShoppingListScreen(
     innerPadding: PaddingValues,
+    onOpenDrawer: () -> Unit = {},
     onNavigateToDetail: (Long) -> Unit,
     viewModel: ShoppingListViewModel = hiltViewModel()
 ) {
@@ -106,6 +108,15 @@ fun ShoppingListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = onOpenDrawer) {
+                        Icon(
+                            Icons.Rounded.Menu,
+                            contentDescription = "Open menu",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                },
                 title = {
                     Text(
                         text = "My Shopping Lists",
