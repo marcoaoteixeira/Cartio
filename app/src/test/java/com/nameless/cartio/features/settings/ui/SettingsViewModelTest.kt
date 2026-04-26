@@ -1,6 +1,8 @@
 package com.nameless.cartio.features.settings.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.nameless.cartio.features.backup.data.BackupPreferences
+import com.nameless.cartio.features.backup.domain.CartioBackupManager
 import com.nameless.cartio.features.settings.domain.ClearAllData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,29 +36,55 @@ class SettingsViewModelTest {
         Dispatchers.resetMain()
     }
 
-    private fun createViewModel(clearAllData: ClearAllData = ClearAllData {}) =
-        SettingsViewModel(clearAllData)
+    private fun createViewModel(
+        clearAllData: ClearAllData = ClearAllData {},
+        backupManager: CartioBackupManager = FakeBackupManager(),
+        backupPreferences: BackupPreferences = FakeBackupPreferences()
+    ) = SettingsViewModel(clearAllData, backupManager, backupPreferences)
+
+    // region sync toggle
 
     @Test
-    fun `sync is disabled by default`() {
-        val viewModel = createViewModel()
+    fun `sync is disabled by default when preference is off`() {
+        val viewModel = createViewModel(backupPreferences = FakeBackupPreferences(initial = false))
         assertFalse(viewModel.syncEnabled.value)
     }
 
     @Test
-    fun `toggleSync enables sync`() {
-        val viewModel = createViewModel()
-        viewModel.toggleSync(true)
+    fun `sync is enabled by default when preference is on`() {
+        val viewModel = createViewModel(backupPreferences = FakeBackupPreferences(initial = true))
         assertTrue(viewModel.syncEnabled.value)
     }
 
     @Test
-    fun `toggleSync disables sync`() {
-        val viewModel = createViewModel()
+    fun `toggleSync true calls requestBackup and persists preference`() {
+        val manager = FakeBackupManager()
+        val prefs = FakeBackupPreferences()
+        val viewModel = createViewModel(backupManager = manager, backupPreferences = prefs)
+
         viewModel.toggleSync(true)
-        viewModel.toggleSync(false)
-        assertFalse(viewModel.syncEnabled.value)
+
+        assertTrue(viewModel.syncEnabled.value)
+        assertTrue(prefs.isBackupEnabled)
+        assertTrue(manager.requestBackupCalled)
     }
+
+    @Test
+    fun `toggleSync false does not call requestBackup but persists preference`() {
+        val manager = FakeBackupManager()
+        val prefs = FakeBackupPreferences(initial = true)
+        val viewModel = createViewModel(backupManager = manager, backupPreferences = prefs)
+
+        viewModel.toggleSync(false)
+
+        assertFalse(viewModel.syncEnabled.value)
+        assertFalse(prefs.isBackupEnabled)
+        assertFalse(manager.requestBackupCalled)
+    }
+
+    // endregion
+
+    // region clear data dialog
 
     @Test
     fun `showClearDialog is false by default`() {
@@ -103,32 +131,18 @@ class SettingsViewModelTest {
         assertFalse(viewModel.showClearDialog.value)
     }
 
-    @Test
-    fun `showRestoreDialog is false by default`() {
-        val viewModel = createViewModel()
-        assertFalse(viewModel.showRestoreDialog.value)
+    // endregion
+
+    // region fakes
+
+    private class FakeBackupManager : CartioBackupManager {
+        var requestBackupCalled = false
+        override fun requestBackup() { requestBackupCalled = true }
     }
 
-    @Test
-    fun `requestRestore shows restore dialog`() {
-        val viewModel = createViewModel()
-        viewModel.requestRestore()
-        assertTrue(viewModel.showRestoreDialog.value)
+    private class FakeBackupPreferences(initial: Boolean = false) : BackupPreferences {
+        override var isBackupEnabled: Boolean = initial
     }
 
-    @Test
-    fun `dismissRestoreDialog hides restore dialog`() {
-        val viewModel = createViewModel()
-        viewModel.requestRestore()
-        viewModel.dismissRestoreDialog()
-        assertFalse(viewModel.showRestoreDialog.value)
-    }
-
-    @Test
-    fun `confirmRestore hides restore dialog`() {
-        val viewModel = createViewModel()
-        viewModel.requestRestore()
-        viewModel.confirmRestore()
-        assertFalse(viewModel.showRestoreDialog.value)
-    }
+    // endregion
 }
