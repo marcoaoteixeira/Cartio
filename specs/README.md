@@ -7,3 +7,4 @@
 | FEAT-003 | Fix & Restyle Bottom Navigation Bar | Done | feature/CARTIO-003-fix-bottom-nav |
 | FEAT-004 | Shopping List Core | Done | feature/CARTIO-004-shopping-list-core |
 | FEAT-005 | Splash Screen | Done | feature/CARTIO-005-splash-screen |
+| FEAT-006 | Settings Screen Foundation | Done | feature/CARTIO-006-settings-screen-foundation |

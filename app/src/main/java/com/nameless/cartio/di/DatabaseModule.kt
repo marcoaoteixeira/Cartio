@@ -16,6 +16,8 @@ import com.nameless.cartio.features.shopping.data.ShoppingListItemRepositoryImpl
 import com.nameless.cartio.features.shopping.data.ShoppingListLocalDataSource
 import com.nameless.cartio.features.shopping.data.ShoppingListRepository
 import com.nameless.cartio.features.shopping.data.ShoppingListRepositoryImpl
+import com.nameless.cartio.features.settings.domain.ClearAllData
+import com.nameless.cartio.features.settings.domain.ClearAllDataUseCase
 import com.nameless.cartio.features.shopping.domain.AddItemToList
 import com.nameless.cartio.features.shopping.domain.AddItemToListUseCase
 import dagger.Binds
@@ -53,6 +55,10 @@ abstract class DatabaseModule {
     @Binds
     @Singleton
     abstract fun bindAddItemToList(impl: AddItemToListUseCase): AddItemToList
+
+    @Binds
+    @Singleton
+    abstract fun bindClearAllData(impl: ClearAllDataUseCase): ClearAllData
 
     companion object {
         @Provides
