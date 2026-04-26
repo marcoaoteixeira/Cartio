@@ -74,6 +74,7 @@ fun ShoppingListScreen(
 ) {
     val shoppingLists by viewModel.shoppingLists.collectAsStateWithLifecycle()
     val createdListId by viewModel.createdListId.collectAsStateWithLifecycle()
+    val dashboardSort by viewModel.dashboardSort.collectAsStateWithLifecycle()
 
     var showCreateDialog by rememberSaveable { mutableStateOf(false) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
@@ -83,9 +84,7 @@ fun ShoppingListScreen(
         else shoppingLists.filter { it.name.contains(searchQuery, ignoreCase = true) }
     }
 
-    val inProgressList = remember(shoppingLists) {
-        shoppingLists.firstOrNull { it.checkedCount > 0 && it.checkedCount < it.itemCount }
-    }
+    val inProgressList = remember(shoppingLists) { shoppingLists.maxByOrNull { it.updatedAt } }
 
     LaunchedEffect(createdListId) {
         createdListId?.let { id ->
@@ -115,11 +114,18 @@ fun ShoppingListScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.AutoMirrored.Rounded.Sort, contentDescription = "Sort")
+                    val sortDescription = when (dashboardSort) {
+                        DashboardSort.RECENT -> "Sort A to Z"
+                        DashboardSort.ALPHA_ASC -> "Sort Z to A"
+                        DashboardSort.ALPHA_DESC -> "Remove sort"
                     }
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Rounded.MoreVert, contentDescription = "More options")
+                    IconButton(onClick = { viewModel.toggleDashboardSort() }) {
+                        Icon(
+                            Icons.AutoMirrored.Rounded.Sort,
+                            contentDescription = sortDescription,
+                            tint = if (dashboardSort != DashboardSort.RECENT) Color(0xFFFFB300)
+                                   else MaterialTheme.colorScheme.onPrimary
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(

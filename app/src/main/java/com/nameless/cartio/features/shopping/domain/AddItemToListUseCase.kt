@@ -18,7 +18,12 @@ class AddItemToListUseCase @Inject constructor(
         val existing = productDataSource.getByName(trimmed)
         val productId = existing?.id
             ?: productDataSource.insert(ProductEntity(name = trimmed, createdAt = System.currentTimeMillis()))
-        itemRepository.insertItem(listId, productId)
+        val activeItem = itemRepository.findActiveItemByProduct(listId, productId)
+        if (activeItem != null) {
+            itemRepository.updateQuantity(activeItem.first, activeItem.second + 1)
+        } else {
+            itemRepository.insertItem(listId, productId)
+        }
         listRepository.touchUpdatedAt(listId)
     }
 }

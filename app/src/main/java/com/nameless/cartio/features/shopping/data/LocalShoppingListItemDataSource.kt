@@ -13,6 +13,9 @@ class LocalShoppingListItemDataSource @Inject constructor(
     override fun getItemsForList(listId: Long): Flow<List<ShoppingListItemWithProduct>> =
         dao.getByListWithProduct(listId)
 
+    override suspend fun findActiveByProduct(listId: Long, productId: Long): ShoppingListItemEntity? =
+        dao.findActiveByProduct(listId, productId)
+
     override suspend fun insert(listId: Long, productId: Long): Long =
         dao.insert(ShoppingListItemEntity(shoppingListId = listId, productId = productId, quantity = 1f))
 

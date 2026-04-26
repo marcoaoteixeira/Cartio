@@ -194,6 +194,7 @@ private class FakeShoppingListItemRepository(
     val deletedIds = mutableListOf<Long>()
 
     override fun getItemsForList(listId: Long) = itemsFlow
+    override suspend fun findActiveItemByProduct(listId: Long, productId: Long): Pair<Long, Int>? = null
     override suspend fun insertItem(listId: Long, productId: Long) {}
     override suspend fun updateQuantity(itemId: Long, quantity: Int) { updatedQuantities.add(itemId to quantity) }
     override suspend fun checkItem(itemId: Long, checked: Boolean) { checkedItems.add(itemId to checked) }

@@ -175,7 +175,7 @@ fun ShoppingListDetailScreen(
                                 onDismissRequest = { showMoreMenu = false }
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("Delete list") },
+                                    text = { Text("Delete") },
                                     leadingIcon = {
                                         Icon(
                                             Icons.Rounded.Delete,
@@ -244,6 +244,7 @@ fun ShoppingListDetailScreen(
                             else viewModel.deleteItem(item.id)
                         }
                     )
+
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 }
 
@@ -252,17 +253,9 @@ fun ShoppingListDetailScreen(
                         DoneSectionHeader(count = uiState.checkedItems.size)
                     }
                     items(uiState.checkedItems, key = { it.id }) { item ->
-                        SwipeableItemRow(
+                        DoneItemRow(
                             item = item,
-                            isCompleted = true,
-                            onCheck = { viewModel.checkItem(item.id, false) },
-                            onDelete = { viewModel.deleteItem(item.id) },
-                            onCheckboxTap = { viewModel.checkItem(item.id, false) },
-                            onIncrement = { viewModel.updateQuantity(item.id, item.quantity + 1) },
-                            onDecrement = {
-                                if (item.quantity > 1) viewModel.updateQuantity(item.id, item.quantity - 1)
-                                else viewModel.deleteItem(item.id)
-                            }
+                            onUncheck = { viewModel.checkItem(item.id, false) }
                         )
                         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     }
@@ -276,7 +269,6 @@ fun ShoppingListDetailScreen(
 @Composable
 private fun SwipeableItemRow(
     item: ShoppingListItem,
-    isCompleted: Boolean = false,
     onCheck: () -> Unit,
     onDelete: () -> Unit,
     onCheckboxTap: () -> Unit,
@@ -338,7 +330,6 @@ private fun SwipeableItemRow(
     ) {
         ShoppingListItemRow(
             item = item,
-            isCompleted = isCompleted,
             onCheckboxTap = onCheckboxTap,
             onIncrement = onIncrement,
             onDecrement = onDecrement
@@ -349,7 +340,6 @@ private fun SwipeableItemRow(
 @Composable
 private fun ShoppingListItemRow(
     item: ShoppingListItem,
-    isCompleted: Boolean,
     onCheckboxTap: () -> Unit,
     onIncrement: () -> Unit,
     onDecrement: () -> Unit
@@ -361,21 +351,45 @@ private fun ShoppingListItemRow(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        CircleCheckbox(checked = isCompleted, onClick = onCheckboxTap)
+        CircleCheckbox(checked = false, onClick = onCheckboxTap)
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = item.productName,
             modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.bodyLarge,
-            textDecoration = if (isCompleted) TextDecoration.LineThrough else TextDecoration.None,
-            color = if (isCompleted) MaterialTheme.colorScheme.outline
-            else MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground
         )
         QuantityStepper(
             quantity = item.quantity,
-            isCompleted = isCompleted,
             onIncrement = onIncrement,
             onDecrement = onDecrement
+        )
+    }
+}
+
+@Composable
+private fun DoneItemRow(item: ShoppingListItem, onUncheck: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        CircleCheckbox(checked = true, onClick = onUncheck)
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = item.productName,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.bodyLarge,
+            textDecoration = TextDecoration.LineThrough,
+            color = MaterialTheme.colorScheme.outline
+        )
+        Text(
+            text = "${item.quantity}",
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.outline
         )
     }
 }
@@ -411,32 +425,30 @@ private fun CircleCheckbox(checked: Boolean, onClick: () -> Unit) {
 @Composable
 private fun QuantityStepper(
     quantity: Int,
-    isCompleted: Boolean,
     onIncrement: () -> Unit,
     onDecrement: () -> Unit
 ) {
-    val alpha = if (isCompleted) 0.4f else 1f
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
                 .size(28.dp)
                 .clip(CircleShape)
-                .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = alpha), CircleShape)
+                .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
                 .clickable(onClick = onDecrement),
             contentAlignment = Alignment.Center
         ) {
-            if (!isCompleted && quantity == 1) {
+            if (quantity == 1) {
                 Icon(
                     Icons.Rounded.Delete,
                     contentDescription = "Remove item",
-                    tint = Color(0xFFE53935).copy(alpha = alpha),
+                    tint = Color(0xFFE53935),
                     modifier = Modifier.size(14.dp)
                 )
             } else {
                 Text(
                     "−",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = alpha)
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
@@ -445,20 +457,20 @@ private fun QuantityStepper(
             modifier = Modifier.padding(horizontal = 8.dp),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = alpha)
+            color = MaterialTheme.colorScheme.onBackground
         )
         Box(
             modifier = Modifier
                 .size(28.dp)
                 .clip(CircleShape)
-                .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = alpha), CircleShape)
+                .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
                 .clickable(onClick = onIncrement),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 "+",
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = alpha)
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }
