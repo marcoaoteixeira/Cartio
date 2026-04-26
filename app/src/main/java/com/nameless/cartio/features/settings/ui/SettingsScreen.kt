@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Article
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Sync
@@ -34,11 +33,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nameless.cartio.BuildConfig
@@ -54,19 +53,11 @@ fun SettingsScreen(
     val context = LocalContext.current
     val syncEnabled by viewModel.syncEnabled.collectAsStateWithLifecycle()
     val showClearDialog by viewModel.showClearDialog.collectAsStateWithLifecycle()
-    val showRestoreDialog by viewModel.showRestoreDialog.collectAsStateWithLifecycle()
 
     if (showClearDialog) {
         ClearDataDialog(
             onConfirm = viewModel::confirmClearData,
             onDismiss = viewModel::dismissClearDialog
-        )
-    }
-
-    if (showRestoreDialog) {
-        RestoreDataDialog(
-            onConfirm = viewModel::confirmRestore,
-            onDismiss = viewModel::dismissRestoreDialog
         )
     }
 
@@ -124,27 +115,11 @@ fun SettingsScreen(
                                 )
                             }
                         },
-                        title = "Backup with Google Drive",
-                        subtitle = if (syncEnabled) "On · Backed up to Google Drive"
+                        title = "Backup with Google Account",
+                        subtitle = if (syncEnabled) "On · Backed up to your Google Account"
                                    else "Off · Stored only on this device",
                         checked = syncEnabled,
                         onCheckedChange = viewModel::toggleSync
-                    )
-                    SettingsListItem(
-                        icon = {
-                            SettingsIconBox(backgroundColor = MaterialTheme.colorScheme.surfaceVariant) {
-                                Icon(
-                                    Icons.Rounded.Download,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.outline,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
-                        },
-                        title = "Restore Previous Backup",
-                        subtitle = "Overwrite local data from Google Drive",
-                        showChevron = true,
-                        onClick = viewModel::requestRestore
                     )
                 }
             }
@@ -257,25 +232,6 @@ private fun openPlayStore(context: Context) {
     } catch (_: ActivityNotFoundException) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AppConfig.PLAY_STORE_URL)))
     }
-}
-
-@Composable
-private fun RestoreDataDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Restore backup?") },
-        text = {
-            Text("This will overwrite your current local data with the most recent Google Drive backup.")
-        },
-        confirmButton = {
-            TextButton(onClick = onConfirm) {
-                Text("Restore")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
-        }
-    )
 }
 
 @Composable
