@@ -9,3 +9,4 @@
 | FEAT-005 | Splash Screen | Done | feature/CARTIO-005-splash-screen |
 | FEAT-006 | Settings Screen Foundation | Done | feature/CARTIO-006-settings-screen-foundation |
 | FEAT-007 | Nav Drawer + UX Improvements | Done | feature/CARTIO-007-nav-drawer-and-ux-improvements |
+| FEAT-008 | Android Auto Backup | Done | feature/CARTIO-008-android-auto-backup |
