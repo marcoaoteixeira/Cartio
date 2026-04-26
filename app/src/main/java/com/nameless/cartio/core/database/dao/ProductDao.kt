@@ -12,6 +12,9 @@ interface ProductDao {
     @Query("SELECT * FROM products ORDER BY name ASC")
     fun getAll(): Flow<List<ProductEntity>>
 
+    @Query("SELECT * FROM products WHERE name = :name COLLATE NOCASE LIMIT 1")
+    suspend fun getByName(name: String): ProductEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(product: ProductEntity): Long
 }

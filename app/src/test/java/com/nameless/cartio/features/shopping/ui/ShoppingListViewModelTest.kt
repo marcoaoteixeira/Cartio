@@ -64,10 +64,48 @@ class ShoppingListViewModelTest {
 
         assertEquals(lists, viewModel.shoppingLists.value)
     }
+
+    @Test
+    fun `createShoppingList emits new list id`() = runTest {
+        val fakeRepository = FakeShoppingListRepository(emptyList())
+        val viewModel = ShoppingListViewModel(fakeRepository)
+
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.createdListId.collect {}
+        }
+
+        viewModel.createShoppingList("Groceries")
+        advanceUntilIdle()
+
+        assertEquals(100L, viewModel.createdListId.value)
+    }
+
+    @Test
+    fun `onNavigationHandled clears createdListId`() = runTest {
+        val fakeRepository = FakeShoppingListRepository(emptyList())
+        val viewModel = ShoppingListViewModel(fakeRepository)
+
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.createdListId.collect {}
+        }
+
+        viewModel.createShoppingList("Groceries")
+        advanceUntilIdle()
+        viewModel.onNavigationHandled()
+        advanceUntilIdle()
+
+        assertEquals(null, viewModel.createdListId.value)
+    }
 }
 
 private class FakeShoppingListRepository(
-    private val lists: List<ShoppingList>
+    private val lists: List<ShoppingList>,
+    private var nextId: Long = 100L
 ) : ShoppingListRepository {
     override fun getShoppingLists() = flowOf(lists)
+    override fun getShoppingListById(id: Long) = flowOf(lists.find { it.id == id })
+    override suspend fun createShoppingList(name: String) = nextId++
+    override suspend fun renameShoppingList(id: Long, name: String) {}
+    override suspend fun deleteShoppingList(id: Long) {}
+    override suspend fun touchUpdatedAt(id: Long) {}
 }
