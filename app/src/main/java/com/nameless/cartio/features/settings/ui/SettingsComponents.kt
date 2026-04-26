@@ -236,7 +236,7 @@ fun PromoCard(onBuyClick: () -> Unit) {
             contentDescription = null,
             modifier = Modifier
                 .size(80.dp)
-                .align(Alignment.CenterEnd),
+                .align(Alignment.BottomEnd),
             tint = PromoButtonColor.copy(alpha = 0.18f)
         )
     }

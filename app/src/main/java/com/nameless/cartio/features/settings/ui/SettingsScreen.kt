@@ -1,5 +1,8 @@
 package com.nameless.cartio.features.settings.ui
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Article
 import androidx.compose.material.icons.rounded.Article
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Download
@@ -32,9 +36,11 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nameless.cartio.BuildConfig
+import com.nameless.cartio.core.config.AppConfig
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +48,7 @@ fun SettingsScreen(
     innerPadding: PaddingValues,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val syncEnabled by viewModel.syncEnabled.collectAsStateWithLifecycle()
     val showClearDialog by viewModel.showClearDialog.collectAsStateWithLifecycle()
 
@@ -125,23 +132,6 @@ fun SettingsScreen(
                 SettingsSection(label = "DATA") {
                     SettingsListItem(
                         icon = {
-                            SettingsIconBox(backgroundColor = Color(0xFF37474F)) {
-                                Icon(
-                                    Icons.Rounded.Download,
-                                    contentDescription = null,
-                                    tint = Color.White,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
-                        },
-                        title = "Export lists as JSON",
-                        subtitle = "Download a backup file",
-                        showDivider = true,
-                        showChevron = true,
-                        onClick = {}
-                    )
-                    SettingsListItem(
-                        icon = {
                             SettingsIconBox(backgroundColor = MaterialTheme.colorScheme.error) {
                                 Icon(
                                     Icons.Rounded.Delete,
@@ -178,13 +168,26 @@ fun SettingsScreen(
                         },
                         title = "Cartio",
                         subtitle = "Version ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})",
-                        showDivider = true
+                        showDivider = true,
+                        onClick = {
+                            val marketIntent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=${context.packageName}")
+                            ).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            try {
+                                context.startActivity(marketIntent)
+                            } catch (_: ActivityNotFoundException) {
+                                context.startActivity(
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(AppConfig.PLAY_STORE_URL))
+                                )
+                            }
+                        }
                     )
                     SettingsListItem(
                         icon = {
                             SettingsIconBox(backgroundColor = MaterialTheme.colorScheme.surfaceVariant) {
                                 Icon(
-                                    Icons.Rounded.Article,
+                                    Icons.AutoMirrored.Rounded.Article,
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.outline,
                                     modifier = Modifier.size(20.dp)
