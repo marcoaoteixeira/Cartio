@@ -14,6 +14,7 @@ navigationCompose = "2.9.0"
 coroutines = "1.10.1"
 lifecycleViewModelCompose = "2.9.0"
 archCoreTesting = "2.2.0"
+coreSplashscreen = "1.0.1"
 
 [libraries]
 # Core
@@ -56,6 +57,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-arch-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "archCoreTesting" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
