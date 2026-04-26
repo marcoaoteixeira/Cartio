@@ -21,6 +21,9 @@ class SettingsViewModel @Inject constructor(
     private val _showClearDialog = MutableStateFlow(false)
     val showClearDialog: StateFlow<Boolean> = _showClearDialog.asStateFlow()
 
+    private val _showRestoreDialog = MutableStateFlow(false)
+    val showRestoreDialog: StateFlow<Boolean> = _showRestoreDialog.asStateFlow()
+
     fun toggleSync(enabled: Boolean) {
         _syncEnabled.value = enabled
     }
@@ -38,5 +41,17 @@ class SettingsViewModel @Inject constructor(
             runCatching { clearAllData() }
             _showClearDialog.value = false
         }
+    }
+
+    fun requestRestore() {
+        _showRestoreDialog.value = true
+    }
+
+    fun dismissRestoreDialog() {
+        _showRestoreDialog.value = false
+    }
+
+    fun confirmRestore() {
+        _showRestoreDialog.value = false
     }
 }

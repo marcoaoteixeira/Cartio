@@ -10,7 +10,6 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -102,5 +101,34 @@ class SettingsViewModelTest {
         advanceUntilIdle()
 
         assertFalse(viewModel.showClearDialog.value)
+    }
+
+    @Test
+    fun `showRestoreDialog is false by default`() {
+        val viewModel = createViewModel()
+        assertFalse(viewModel.showRestoreDialog.value)
+    }
+
+    @Test
+    fun `requestRestore shows restore dialog`() {
+        val viewModel = createViewModel()
+        viewModel.requestRestore()
+        assertTrue(viewModel.showRestoreDialog.value)
+    }
+
+    @Test
+    fun `dismissRestoreDialog hides restore dialog`() {
+        val viewModel = createViewModel()
+        viewModel.requestRestore()
+        viewModel.dismissRestoreDialog()
+        assertFalse(viewModel.showRestoreDialog.value)
+    }
+
+    @Test
+    fun `confirmRestore hides restore dialog`() {
+        val viewModel = createViewModel()
+        viewModel.requestRestore()
+        viewModel.confirmRestore()
+        assertFalse(viewModel.showRestoreDialog.value)
     }
 }

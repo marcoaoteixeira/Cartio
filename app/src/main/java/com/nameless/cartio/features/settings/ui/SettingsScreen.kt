@@ -18,10 +18,12 @@ import androidx.compose.material.icons.automirrored.rounded.Article
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -46,11 +48,13 @@ import com.nameless.cartio.core.config.AppConfig
 @Composable
 fun SettingsScreen(
     innerPadding: PaddingValues,
+    onOpenDrawer: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val syncEnabled by viewModel.syncEnabled.collectAsStateWithLifecycle()
     val showClearDialog by viewModel.showClearDialog.collectAsStateWithLifecycle()
+    val showRestoreDialog by viewModel.showRestoreDialog.collectAsStateWithLifecycle()
 
     if (showClearDialog) {
         ClearDataDialog(
@@ -59,9 +63,25 @@ fun SettingsScreen(
         )
     }
 
+    if (showRestoreDialog) {
+        RestoreDataDialog(
+            onConfirm = viewModel::confirmRestore,
+            onDismiss = viewModel::dismissRestoreDialog
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = onOpenDrawer) {
+                        Icon(
+                            Icons.Rounded.Menu,
+                            contentDescription = "Open menu",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                },
                 title = {
                     Text(
                         text = "Settings",
@@ -92,7 +112,7 @@ fun SettingsScreen(
             item { Spacer(modifier = Modifier.height(12.dp)) }
 
             item {
-                SettingsSection(label = "BACKUP & SYNC") {
+                SettingsSection(label = "BACKUP & RESTORE") {
                     ToggleSettingItem(
                         icon = {
                             SettingsIconBox(backgroundColor = MaterialTheme.colorScheme.primary) {
@@ -104,11 +124,27 @@ fun SettingsScreen(
                                 )
                             }
                         },
-                        title = "Sync with Google Drive",
-                        subtitle = if (syncEnabled) "On · Syncing to Google Drive"
+                        title = "Backup with Google Drive",
+                        subtitle = if (syncEnabled) "On · Backed up to Google Drive"
                                    else "Off · Stored only on this device",
                         checked = syncEnabled,
                         onCheckedChange = viewModel::toggleSync
+                    )
+                    SettingsListItem(
+                        icon = {
+                            SettingsIconBox(backgroundColor = MaterialTheme.colorScheme.surfaceVariant) {
+                                Icon(
+                                    Icons.Rounded.Download,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.outline,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        },
+                        title = "Restore Previous Backup",
+                        subtitle = "Overwrite local data from Google Drive",
+                        showChevron = true,
+                        onClick = viewModel::requestRestore
                     )
                 }
             }
@@ -221,6 +257,25 @@ private fun openPlayStore(context: Context) {
     } catch (_: ActivityNotFoundException) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AppConfig.PLAY_STORE_URL)))
     }
+}
+
+@Composable
+private fun RestoreDataDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Restore backup?") },
+        text = {
+            Text("This will overwrite your current local data with the most recent Google Drive backup.")
+        },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text("Restore")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text("Cancel") }
+        }
+    )
 }
 
 @Composable
