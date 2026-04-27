@@ -2,8 +2,8 @@ package com.nameless.cartio.features.monetization
 
 object MonetizationConfig {
     // Replace with production values before Play Store release
-    const val ADMOB_INTERSTITIAL_UNIT_ID = "ca-app-pub-3940256099942544/1033173712" // test ID
-    const val REMOVE_ADS_PRODUCT_ID = "remove_ads_support"
+    const val ADMOB_INTERSTITIAL_UNIT_ID = "ca-app-pub-7006378932719266/8563981370"
+    const val REMOVE_ADS_PRODUCT_ID = "cartio_buy_me_a_coffee_support"
     const val FREQUENCY_CAP_MINUTES = 30L
     const val AD_TIMEOUT_MS = 3_000L
 }

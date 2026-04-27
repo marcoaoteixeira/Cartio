@@ -65,7 +65,7 @@
     <string name="nav_item_settings_subtitle">Sync, data, about</string>
 
     <!-- AdMob (replace with production IDs before release) -->
-    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_app_id" translatable="false">ca-app-pub-7006378932719266~5913541964</string>
 
     <!-- Support / Ad-free entitlement -->
     <string name="settings_support_purchased_title">Ad-free — Thank you!</string>
