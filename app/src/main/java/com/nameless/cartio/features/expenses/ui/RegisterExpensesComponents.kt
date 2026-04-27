@@ -82,7 +82,7 @@ fun ExpenseItemRow(
                 )
                 OutlinedTextField(
                     value = row.unitPrice,
-                    onValueChange = { onPriceChange(it) },
+                    onValueChange = { if (isValidMonetaryInput(it)) onPriceChange(it) },
                     prefix = { Text("$") },
                     placeholder = { Text("0.00") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -93,6 +93,11 @@ fun ExpenseItemRow(
         }
     }
 }
+
+private val monetaryInputRegex = Regex("""^\d*\.?\d{0,3}$""")
+
+private fun isValidMonetaryInput(input: String): Boolean =
+    input.isEmpty() || input.matches(monetaryInputRegex)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
