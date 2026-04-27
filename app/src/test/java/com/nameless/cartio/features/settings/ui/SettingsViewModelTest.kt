@@ -1,12 +1,19 @@
 package com.nameless.cartio.features.settings.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import android.app.Activity
 import com.nameless.cartio.features.backup.data.BackupPreferences
 import com.nameless.cartio.features.backup.domain.CartioBackupManager
+import com.nameless.cartio.features.monetization.domain.BillingRepository
+import com.nameless.cartio.features.monetization.domain.HasAdFreeEntitlementUseCase
 import com.nameless.cartio.features.settings.domain.ClearAllData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -39,8 +46,15 @@ class SettingsViewModelTest {
     private fun createViewModel(
         clearAllData: ClearAllData = ClearAllData {},
         backupManager: CartioBackupManager = FakeBackupManager(),
-        backupPreferences: BackupPreferences = FakeBackupPreferences()
-    ) = SettingsViewModel(clearAllData, backupManager, backupPreferences)
+        backupPreferences: BackupPreferences = FakeBackupPreferences(),
+        fakeBillingRepository: BillingRepository = FakeBillingRepository()
+    ) = SettingsViewModel(
+        clearAllData,
+        backupManager,
+        backupPreferences,
+        HasAdFreeEntitlementUseCase(fakeBillingRepository),
+        fakeBillingRepository
+    )
 
     // region sync toggle
 
@@ -164,6 +178,41 @@ class SettingsViewModelTest {
 
     // endregion
 
+    // region billing tests
+
+    @Test
+    fun `adFreeEntitlement is false by default`() = runTest {
+        val viewModel = createViewModel(fakeBillingRepository = FakeBillingRepository(entitlement = false))
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.adFreeEntitlement.collect {}
+        }
+        advanceUntilIdle()
+        assertFalse(viewModel.adFreeEntitlement.value)
+    }
+
+    @Test
+    fun `adFreeEntitlement is true when user owns product`() = runTest {
+        val viewModel = createViewModel(fakeBillingRepository = FakeBillingRepository(entitlement = true))
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.adFreeEntitlement.collect {}
+        }
+        advanceUntilIdle()
+        assertTrue(viewModel.adFreeEntitlement.value)
+    }
+
+    @Test
+    fun `onBuyRemoveAdsClicked delegates to billing repository`() = runTest {
+        val billing = FakeBillingRepository()
+        val viewModel = createViewModel(fakeBillingRepository = billing)
+
+        viewModel.onBuyRemoveAdsClicked(FakeActivity())
+        advanceUntilIdle()
+
+        assertTrue(billing.launchPurchaseCalled)
+    }
+
+    // endregion
+
     // region fakes
 
     private class FakeBackupManager : CartioBackupManager {
@@ -174,6 +223,16 @@ class SettingsViewModelTest {
     private class FakeBackupPreferences(initial: Boolean = false) : BackupPreferences {
         override var isBackupEnabled: Boolean = initial
     }
+
+    private class FakeBillingRepository(private val entitlement: Boolean = false) : BillingRepository {
+        var launchPurchaseCalled = false
+        override val adFreeEntitlement: Flow<Boolean> = flowOf(entitlement)
+        override suspend fun connect(): Boolean = true
+        override suspend fun refreshEntitlements() {}
+        override suspend fun launchRemoveAdsPurchase(activity: Activity) { launchPurchaseCalled = true }
+    }
+
+    private class FakeActivity : Activity()
 
     // endregion
 }

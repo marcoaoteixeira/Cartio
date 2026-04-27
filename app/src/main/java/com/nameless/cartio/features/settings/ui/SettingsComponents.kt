@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.LocalCafe
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -169,6 +170,41 @@ fun SettingsIconBox(
         contentAlignment = Alignment.Center,
         content = { content() }
     )
+}
+
+@Composable
+fun PurchasedCard() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(PromoGradient)
+            .padding(20.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                Icons.Rounded.CheckCircle,
+                contentDescription = null,
+                tint = PromoButtonDark,
+                modifier = Modifier.size(32.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Column {
+                Text(
+                    text = stringResource(R.string.settings_support_purchased_title),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = PromoButtonDark
+                )
+                Text(
+                    text = stringResource(R.string.settings_support_purchased_body),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = PromoButtonDark.copy(alpha = Alpha.Dimmed),
+                    lineHeight = 18.sp
+                )
+            }
+        }
+    }
 }
 
 private val PromoGradient = Brush.linearGradient(

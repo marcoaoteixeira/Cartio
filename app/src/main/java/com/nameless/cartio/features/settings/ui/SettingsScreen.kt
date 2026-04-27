@@ -1,5 +1,6 @@
 package com.nameless.cartio.features.settings.ui
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -53,9 +54,11 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val activity = context as Activity
     val syncEnabled by viewModel.syncEnabled.collectAsStateWithLifecycle()
     val showClearDialog by viewModel.showClearDialog.collectAsStateWithLifecycle()
     val clearDataError by viewModel.clearDataError.collectAsStateWithLifecycle()
+    val adFreeEntitlement by viewModel.adFreeEntitlement.collectAsStateWithLifecycle()
 
     if (showClearDialog) {
         ClearDataDialog(
@@ -142,7 +145,13 @@ fun SettingsScreen(
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
 
-            item { PromoCard(onBuyClick = { /* TODO(CARTIO-IAP): implement in-app purchase flow */ }) }
+            item {
+                if (adFreeEntitlement) {
+                    PurchasedCard()
+                } else {
+                    PromoCard(onBuyClick = { viewModel.onBuyRemoveAdsClicked(activity) })
+                }
+            }
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
 
