@@ -1,8 +1,10 @@
 package com.nameless.cartio.features.shopping.ui
 
+import android.app.Activity
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nameless.cartio.features.monetization.domain.ShowDetailAdUseCase
 import com.nameless.cartio.features.shopping.data.ShoppingListItem
 import com.nameless.cartio.features.shopping.data.ShoppingListItemRepository
 import com.nameless.cartio.features.shopping.data.ShoppingListRepository
@@ -33,7 +35,8 @@ class ShoppingListDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val listRepository: ShoppingListRepository,
     private val itemRepository: ShoppingListItemRepository,
-    private val addItemToList: AddItemToList
+    private val addItemToList: AddItemToList,
+    private val showDetailAd: ShowDetailAdUseCase
 ) : ViewModel() {
 
     private val listId: Long = checkNotNull(savedStateHandle[CartioDestinations.ShoppingListDetail.ARG_LIST_ID]) {
@@ -63,6 +66,10 @@ class ShoppingListDetailViewModel @Inject constructor(
             isLoading = false
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), ShoppingListDetailUiState())
+
+    fun onScreenEntered(activity: Activity) {
+        viewModelScope.launch { showDetailAd(activity) }
+    }
 
     fun toggleSort() {
         _sortOrder.value = when (_sortOrder.value) {

@@ -92,6 +92,10 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
+    // Monetization
+    implementation(libs.google.ads)
+    implementation(libs.play.billing)
+
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
 
