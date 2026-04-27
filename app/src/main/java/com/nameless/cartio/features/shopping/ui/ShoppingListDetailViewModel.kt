@@ -23,6 +23,7 @@ import javax.inject.Inject
 enum class SortOrder { DEFAULT, ALPHA_ASC, ALPHA_DESC }
 
 data class ShoppingListDetailUiState(
+    val listId: Long = 0L,
     val listName: String = "",
     val activeItems: List<ShoppingListItem> = emptyList(),
     val checkedItems: List<ShoppingListItem> = emptyList(),
@@ -59,6 +60,7 @@ class ShoppingListDetailViewModel @Inject constructor(
             SortOrder.ALPHA_DESC -> items.sortedByDescending { it.productName.lowercase() }
         }
         ShoppingListDetailUiState(
+            listId = listId,
             listName = list?.name ?: "",
             activeItems = sorted.filter { !it.checked },
             checkedItems = sorted.filter { it.checked },

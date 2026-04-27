@@ -83,6 +83,7 @@ import com.nameless.cartio.features.shopping.data.ShoppingListItem
 @Composable
 fun ShoppingListDetailScreen(
     onNavigateUp: () -> Unit,
+    onNavigateToRegisterExpenses: (Long) -> Unit = {},
     viewModel: ShoppingListDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -195,7 +196,10 @@ fun ShoppingListDetailScreen(
                                             contentDescription = null
                                         )
                                     },
-                                    onClick = { showMoreMenu = false /* TODO(CARTIO-EXPENSES): open register expenses flow */ }
+                                    onClick = {
+                                        showMoreMenu = false
+                                        onNavigateToRegisterExpenses(uiState.listId)
+                                    }
                                 )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.action_delete)) },

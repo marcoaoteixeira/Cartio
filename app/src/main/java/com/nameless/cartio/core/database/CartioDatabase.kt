@@ -12,6 +12,8 @@ import com.nameless.cartio.core.database.entity.PriceHistoryEntity
 import com.nameless.cartio.core.database.entity.ProductEntity
 import com.nameless.cartio.core.database.entity.ShoppingListEntity
 import com.nameless.cartio.core.database.entity.ShoppingListItemEntity
+import com.nameless.cartio.features.expenses.data.ExpenseRecordDao
+import com.nameless.cartio.features.expenses.data.ExpenseRecordEntity
 
 @Database(
     entities = [
@@ -19,8 +21,9 @@ import com.nameless.cartio.core.database.entity.ShoppingListItemEntity
         ProductEntity::class,
         ShoppingListItemEntity::class,
         PriceHistoryEntity::class,
+        ExpenseRecordEntity::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 @TypeConverters(CustomConverters::class)
@@ -29,4 +32,5 @@ abstract class CartioDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
     abstract fun shoppingListItemDao(): ShoppingListItemDao
     abstract fun priceHistoryDao(): PriceHistoryDao
+    abstract fun expenseRecordDao(): ExpenseRecordDao
 }
