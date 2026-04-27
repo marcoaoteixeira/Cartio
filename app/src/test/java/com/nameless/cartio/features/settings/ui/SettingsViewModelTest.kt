@@ -131,6 +131,37 @@ class SettingsViewModelTest {
         assertFalse(viewModel.showClearDialog.value)
     }
 
+    @Test
+    fun `confirmClearData sets clearDataError on failure`() = runTest {
+        val viewModel = createViewModel(clearAllData = ClearAllData { error("db error") })
+
+        viewModel.confirmClearData()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.clearDataError.value)
+    }
+
+    @Test
+    fun `confirmClearData does not set clearDataError on success`() = runTest {
+        val viewModel = createViewModel(clearAllData = ClearAllData {})
+
+        viewModel.confirmClearData()
+        advanceUntilIdle()
+
+        assertFalse(viewModel.clearDataError.value)
+    }
+
+    @Test
+    fun `dismissClearDataError clears error state`() = runTest {
+        val viewModel = createViewModel(clearAllData = ClearAllData { error("db error") })
+
+        viewModel.confirmClearData()
+        advanceUntilIdle()
+        viewModel.dismissClearDataError()
+
+        assertFalse(viewModel.clearDataError.value)
+    }
+
     // endregion
 
     // region fakes

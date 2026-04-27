@@ -34,6 +34,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nameless.cartio.BuildConfig
+import com.nameless.cartio.R
 import com.nameless.cartio.core.config.AppConfig
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,12 +55,17 @@ fun SettingsScreen(
     val context = LocalContext.current
     val syncEnabled by viewModel.syncEnabled.collectAsStateWithLifecycle()
     val showClearDialog by viewModel.showClearDialog.collectAsStateWithLifecycle()
+    val clearDataError by viewModel.clearDataError.collectAsStateWithLifecycle()
 
     if (showClearDialog) {
         ClearDataDialog(
             onConfirm = viewModel::confirmClearData,
             onDismiss = viewModel::dismissClearDialog
         )
+    }
+
+    if (clearDataError) {
+        ClearDataErrorDialog(onDismiss = viewModel::dismissClearDataError)
     }
 
     Scaffold(
@@ -68,14 +75,14 @@ fun SettingsScreen(
                     IconButton(onClick = onOpenDrawer) {
                         Icon(
                             Icons.Rounded.Menu,
-                            contentDescription = "Open menu",
+                            contentDescription = stringResource(R.string.nav_open_menu),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
                 title = {
                     Text(
-                        text = "Settings",
+                        text = stringResource(R.string.settings_screen_title),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -103,7 +110,7 @@ fun SettingsScreen(
             item { Spacer(modifier = Modifier.height(12.dp)) }
 
             item {
-                SettingsSection(label = "BACKUP & RESTORE") {
+                SettingsSection(label = stringResource(R.string.settings_section_backup)) {
                     ToggleSettingItem(
                         icon = {
                             SettingsIconBox(backgroundColor = MaterialTheme.colorScheme.primary) {
@@ -115,9 +122,9 @@ fun SettingsScreen(
                                 )
                             }
                         },
-                        title = "Backup with Google Account",
-                        subtitle = if (syncEnabled) "On · Backed up to your Google Account"
-                                   else "Off · Stored only on this device",
+                        title = stringResource(R.string.settings_backup_title),
+                        subtitle = if (syncEnabled) stringResource(R.string.settings_backup_subtitle_on)
+                                   else stringResource(R.string.settings_backup_subtitle_off),
                         checked = syncEnabled,
                         onCheckedChange = viewModel::toggleSync
                     )
@@ -126,7 +133,7 @@ fun SettingsScreen(
 
             item {
                 Text(
-                    text = "Keep your lists safe across devices.",
+                    text = stringResource(R.string.settings_backup_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.outline,
                     modifier = Modifier.padding(horizontal = 4.dp, vertical = 6.dp)
@@ -135,12 +142,12 @@ fun SettingsScreen(
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
 
-            item { PromoCard(onBuyClick = {}) }
+            item { PromoCard(onBuyClick = { /* TODO(CARTIO-IAP): implement in-app purchase flow */ }) }
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
 
             item {
-                SettingsSection(label = "DATA") {
+                SettingsSection(label = stringResource(R.string.settings_section_data)) {
                     SettingsListItem(
                         icon = {
                             SettingsIconBox(backgroundColor = MaterialTheme.colorScheme.error) {
@@ -152,8 +159,8 @@ fun SettingsScreen(
                                 )
                             }
                         },
-                        title = "Clear all data",
-                        subtitle = "Removes every list, item and price history",
+                        title = stringResource(R.string.settings_clear_data_title),
+                        subtitle = stringResource(R.string.settings_clear_data_subtitle),
                         titleColor = MaterialTheme.colorScheme.error,
                         subtitleColor = MaterialTheme.colorScheme.error,
                         showChevron = true,
@@ -165,7 +172,7 @@ fun SettingsScreen(
             item { Spacer(modifier = Modifier.height(16.dp)) }
 
             item {
-                SettingsSection(label = "ABOUT") {
+                SettingsSection(label = stringResource(R.string.settings_section_about)) {
                     SettingsListItem(
                         icon = {
                             SettingsIconBox(backgroundColor = MaterialTheme.colorScheme.surfaceVariant) {
@@ -193,9 +200,9 @@ fun SettingsScreen(
                                 )
                             }
                         },
-                        title = "Open-source licenses",
+                        title = stringResource(R.string.settings_licenses_title),
                         showChevron = true,
-                        onClick = {}
+                        onClick = { /* TODO(CARTIO-OSS): open open-source licenses screen */ }
                     )
                 }
             }
@@ -235,20 +242,32 @@ private fun openPlayStore(context: Context) {
 }
 
 @Composable
+private fun ClearDataErrorDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.settings_clear_error_title)) },
+        text = { Text(stringResource(R.string.settings_clear_error_body)) },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_ok)) }
+        }
+    )
+}
+
+@Composable
 private fun ClearDataDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Clear all data?") },
+        title = { Text(stringResource(R.string.settings_clear_dialog_title)) },
         text = {
-            Text("This removes every list, item and price history permanently.")
+            Text(stringResource(R.string.settings_clear_dialog_body))
         },
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text("Delete All", color = MaterialTheme.colorScheme.error)
+                Text(stringResource(R.string.settings_clear_dialog_confirm), color = MaterialTheme.colorScheme.error)
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.settings_clear_dialog_cancel)) }
         }
     )
 }

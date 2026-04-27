@@ -36,7 +36,9 @@ class ShoppingListDetailViewModel @Inject constructor(
     private val addItemToList: AddItemToList
 ) : ViewModel() {
 
-    private val listId: Long = checkNotNull(savedStateHandle[CartioDestinations.ShoppingListDetail.ARG_LIST_ID])
+    private val listId: Long = checkNotNull(savedStateHandle[CartioDestinations.ShoppingListDetail.ARG_LIST_ID]) {
+        "ShoppingListDetailViewModel requires a ${CartioDestinations.ShoppingListDetail.ARG_LIST_ID} navigation argument"
+    }
 
     private val _sortOrder = MutableStateFlow(SortOrder.DEFAULT)
 

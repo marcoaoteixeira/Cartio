@@ -43,12 +43,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.nameless.cartio.R
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nameless.cartio.BuildConfig
+import com.nameless.cartio.core.ui.theme.Alpha
 import com.nameless.cartio.core.ui.theme.CartioTheme
 import com.nameless.cartio.features.splash.ui.CartioSplashScreen
 import com.nameless.cartio.navigation.CartioDestinations
@@ -76,9 +79,9 @@ class MainActivity : ComponentActivity() {
                     val scope = rememberCoroutineScope()
 
                     val navItems = listOf(
-                        NavDrawerItem(CartioDestinations.Shopping, Icons.Rounded.ShoppingCart, "Shopping", "Lists, items, prices"),
-                        NavDrawerItem(CartioDestinations.Reports, Icons.Rounded.BarChart, "Reports", "Spend & trends"),
-                        NavDrawerItem(CartioDestinations.Settings, Icons.Rounded.Settings, "Settings", "Sync, data, about"),
+                        NavDrawerItem(CartioDestinations.Shopping, Icons.Rounded.ShoppingCart, stringResource(R.string.nav_item_shopping), stringResource(R.string.nav_item_shopping_subtitle)),
+                        NavDrawerItem(CartioDestinations.Reports, Icons.Rounded.BarChart, stringResource(R.string.nav_item_reports), stringResource(R.string.nav_item_reports_subtitle)),
+                        NavDrawerItem(CartioDestinations.Settings, Icons.Rounded.Settings, stringResource(R.string.nav_item_settings), stringResource(R.string.nav_item_settings_subtitle)),
                     )
 
                     ModalNavigationDrawer(
@@ -97,7 +100,7 @@ class MainActivity : ComponentActivity() {
                                             modifier = Modifier
                                                 .size(56.dp)
                                                 .clip(RoundedCornerShape(14.dp))
-                                                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f)),
+                                                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Subtle)),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Icon(
@@ -115,9 +118,9 @@ class MainActivity : ComponentActivity() {
                                             color = MaterialTheme.colorScheme.onPrimary
                                         )
                                         Text(
-                                            text = "Your grocery intelligence",
+                                            text = stringResource(R.string.nav_drawer_tagline),
                                             style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Secondary)
                                         )
                                     }
                                 }
@@ -189,7 +192,7 @@ private fun DrawerNavItem(
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 4.dp)
             .clip(RoundedCornerShape(12.dp))
-            .background(if (selected) primaryColor.copy(alpha = 0.08f) else Color.Transparent)
+            .background(if (selected) primaryColor.copy(alpha = Alpha.Selected) else Color.Transparent)
             .clickable(onClick = onClick)
             .padding(end = 12.dp, top = 12.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically

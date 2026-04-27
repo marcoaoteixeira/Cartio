@@ -65,11 +65,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nameless.cartio.R
+import com.nameless.cartio.core.ui.theme.Alpha
+import com.nameless.cartio.core.ui.theme.SwipeCheckColor
+import com.nameless.cartio.core.ui.theme.SwipeDeleteColor
 import com.nameless.cartio.features.shopping.data.ShoppingListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -111,7 +116,7 @@ fun ShoppingListDetailScreen(
                         IconButton(onClick = onNavigateUp) {
                             Icon(
                                 Icons.AutoMirrored.Rounded.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.action_back),
                                 tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
@@ -128,8 +133,8 @@ fun ShoppingListDetailScreen(
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Icon(
                                     Icons.Rounded.Edit,
-                                    contentDescription = "Rename list",
-                                    tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
+                                    contentDescription = stringResource(R.string.detail_rename_list),
+                                    tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Secondary),
                                     modifier = Modifier
                                         .size(16.dp)
                                         .clickable { showRenameDialog = true }
@@ -139,7 +144,7 @@ fun ShoppingListDetailScreen(
                                 text = if (totalCount == 0) "Empty list"
                                 else "${uiState.checkedItems.size} of $totalCount picked up",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Secondary)
                             )
                         }
                     },
@@ -149,16 +154,16 @@ fun ShoppingListDetailScreen(
                             else -> Icons.AutoMirrored.Rounded.Sort
                         }
                         val sortDescription = when (uiState.sortOrder) {
-                            SortOrder.DEFAULT -> "Sort A to Z"
-                            SortOrder.ALPHA_ASC -> "Sort Z to A"
-                            SortOrder.ALPHA_DESC -> "Remove sort"
+                            SortOrder.DEFAULT -> stringResource(R.string.detail_sort_a_to_z)
+                            SortOrder.ALPHA_ASC -> stringResource(R.string.detail_sort_z_to_a)
+                            SortOrder.ALPHA_DESC -> stringResource(R.string.detail_remove_sort)
                         }
                         IconButton(onClick = { viewModel.toggleSort() }) {
                             Icon(
                                 sortIcon,
                                 contentDescription = sortDescription,
                                 tint = if (uiState.sortOrder != SortOrder.DEFAULT)
-                                    Color(0xFFFFB300)
+                                    MaterialTheme.colorScheme.tertiary
                                 else
                                     MaterialTheme.colorScheme.onPrimary
                             )
@@ -167,7 +172,7 @@ fun ShoppingListDetailScreen(
                             IconButton(onClick = { showMoreMenu = true }) {
                                 Icon(
                                     Icons.Rounded.MoreVert,
-                                    contentDescription = "More options",
+                                    contentDescription = stringResource(R.string.detail_more_options),
                                     tint = MaterialTheme.colorScheme.onPrimary
                                 )
                             }
@@ -176,17 +181,17 @@ fun ShoppingListDetailScreen(
                                 onDismissRequest = { showMoreMenu = false }
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("Register expenses") },
+                                    text = { Text(stringResource(R.string.detail_menu_register_expenses)) },
                                     leadingIcon = {
                                         Icon(
                                             Icons.Rounded.PointOfSale,
                                             contentDescription = null
                                         )
                                     },
-                                    onClick = { showMoreMenu = false }
+                                    onClick = { showMoreMenu = false /* TODO(CARTIO-EXPENSES): open register expenses flow */ }
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Delete") },
+                                    text = { Text(stringResource(R.string.action_delete)) },
                                     leadingIcon = {
                                         Icon(
                                             Icons.Rounded.Delete,
@@ -211,7 +216,7 @@ fun ShoppingListDetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(3.dp),
-                    color = Color(0xFFFFB300),
+                    color = MaterialTheme.colorScheme.tertiary,
                     trackColor = MaterialTheme.colorScheme.primary,
                     strokeCap = StrokeCap.Square
                 )
@@ -303,8 +308,8 @@ private fun SwipeableItemRow(
             val isDeleteSide = target == SwipeToDismissBoxValue.EndToStart
             val bgColor by animateColorAsState(
                 targetValue = when (target) {
-                    SwipeToDismissBoxValue.StartToEnd -> Color(0xFF4CAF50)
-                    SwipeToDismissBoxValue.EndToStart -> Color(0xFFE53935)
+                    SwipeToDismissBoxValue.StartToEnd -> SwipeCheckColor
+                    SwipeToDismissBoxValue.EndToStart -> SwipeDeleteColor
                     SwipeToDismissBoxValue.Settled -> Color.Transparent
                 },
                 label = "swipe_bg"
@@ -319,7 +324,7 @@ private fun SwipeableItemRow(
             ) {
                 if (isDeleteSide) {
                     Text(
-                        "DELETE",
+                        stringResource(R.string.detail_swipe_delete_label),
                         color = Color.White,
                         fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.labelMedium
@@ -330,7 +335,7 @@ private fun SwipeableItemRow(
                     Icon(Icons.Rounded.Check, contentDescription = null, tint = Color.White)
                     Spacer(Modifier.width(8.dp))
                     Text(
-                        "CHECK",
+                        stringResource(R.string.detail_swipe_check_label),
                         color = Color.White,
                         fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.labelMedium
@@ -451,9 +456,9 @@ private fun QuantityStepper(
             if (quantity == 1) {
                 Icon(
                     Icons.Rounded.Delete,
-                    contentDescription = "Remove item",
-                    tint = Color(0xFFE53935),
-                    modifier = Modifier.size(14.dp)
+                    contentDescription = stringResource(R.string.remove_item),
+                    tint = SwipeDeleteColor,
+                    modifier = Modifier.size(14.dp),
                 )
             } else {
                 Text(
@@ -496,7 +501,7 @@ private fun DoneSectionHeader(count: Int) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "DONE · $count",
+            text = stringResource(R.string.detail_done_header, count),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.outline
@@ -537,7 +542,7 @@ private fun AddItemBar(
             modifier = Modifier.weight(1f),
             placeholder = {
                 Text(
-                    "Add item...",
+                    stringResource(R.string.detail_add_item_placeholder),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.outline
                 )
@@ -562,7 +567,7 @@ private fun AddItemBar(
         ) {
             Icon(
                 Icons.Rounded.Add,
-                contentDescription = "Add item",
+                contentDescription = stringResource(R.string.action_add_item),
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(20.dp)
             )
@@ -585,13 +590,13 @@ private fun EmptyShoppingListState(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Nothing here yet",
+            text = stringResource(R.string.detail_empty_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Type items below to start building your list.",
+            text = stringResource(R.string.detail_empty_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.outline
         )
@@ -607,13 +612,13 @@ private fun RenameListDialog(
     var text by rememberSaveable { mutableStateOf(currentName) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Rename list") },
+        title = { Text(stringResource(R.string.dialog_rename_list_title)) },
         text = {
             OutlinedTextField(
                 value = text,
                 onValueChange = { text = it },
                 singleLine = true,
-                label = { Text("List name") }
+                label = { Text(stringResource(R.string.dialog_rename_new_name_label)) }
             )
         },
         confirmButton = {

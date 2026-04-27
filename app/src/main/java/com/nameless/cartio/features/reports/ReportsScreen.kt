@@ -18,7 +18,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.nameless.cartio.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +35,7 @@ fun ReportsScreen(
                     IconButton(onClick = onOpenDrawer) {
                         Icon(
                             Icons.Rounded.Menu,
-                            contentDescription = "Open menu",
+                            contentDescription = stringResource(R.string.nav_open_menu),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -61,7 +63,7 @@ fun ReportsScreen(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Reports — Coming Soon",
+                text = stringResource(R.string.reports_coming_soon),
                 style = MaterialTheme.typography.titleMedium
             )
         }
