@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.nameless.cartio.features.expenses.ui.RegisterExpensesScreen
 import com.nameless.cartio.features.reports.ReportsScreen
 import com.nameless.cartio.features.settings.ui.SettingsScreen
 import com.nameless.cartio.features.shopping.ui.ShoppingListDetailScreen
@@ -46,8 +47,21 @@ fun CartioNavGraph(
             )
         ) {
             ShoppingListDetailScreen(
-                onNavigateUp = { navController.navigateUp() }
+                onNavigateUp = { navController.navigateUp() },
+                onNavigateToRegisterExpenses = { listId ->
+                    navController.navigate(CartioDestinations.RegisterExpenses.routeFor(listId))
+                }
             )
+        }
+        composable(
+            route = CartioDestinations.RegisterExpenses.route,
+            arguments = listOf(
+                navArgument(CartioDestinations.RegisterExpenses.ARG_LIST_ID) {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            RegisterExpensesScreen(onNavigateUp = { navController.navigateUp() })
         }
     }
 }

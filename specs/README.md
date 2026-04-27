@@ -12,3 +12,4 @@
 | FEAT-008 | Android Auto Backup | Done | feature/CARTIO-008-android-auto-backup |
 | FEAT-009 | Play Store Pre-Release Cleanup | Done | feature/CARTIO-009-play-store-cleanup |
 | FEAT-010 | Buy Me A Coffee (Ads + Billing) | Done | feature/CARTIO-010-buy-me-a-coffee |
+| FEAT-011 | Register Expenses + Reports | Done | feature/CARTIO-011-register-expenses |

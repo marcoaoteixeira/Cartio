@@ -51,8 +51,20 @@
     <string name="promo_body">One-time $3. Keeps the app ad-free forever and helps me build the next features.</string>
     <string name="promo_button">Buy coffee · $3</string>
 
+    <!-- Register Expenses Screen -->
+    <string name="expenses_screen_title">Register expenses</string>
+    <string name="expenses_instruction">Set a price per unit for each item you bought. The line total is calculated automatically.</string>
+    <string name="expenses_total_label">TOTAL</string>
+    <string name="expenses_record_button">Record</string>
+    <string name="expenses_saved_toast">Expenses recorded!</string>
+    <string name="expenses_empty">No checked items to register.</string>
+
     <!-- Reports Screen -->
     <string name="reports_coming_soon">Reports — Coming Soon</string>
+    <string name="reports_last_30_days">LAST 30 DAYS</string>
+    <string name="reports_most_bought">MOST BOUGHT · LAST 30 DAYS</string>
+    <string name="reports_bought_count">bought %d×</string>
+    <string name="reports_empty">No expenses recorded yet.\nUse \"Register expenses\" after a shopping trip.</string>
 
     <!-- Navigation Drawer -->
     <string name="nav_drawer_tagline">Your grocery intelligence</string>
@@ -65,7 +77,7 @@
     <string name="nav_item_settings_subtitle">Sync, data, about</string>
 
     <!-- AdMob (replace with production IDs before release) -->
-    <string name="admob_app_id" translatable="false">ca-app-pub-7006378932719266~5913541964</string>
+    <string name="admob_app_id" translatable="false">ca-app-pub-8915922220503415~7195668198</string>
 
     <!-- Support / Ad-free entitlement -->
     <string name="settings_support_purchased_title">Ad-free — Thank you!</string>

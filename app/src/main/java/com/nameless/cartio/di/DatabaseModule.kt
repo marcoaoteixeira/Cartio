@@ -17,6 +17,11 @@ import com.nameless.cartio.features.shopping.data.ShoppingListItemRepositoryImpl
 import com.nameless.cartio.features.shopping.data.ShoppingListLocalDataSource
 import com.nameless.cartio.features.shopping.data.ShoppingListRepository
 import com.nameless.cartio.features.shopping.data.ShoppingListRepositoryImpl
+import com.nameless.cartio.core.database.migrations.MIGRATION_2_3
+import com.nameless.cartio.features.expenses.data.ExpenseRecordDao
+import com.nameless.cartio.features.expenses.data.ExpenseRepository
+import com.nameless.cartio.features.expenses.data.ExpenseRepositoryImpl
+import com.nameless.cartio.features.expenses.domain.RecordExpensesUseCase
 import com.nameless.cartio.features.settings.domain.ClearAllData
 import com.nameless.cartio.features.settings.domain.ClearAllDataUseCase
 import com.nameless.cartio.features.shopping.domain.AddItemToList
@@ -61,6 +66,10 @@ abstract class DatabaseModule {
     @Singleton
     abstract fun bindClearAllData(impl: ClearAllDataUseCase): ClearAllData
 
+    @Binds
+    @Singleton
+    abstract fun bindExpenseRepository(impl: ExpenseRepositoryImpl): ExpenseRepository
+
     companion object {
         private const val DATABASE_NAME = "cartio.db"
 
@@ -68,6 +77,7 @@ abstract class DatabaseModule {
         @Singleton
         fun provideDatabase(@ApplicationContext context: Context): CartioDatabase =
             Room.databaseBuilder(context, CartioDatabase::class.java, DATABASE_NAME)
+                .addMigrations(MIGRATION_2_3)
                 .apply { if (BuildConfig.DEBUG) fallbackToDestructiveMigration(dropAllTables = true) }
                 .build()
 
@@ -82,5 +92,13 @@ abstract class DatabaseModule {
         @Provides
         @Singleton
         fun provideProductDao(db: CartioDatabase): ProductDao = db.productDao()
+
+        @Provides
+        @Singleton
+        fun provideExpenseRecordDao(db: CartioDatabase): ExpenseRecordDao = db.expenseRecordDao()
+
+        @Provides
+        fun provideRecordExpenses(repo: ExpenseRepository): RecordExpensesUseCase =
+            RecordExpensesUseCase { records -> repo.recordExpenses(records) }
     }
 }
