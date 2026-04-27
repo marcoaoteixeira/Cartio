@@ -2,6 +2,7 @@ package com.nameless.cartio.di
 
 import android.content.Context
 import androidx.room.Room
+import com.nameless.cartio.BuildConfig
 import com.nameless.cartio.core.database.CartioDatabase
 import com.nameless.cartio.core.database.dao.ProductDao
 import com.nameless.cartio.core.database.dao.ShoppingListDao
@@ -61,11 +62,13 @@ abstract class DatabaseModule {
     abstract fun bindClearAllData(impl: ClearAllDataUseCase): ClearAllData
 
     companion object {
+        private const val DATABASE_NAME = "cartio.db"
+
         @Provides
         @Singleton
         fun provideDatabase(@ApplicationContext context: Context): CartioDatabase =
-            Room.databaseBuilder(context, CartioDatabase::class.java, "cartio.db")
-                .fallbackToDestructiveMigration(dropAllTables = true)
+            Room.databaseBuilder(context, CartioDatabase::class.java, DATABASE_NAME)
+                .apply { if (BuildConfig.DEBUG) fallbackToDestructiveMigration(dropAllTables = true) }
                 .build()
 
         @Provides

@@ -18,6 +18,15 @@ val OnSurface = Color(0xFF1C1B1F)
 val Outline = Color(0xFF79747E)
 val OutlineVariant = Color(0xFFCAC4D0)
 
+// Swipe action backgrounds
+val SwipeCheckColor = Color(0xFF4CAF50)
+val SwipeDeleteColor = Color(0xFFE53935)
+
+// Promo card
+val BrandYellow = Color(0xFFFFCA28)
+val PromoGradientStart = Color(0xFFFF8F00)
+val PromoButtonDark = Color(0xFF1A1A1A)
+
 // Dark palette
 val PrimaryDarkTheme = Color(0xFFFF8A65)
 val OnPrimaryDarkTheme = Color(0xFF8B2500)

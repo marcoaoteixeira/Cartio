@@ -25,6 +25,9 @@ class SettingsViewModel @Inject constructor(
     private val _showClearDialog = MutableStateFlow(false)
     val showClearDialog: StateFlow<Boolean> = _showClearDialog.asStateFlow()
 
+    private val _clearDataError = MutableStateFlow(false)
+    val clearDataError: StateFlow<Boolean> = _clearDataError.asStateFlow()
+
     fun toggleSync(enabled: Boolean) {
         _syncEnabled.value = enabled
         backupPreferences.isBackupEnabled = enabled
@@ -41,8 +44,13 @@ class SettingsViewModel @Inject constructor(
 
     fun confirmClearData() {
         viewModelScope.launch {
-            runCatching { clearAllData() }
+            val result = runCatching { clearAllData() }
+            _clearDataError.value = result.isFailure
             _showClearDialog.value = false
         }
+    }
+
+    fun dismissClearDataError() {
+        _clearDataError.value = false
     }
 }

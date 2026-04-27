@@ -23,15 +23,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Canvas
 import com.nameless.cartio.R
+import com.nameless.cartio.core.ui.theme.BrandYellow
 import kotlinx.coroutines.delay
 
+private const val SPLASH_DURATION_MS = 2000L
 private val AutolovaFamily = FontFamily(Font(R.font.autolova))
-private val BrandYellow = Color(0xFFFFCA28)
 
 @Composable
 fun CartioSplashScreen(onComplete: () -> Unit) {
     LaunchedEffect(Unit) {
-        delay(2000L)
+        delay(SPLASH_DURATION_MS)
         onComplete()
     }
 

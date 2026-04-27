@@ -33,6 +33,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.nameless.cartio.R
+import com.nameless.cartio.core.ui.theme.Alpha
+import com.nameless.cartio.core.ui.theme.BrandYellow
+import com.nameless.cartio.core.ui.theme.PromoButtonDark
+import com.nameless.cartio.core.ui.theme.PromoGradientStart
 
 @Composable
 fun SettingsSection(
@@ -166,9 +172,8 @@ fun SettingsIconBox(
 }
 
 private val PromoGradient = Brush.linearGradient(
-    colors = listOf(Color(0xFFFF8F00), Color(0xFFFFCA28))
+    colors = listOf(PromoGradientStart, BrandYellow)
 )
-private val PromoButtonColor = Color(0xFF1A1A1A)
 
 @Composable
 fun PromoCard(onBuyClick: () -> Unit) {
@@ -183,11 +188,11 @@ fun PromoCard(onBuyClick: () -> Unit) {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(20.dp))
-                    .background(PromoButtonColor)
+                    .background(PromoButtonDark)
                     .padding(horizontal = 10.dp, vertical = 4.dp)
             ) {
                 Text(
-                    text = "SUPPORT CARTIO",
+                    text = stringResource(R.string.promo_badge),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -196,24 +201,24 @@ fun PromoCard(onBuyClick: () -> Unit) {
             }
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "Buy me a coffee & remove ads",
+                text = stringResource(R.string.promo_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = PromoButtonColor,
+                color = PromoButtonDark,
                 lineHeight = 22.sp
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = "One-time \$3. Keeps the app ad-free forever and helps me build the next features.",
+                text = stringResource(R.string.promo_body),
                 style = MaterialTheme.typography.bodySmall,
-                color = PromoButtonColor.copy(alpha = 0.75f),
+                color = PromoButtonDark.copy(alpha = Alpha.Dimmed),
                 lineHeight = 18.sp
             )
             Spacer(modifier = Modifier.height(14.dp))
             Button(
                 onClick = onBuyClick,
                 shape = RoundedCornerShape(24.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = PromoButtonColor)
+                colors = ButtonDefaults.buttonColors(containerColor = PromoButtonDark)
             ) {
                 Icon(
                     Icons.Rounded.LocalCafe,
@@ -223,7 +228,7 @@ fun PromoCard(onBuyClick: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = "Buy coffee · \$3",
+                    text = stringResource(R.string.promo_button),
                     color = Color.White,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold
@@ -236,7 +241,7 @@ fun PromoCard(onBuyClick: () -> Unit) {
             modifier = Modifier
                 .size(80.dp)
                 .align(Alignment.BottomEnd),
-            tint = PromoButtonColor.copy(alpha = 0.18f)
+            tint = PromoButtonDark.copy(alpha = Alpha.Faint)
         )
     }
 }

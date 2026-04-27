@@ -56,10 +56,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.nameless.cartio.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nameless.cartio.core.ui.theme.Alpha
 import com.nameless.cartio.features.shopping.data.ShoppingList
 import java.time.Instant
 import java.time.ZoneId
@@ -112,14 +115,14 @@ fun ShoppingListScreen(
                     IconButton(onClick = onOpenDrawer) {
                         Icon(
                             Icons.Rounded.Menu,
-                            contentDescription = "Open menu",
+                            contentDescription = stringResource(R.string.nav_open_menu),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
                 title = {
                     Text(
-                        text = "My Shopping Lists",
+                        text = stringResource(R.string.shopping_screen_title),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -134,7 +137,7 @@ fun ShoppingListScreen(
                         Icon(
                             Icons.AutoMirrored.Rounded.Sort,
                             contentDescription = sortDescription,
-                            tint = if (dashboardSort != DashboardSort.RECENT) Color(0xFFFFB300)
+                            tint = if (dashboardSort != DashboardSort.RECENT) MaterialTheme.colorScheme.tertiary
                                    else MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -154,7 +157,7 @@ fun ShoppingListScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
-                Icon(Icons.Rounded.Add, contentDescription = "Add list")
+                Icon(Icons.Rounded.Add, contentDescription = stringResource(R.string.action_add_list))
             }
         },
         contentWindowInsets = WindowInsets(0),
@@ -224,7 +227,7 @@ private fun ShoppingInProgressCard(list: ShoppingList, onClick: () -> Unit) {
                 modifier = Modifier
                     .size(40.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f)),
+                    .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Subtle)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -237,10 +240,10 @@ private fun ShoppingInProgressCard(list: ShoppingList, onClick: () -> Unit) {
             Spacer(modifier = Modifier.size(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "SHOPPING IN PROGRESS",
+                    text = stringResource(R.string.shopping_in_progress_label),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Secondary)
                 )
                 Text(
                     text = list.name,
@@ -251,7 +254,7 @@ private fun ShoppingInProgressCard(list: ShoppingList, onClick: () -> Unit) {
                 Text(
                     text = "${list.checkedCount} of ${list.itemCount} picked up",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Secondary)
                 )
             }
             Icon(
@@ -268,23 +271,23 @@ private fun CreateListDialog(onConfirm: (String) -> Unit, onDismiss: () -> Unit)
     var text by rememberSaveable { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("New list") },
+        title = { Text(stringResource(R.string.dialog_new_list_title)) },
         text = {
             OutlinedTextField(
                 value = text,
                 onValueChange = { text = it },
                 singleLine = true,
-                label = { Text("List name") },
-                placeholder = { Text("e.g. Weekly Groceries") }
+                label = { Text(stringResource(R.string.dialog_new_list_label)) },
+                placeholder = { Text(stringResource(R.string.dialog_new_list_placeholder)) }
             )
         },
         confirmButton = {
             TextButton(onClick = { onConfirm(text) }, enabled = text.isNotBlank()) {
-                Text("Create")
+                Text(stringResource(R.string.action_create))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) }
         }
     )
 }
@@ -299,7 +302,7 @@ private fun SearchBar(query: String, onQueryChange: (String) -> Unit) {
             .height(52.dp),
         placeholder = {
             Text(
-                text = "Search lists...",
+                text = stringResource(R.string.shopping_search_placeholder),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline
             )
@@ -335,7 +338,7 @@ private fun ListsSection(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Your Lists",
+            text = stringResource(R.string.shopping_your_lists_header),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold
         )
@@ -350,7 +353,7 @@ private fun ListsSection(
 
     if (shoppingLists.isEmpty()) {
         Text(
-            text = "No lists match your search.",
+            text = stringResource(R.string.shopping_no_search_results),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.outline,
             modifier = Modifier.padding(top = 8.dp)
@@ -413,7 +416,7 @@ private fun ShoppingListCard(list: ShoppingList, onClick: () -> Unit, onDelete: 
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
                         Icons.Rounded.MoreVert,
-                        contentDescription = "List options",
+                        contentDescription = stringResource(R.string.list_options),
                         tint = MaterialTheme.colorScheme.outline
                     )
                 }
@@ -456,13 +459,13 @@ private fun EmptyState(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "No lists yet",
+            text = stringResource(R.string.shopping_empty_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Tap + to create your first shopping list",
+            text = stringResource(R.string.shopping_empty_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.outline
         )
