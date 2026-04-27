@@ -94,7 +94,7 @@ fun ExpenseItemRow(
     }
 }
 
-private val monetaryInputRegex = Regex("""^\d*\.?\d{0,3}$""")
+private val monetaryInputRegex = Regex("""^\d*\.?\d{0,2}$""")
 
 private fun isValidMonetaryInput(input: String): Boolean =
     input.isEmpty() || input.matches(monetaryInputRegex)
