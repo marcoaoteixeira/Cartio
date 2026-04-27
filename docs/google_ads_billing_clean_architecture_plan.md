@@ -4,6 +4,8 @@
 
 This document consolidates the implementation plan for adding Google Ads to an Android app using Kotlin, Clean Architecture, MVVM, AdMob, and Google Play Billing for an ad-free supporter entitlement.
 
+Recommendation reading: https://developers.google.com/admob/android/quick-start
+
 ---
 
 # Goals

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -45,6 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nameless.cartio.BuildConfig
 import com.nameless.cartio.R
 import com.nameless.cartio.core.config.AppConfig
+import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -241,12 +241,12 @@ fun SettingsScreen(
 private fun openPlayStore(context: Context) {
     val market = Intent(
         Intent.ACTION_VIEW,
-        Uri.parse("market://details?id=${context.packageName}")
+        "market://details?id=${context.packageName}".toUri()
     ).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_TASK)
     try {
         context.startActivity(market)
     } catch (_: ActivityNotFoundException) {
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AppConfig.PLAY_STORE_URL)))
+        context.startActivity(Intent(Intent.ACTION_VIEW, AppConfig.PLAY_STORE_URL.toUri()))
     }
 }
 
