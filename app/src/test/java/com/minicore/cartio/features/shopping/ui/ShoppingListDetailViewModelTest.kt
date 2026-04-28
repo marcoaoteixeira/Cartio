@@ -2,10 +2,10 @@ package com.minicore.cartio.features.shopping.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import com.minicore.cartio.features.shopping.data.ShoppingList
-import com.minicore.cartio.features.shopping.data.ShoppingListItem
 import com.minicore.cartio.features.shopping.data.ShoppingListItemRepository
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
+import com.minicore.cartio.features.shopping.domain.ShoppingList
+import com.minicore.cartio.features.shopping.domain.ShoppingListItem
 import android.app.Activity
 import com.minicore.cartio.features.monetization.domain.AdResult
 import com.minicore.cartio.features.monetization.domain.AdsRepository

@@ -1,6 +1,7 @@
 package com.minicore.cartio.features.shopping.data
 
 import com.minicore.cartio.core.database.entity.ShoppingListItemWithProduct
+import com.minicore.cartio.features.shopping.domain.ShoppingListItem
 
 fun ShoppingListItemWithProduct.toDomain() = ShoppingListItem(
     id = item.id,

@@ -1,5 +1,6 @@
 package com.minicore.cartio.features.shopping.data
 
+import com.minicore.cartio.features.shopping.domain.ShoppingList
 import kotlinx.coroutines.flow.Flow
 
 interface ShoppingListRepository {

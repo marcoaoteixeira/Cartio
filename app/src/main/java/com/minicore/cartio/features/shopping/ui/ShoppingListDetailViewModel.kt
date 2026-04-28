@@ -5,10 +5,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.minicore.cartio.features.monetization.domain.ShowDetailAdUseCase
-import com.minicore.cartio.features.shopping.data.ShoppingListItem
 import com.minicore.cartio.features.shopping.data.ShoppingListItemRepository
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
 import com.minicore.cartio.features.shopping.domain.AddItemToList
+import com.minicore.cartio.features.shopping.domain.ShoppingListItem
 import com.minicore.cartio.navigation.CartioDestinations
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel

@@ -63,7 +63,7 @@ import com.minicore.cartio.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.minicore.cartio.core.ui.theme.Alpha
-import com.minicore.cartio.features.shopping.data.ShoppingList
+import com.minicore.cartio.features.shopping.domain.ShoppingList
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

@@ -2,8 +2,8 @@ package com.minicore.cartio.features.shopping.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.minicore.cartio.features.shopping.data.ShoppingList
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
+import com.minicore.cartio.features.shopping.domain.ShoppingList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

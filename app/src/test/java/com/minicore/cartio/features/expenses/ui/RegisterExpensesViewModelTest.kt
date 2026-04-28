@@ -4,10 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import com.minicore.cartio.core.database.entity.MeasureUnit
 import com.minicore.cartio.core.time.Clock
 import com.minicore.cartio.features.expenses.data.FakeExpenseRepository
-import com.minicore.cartio.features.shopping.data.ShoppingList
-import com.minicore.cartio.features.shopping.data.ShoppingListItem
 import com.minicore.cartio.features.shopping.data.ShoppingListItemRepository
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
+import com.minicore.cartio.features.shopping.domain.ShoppingList
+import com.minicore.cartio.features.shopping.domain.ShoppingListItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

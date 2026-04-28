@@ -2,6 +2,7 @@ package com.minicore.cartio.features.shopping.data
 
 import com.minicore.cartio.core.database.entity.ShoppingListEntity
 import com.minicore.cartio.core.time.Clock
+import com.minicore.cartio.features.shopping.domain.ShoppingList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

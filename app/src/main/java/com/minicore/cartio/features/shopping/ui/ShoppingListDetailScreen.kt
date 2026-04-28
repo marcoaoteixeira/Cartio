@@ -77,7 +77,7 @@ import com.minicore.cartio.R
 import com.minicore.cartio.core.ui.theme.Alpha
 import com.minicore.cartio.core.ui.theme.SwipeCheckColor
 import com.minicore.cartio.core.ui.theme.SwipeDeleteColor
-import com.minicore.cartio.features.shopping.data.ShoppingListItem
+import com.minicore.cartio.features.shopping.domain.ShoppingListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

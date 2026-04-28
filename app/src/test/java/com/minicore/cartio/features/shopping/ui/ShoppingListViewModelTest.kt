@@ -1,8 +1,8 @@
 package com.minicore.cartio.features.shopping.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.minicore.cartio.features.shopping.data.ShoppingList
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
+import com.minicore.cartio.features.shopping.domain.ShoppingList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
