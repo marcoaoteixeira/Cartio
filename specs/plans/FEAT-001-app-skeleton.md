@@ -12,7 +12,7 @@
 
 5. **`app/src/main/res/values/themes.xml`** and **`values-night/themes.xml`** — Change parent to `Theme.MaterialComponents.DayNight.NoActionBar`.
 
-6. **`app/src/main/java/com/nameless/cartio/MainActivity.kt`** (create) — `ComponentActivity` with `enableEdgeToEdge()` + `setContent` rendering `UnderConstructionScreen`.
+6. **`app/src/main/java/com/minicore/cartio/MainActivity.kt`** (create) — `ComponentActivity` with `enableEdgeToEdge()` + `setContent` rendering `UnderConstructionScreen`.
 
 ## Edge Cases Covered
 

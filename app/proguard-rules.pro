@@ -19,4 +19,4 @@
 -keepattributes *Annotation*, Signature, InnerClasses, EnclosingMethod
 
 # Keep Kotlin data classes used in Room entities (prevent field name obfuscation)
--keepclassmembers class com.nameless.cartio.core.database.entity.** { *; }
+-keepclassmembers class com.minicore.cartio.core.database.entity.** { *; }

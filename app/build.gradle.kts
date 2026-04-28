@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nameless.cartio"
+    namespace = "com.minicore.cartio"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -14,7 +14,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.nameless.cartio"
+        applicationId = "com.minicore.cartio"
         minSdk = 29
         targetSdk = 36
         versionCode = 1

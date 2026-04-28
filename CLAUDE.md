@@ -25,7 +25,7 @@
 ./gradlew test
 
 # Run a single unit test class
-./gradlew test --tests "com.nameless.cartio.ClassName"
+./gradlew test --tests "com.minicore.cartio.ClassName"
 
 # Run instrumented tests (requires connected device/emulator)
 ./gradlew connectedAndroidTest
@@ -34,7 +34,7 @@
 ./gradlew lint
 ```
 
-**App ID:** `com.nameless.cartio` | **minSdk:** 29 | **targetSdk:** 36
+**App ID:** `com.minicore.cartio` | **minSdk:** 29 | **targetSdk:** 36
 
 ---
 
@@ -43,7 +43,7 @@
 Layered MVVM + Repository, feature-first package structure:
 
 ```
-app/src/main/java/com/nameless/cartio/
+app/src/main/java/com/minicore/cartio/
  ├── features/
  │    └── shopping/
  │         ├── ui/         # Compose screens + ViewModels
