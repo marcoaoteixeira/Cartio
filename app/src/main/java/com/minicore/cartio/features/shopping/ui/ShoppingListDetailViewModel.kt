@@ -11,11 +11,13 @@ import com.minicore.cartio.features.shopping.data.ShoppingListRepository
 import com.minicore.cartio.features.shopping.domain.AddItemToList
 import com.minicore.cartio.navigation.CartioDestinations
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,8 +48,8 @@ class ShoppingListDetailViewModel @Inject constructor(
 
     private val _sortOrder = MutableStateFlow(SortOrder.DEFAULT)
 
-    private val _listDeleted = MutableStateFlow(false)
-    val listDeleted: StateFlow<Boolean> = _listDeleted.asStateFlow()
+    private val _events = Channel<ShoppingListDetailEvent>(Channel.BUFFERED)
+    val events: Flow<ShoppingListDetailEvent> = _events.receiveAsFlow()
 
     val uiState: StateFlow<ShoppingListDetailUiState> = combine(
         listRepository.getShoppingListById(listId),
@@ -104,7 +106,7 @@ class ShoppingListDetailViewModel @Inject constructor(
     fun deleteList() {
         viewModelScope.launch {
             listRepository.deleteShoppingList(listId)
-            _listDeleted.value = true
+            _events.send(ShoppingListDetailEvent.NavigateUp)
         }
     }
 }

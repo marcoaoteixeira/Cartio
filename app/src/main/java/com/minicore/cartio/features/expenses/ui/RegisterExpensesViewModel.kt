@@ -4,16 +4,20 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.minicore.cartio.core.database.entity.MeasureUnit
+import com.minicore.cartio.core.time.Clock
 import com.minicore.cartio.features.expenses.domain.ExpenseRecord
 import com.minicore.cartio.features.expenses.domain.RecordExpensesUseCase
 import com.minicore.cartio.features.shopping.data.ShoppingListItemRepository
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
 import com.minicore.cartio.navigation.CartioDestinations
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,8 +35,7 @@ data class RegisterExpensesUiState(
     val total: Double = 0.0,
     val hasValidPrices: Boolean = false,
     val isLoading: Boolean = true,
-    val isSaving: Boolean = false,
-    val saved: Boolean = false
+    val isSaving: Boolean = false
 )
 
 @HiltViewModel
@@ -40,13 +43,17 @@ class RegisterExpensesViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val itemRepository: ShoppingListItemRepository,
     private val listRepository: ShoppingListRepository,
-    private val recordExpenses: RecordExpensesUseCase
+    private val recordExpenses: RecordExpensesUseCase,
+    private val clock: Clock
 ) : ViewModel() {
 
     private val listId: Long = checkNotNull(savedStateHandle[CartioDestinations.RegisterExpenses.ARG_LIST_ID])
 
     private val _uiState = MutableStateFlow(RegisterExpensesUiState())
     val uiState: StateFlow<RegisterExpensesUiState> = _uiState.asStateFlow()
+
+    private val _events = Channel<RegisterExpensesEvent>(Channel.BUFFERED)
+    val events: Flow<RegisterExpensesEvent> = _events.receiveAsFlow()
 
     init {
         viewModelScope.launch {
@@ -92,7 +99,7 @@ class RegisterExpensesViewModel @Inject constructor(
 
     fun onRecord() {
         if (_uiState.value.isSaving) return
-        val now = System.currentTimeMillis()
+        val now = clock.now()
         val records = _uiState.value.rows.mapNotNull { row ->
             if (!positivePrice(row.unitPrice)) return@mapNotNull null
             ExpenseRecord(
@@ -107,7 +114,8 @@ class RegisterExpensesViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(isSaving = true)
         viewModelScope.launch {
             recordExpenses(records)
-            _uiState.value = _uiState.value.copy(isSaving = false, saved = true)
+            _uiState.value = _uiState.value.copy(isSaving = false)
+            _events.send(RegisterExpensesEvent.SavedAndUp)
         }
     }
 

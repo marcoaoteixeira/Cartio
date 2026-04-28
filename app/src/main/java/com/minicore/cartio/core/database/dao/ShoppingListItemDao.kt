@@ -20,7 +20,7 @@ interface ShoppingListItemDao {
     suspend fun insert(item: ShoppingListItemEntity): Long
 
     @Query("UPDATE shopping_list_items SET quantity = :quantity WHERE id = :id")
-    suspend fun updateQuantity(id: Long, quantity: Float)
+    suspend fun updateQuantity(id: Long, quantity: Int)
 
     @Query("UPDATE shopping_list_items SET checked = :checked WHERE id = :id")
     suspend fun updateChecked(id: Long, checked: Boolean)

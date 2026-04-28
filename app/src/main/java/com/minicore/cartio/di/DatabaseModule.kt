@@ -17,7 +17,7 @@ import com.minicore.cartio.features.shopping.data.ShoppingListItemRepositoryImpl
 import com.minicore.cartio.features.shopping.data.ShoppingListLocalDataSource
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
 import com.minicore.cartio.features.shopping.data.ShoppingListRepositoryImpl
-import com.minicore.cartio.core.database.migrations.MIGRATION_2_3
+import com.minicore.cartio.core.database.migrations.ALL_MIGRATIONS
 import com.minicore.cartio.features.expenses.data.ExpenseRecordDao
 import com.minicore.cartio.features.expenses.data.ExpenseRepository
 import com.minicore.cartio.features.expenses.data.ExpenseRepositoryImpl
@@ -77,7 +77,7 @@ abstract class DatabaseModule {
         @Singleton
         fun provideDatabase(@ApplicationContext context: Context): CartioDatabase =
             Room.databaseBuilder(context, CartioDatabase::class.java, DATABASE_NAME)
-                .addMigrations(MIGRATION_2_3)
+                .addMigrations(*ALL_MIGRATIONS)
                 .apply { if (BuildConfig.DEBUG) fallbackToDestructiveMigration(dropAllTables = true) }
                 .build()
 

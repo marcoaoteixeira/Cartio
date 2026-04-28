@@ -87,15 +87,20 @@ fun ShoppingListDetailScreen(
     viewModel: ShoppingListDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val listDeleted by viewModel.listDeleted.collectAsStateWithLifecycle()
     val activity = LocalContext.current as Activity
 
     LaunchedEffect(Unit) {
         viewModel.onScreenEntered(activity)
     }
 
-    LaunchedEffect(listDeleted) {
-        if (listDeleted) onNavigateUp()
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                ShoppingListDetailEvent.NavigateUp -> onNavigateUp()
+                is ShoppingListDetailEvent.ItemDeleted -> Unit // reserved for Phase G2 (undo)
+                ShoppingListDetailEvent.ExpensesRecorded -> Unit // reserved for Phase G14
+            }
+        }
     }
 
     var showRenameDialog by rememberSaveable { mutableStateOf(false) }

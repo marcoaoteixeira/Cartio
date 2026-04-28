@@ -5,11 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.minicore.cartio.features.shopping.data.ShoppingList
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,18 +38,14 @@ class ShoppingListViewModel @Inject constructor(
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), emptyList())
 
-    private val _createdListId = MutableStateFlow<Long?>(null)
-    val createdListId: StateFlow<Long?> = _createdListId.asStateFlow()
+    private val _events = Channel<ShoppingListEvent>(Channel.BUFFERED)
+    val events: Flow<ShoppingListEvent> = _events.receiveAsFlow()
 
     fun createShoppingList(name: String) {
         viewModelScope.launch {
             val id = repository.createShoppingList(name)
-            _createdListId.value = id
+            _events.send(ShoppingListEvent.NavigateToDetail(id))
         }
-    }
-
-    fun onNavigationHandled() {
-        _createdListId.value = null
     }
 
     fun toggleDashboardSort() {

@@ -3,10 +3,12 @@ package com.minicore.cartio
 import android.app.Application
 import android.util.Log
 import com.google.android.gms.ads.MobileAds
+import com.minicore.cartio.di.ApplicationScope
 import com.minicore.cartio.features.monetization.AppStartupInitializer
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,13 +21,19 @@ class CartioApp : Application() {
 
     @Inject lateinit var startupInitializer: AppStartupInitializer
 
+    @Inject @ApplicationScope lateinit var applicationScope: CoroutineScope
+
     override fun onCreate() {
         super.onCreate()
         MobileAds.initialize(this)
-        // Dispatchers.Main is required: AdMob and Play Billing both enforce main-thread access
-        GlobalScope.launch(Dispatchers.Main) {
+        applicationScope.launch(Dispatchers.Default) {
             runCatching { startupInitializer.initialize(applicationContext) }
                 .onFailure { Log.e(TAG, "Startup initialization failed", it) }
         }
+    }
+
+    override fun onTerminate() {
+        applicationScope.cancel()
+        super.onTerminate()
     }
 }

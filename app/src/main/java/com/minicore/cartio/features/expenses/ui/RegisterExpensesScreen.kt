@@ -52,10 +52,14 @@ fun RegisterExpensesScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    LaunchedEffect(uiState.saved) {
-        if (uiState.saved) {
-            Toast.makeText(context, context.getString(R.string.expenses_saved_toast), Toast.LENGTH_SHORT).show()
-            onNavigateUp()
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                RegisterExpensesEvent.SavedAndUp -> {
+                    Toast.makeText(context, context.getString(R.string.expenses_saved_toast), Toast.LENGTH_SHORT).show()
+                    onNavigateUp()
+                }
+            }
         }
     }
 

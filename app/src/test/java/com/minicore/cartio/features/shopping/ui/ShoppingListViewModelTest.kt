@@ -66,35 +66,19 @@ class ShoppingListViewModelTest {
     }
 
     @Test
-    fun `createShoppingList emits new list id`() = runTest {
+    fun `createShoppingList emits NavigateToDetail event with new id`() = runTest {
         val fakeRepository = FakeShoppingListRepository(emptyList())
         val viewModel = ShoppingListViewModel(fakeRepository)
 
+        val received = mutableListOf<ShoppingListEvent>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            viewModel.createdListId.collect {}
+            viewModel.events.collect { received.add(it) }
         }
 
         viewModel.createShoppingList("Groceries")
         advanceUntilIdle()
 
-        assertEquals(100L, viewModel.createdListId.value)
-    }
-
-    @Test
-    fun `onNavigationHandled clears createdListId`() = runTest {
-        val fakeRepository = FakeShoppingListRepository(emptyList())
-        val viewModel = ShoppingListViewModel(fakeRepository)
-
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            viewModel.createdListId.collect {}
-        }
-
-        viewModel.createShoppingList("Groceries")
-        advanceUntilIdle()
-        viewModel.onNavigationHandled()
-        advanceUntilIdle()
-
-        assertEquals(null, viewModel.createdListId.value)
+        assertEquals(listOf(ShoppingListEvent.NavigateToDetail(100L)), received)
     }
 }
 

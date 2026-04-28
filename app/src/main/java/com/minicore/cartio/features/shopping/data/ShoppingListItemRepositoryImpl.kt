@@ -1,6 +1,5 @@
 package com.minicore.cartio.features.shopping.data
 
-import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -14,8 +13,7 @@ class ShoppingListItemRepositoryImpl @Inject constructor(
 
     override suspend fun findActiveItemByProduct(listId: Long, productId: Long): Pair<Long, Int>? {
         val entity = localDataSource.findActiveByProduct(listId, productId) ?: return null
-        val qty = entity.quantity?.roundToInt()?.coerceAtLeast(1) ?: 1
-        return Pair(entity.id, qty)
+        return Pair(entity.id, entity.quantity)
     }
 
     override suspend fun insertItem(listId: Long, productId: Long) {
@@ -23,7 +21,7 @@ class ShoppingListItemRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateQuantity(itemId: Long, quantity: Int) =
-        localDataSource.updateQuantity(itemId, quantity.toFloat())
+        localDataSource.updateQuantity(itemId, quantity)
 
     override suspend fun checkItem(itemId: Long, checked: Boolean) =
         localDataSource.updateChecked(itemId, checked)

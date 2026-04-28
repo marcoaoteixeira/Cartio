@@ -2,6 +2,7 @@ package com.minicore.cartio.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.minicore.cartio.core.time.Clock
 import com.minicore.cartio.features.monetization.data.AdFrequencyStore
 import javax.inject.Named
 import com.minicore.cartio.features.monetization.data.AdMobDataSource
@@ -29,8 +30,10 @@ object MonetizationModule {
 
     @Provides
     @Singleton
-    fun provideAdFrequencyStore(@Named("ad_frequency_prefs") prefs: SharedPreferences): AdFrequencyStore =
-        AdFrequencyStore(prefs)
+    fun provideAdFrequencyStore(
+        @Named("ad_frequency_prefs") prefs: SharedPreferences,
+        clock: Clock
+    ): AdFrequencyStore = AdFrequencyStore(prefs, clock)
 
     @Provides
     @Singleton

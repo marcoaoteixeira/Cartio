@@ -78,7 +78,6 @@ fun ShoppingListScreen(
     viewModel: ShoppingListViewModel = hiltViewModel()
 ) {
     val shoppingLists by viewModel.shoppingLists.collectAsStateWithLifecycle()
-    val createdListId by viewModel.createdListId.collectAsStateWithLifecycle()
     val dashboardSort by viewModel.dashboardSort.collectAsStateWithLifecycle()
 
     var showCreateDialog by rememberSaveable { mutableStateOf(false) }
@@ -91,10 +90,12 @@ fun ShoppingListScreen(
 
     val inProgressList = remember(shoppingLists) { shoppingLists.maxByOrNull { it.updatedAt } }
 
-    LaunchedEffect(createdListId) {
-        createdListId?.let { id ->
-            viewModel.onNavigationHandled()
-            onNavigateToDetail(id)
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is ShoppingListEvent.NavigateToDetail -> onNavigateToDetail(event.listId)
+                is ShoppingListEvent.ListDeleted -> Unit // reserved for Phase G2 (undo)
+            }
         }
     }
 
