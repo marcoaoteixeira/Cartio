@@ -46,6 +46,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.lifecycleScope
 import com.minicore.cartio.R
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -53,18 +56,28 @@ import androidx.navigation.compose.rememberNavController
 import com.minicore.cartio.BuildConfig
 import com.minicore.cartio.core.ui.theme.Alpha
 import com.minicore.cartio.core.ui.theme.CartioTheme
+import com.minicore.cartio.features.monetization.domain.BillingRepository
 import com.minicore.cartio.features.splash.ui.CartioSplashScreen
 import com.minicore.cartio.navigation.CartioDestinations
 import com.minicore.cartio.navigation.CartioNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject lateinit var billingRepository: BillingRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                lifecycleScope.launch { billingRepository.refreshEntitlements() }
+            }
+        })
         setContent {
             CartioTheme {
                 var splashCompleted by rememberSaveable { mutableStateOf(false) }

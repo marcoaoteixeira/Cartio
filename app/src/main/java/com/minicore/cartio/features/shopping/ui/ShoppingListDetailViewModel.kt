@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -51,16 +52,23 @@ class ShoppingListDetailViewModel @Inject constructor(
     private val _events = Channel<ShoppingListDetailEvent>(Channel.BUFFERED)
     val events: Flow<ShoppingListDetailEvent> = _events.receiveAsFlow()
 
-    val uiState: StateFlow<ShoppingListDetailUiState> = combine(
-        listRepository.getShoppingListById(listId),
+    // Sort step is split out and `distinctUntilChanged` so a check toggle (which
+    // does not change the order) does not re-sort the whole list.
+    private val sortedItems = combine(
         itemRepository.getItemsForList(listId),
         _sortOrder
-    ) { list, items, sortOrder ->
-        val sorted = when (sortOrder) {
+    ) { items, sortOrder ->
+        when (sortOrder) {
             SortOrder.DEFAULT -> items
             SortOrder.ALPHA_ASC -> items.sortedBy { it.productName.lowercase() }
             SortOrder.ALPHA_DESC -> items.sortedByDescending { it.productName.lowercase() }
-        }
+        } to sortOrder
+    }.distinctUntilChanged()
+
+    val uiState: StateFlow<ShoppingListDetailUiState> = combine(
+        listRepository.getShoppingListById(listId),
+        sortedItems
+    ) { list, (sorted, sortOrder) ->
         ShoppingListDetailUiState(
             listId = listId,
             listName = list?.name ?: "",
