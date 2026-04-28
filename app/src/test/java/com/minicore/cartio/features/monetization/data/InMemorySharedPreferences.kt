@@ -9,7 +9,10 @@ class InMemorySharedPreferences : SharedPreferences {
 
     override fun getAll(): Map<String, *> = store.toMap()
     override fun getString(key: String, defValue: String?) = store[key] as? String ?: defValue
-    override fun getStringSet(key: String, defValues: Set<String>?) = store[key] as? Set<String> ?: defValues
+    override fun getStringSet(key: String, defValues: Set<String>?): Set<String>? {
+        val raw = store[key] ?: return defValues
+        return (raw as? Set<*>)?.filterIsInstance<String>()?.toSet() ?: defValues
+    }
     override fun getInt(key: String, defValue: Int) = store[key] as? Int ?: defValue
     override fun getLong(key: String, defValue: Long) = store[key] as? Long ?: defValue
     override fun getFloat(key: String, defValue: Float) = store[key] as? Float ?: defValue

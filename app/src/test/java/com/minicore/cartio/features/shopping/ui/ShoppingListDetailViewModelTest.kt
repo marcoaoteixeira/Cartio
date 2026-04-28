@@ -6,12 +6,6 @@ import com.minicore.cartio.features.shopping.data.ShoppingListItemRepository
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
 import com.minicore.cartio.features.shopping.domain.ShoppingList
 import com.minicore.cartio.features.shopping.domain.ShoppingListItem
-import android.app.Activity
-import com.minicore.cartio.features.monetization.domain.AdResult
-import com.minicore.cartio.features.monetization.domain.AdsRepository
-import com.minicore.cartio.features.monetization.domain.BillingRepository
-import com.minicore.cartio.features.monetization.domain.ShowDetailAdUseCase
-import com.minicore.cartio.features.monetization.domain.ShouldShowAdUseCase
 import com.minicore.cartio.features.shopping.domain.AddItemToList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -52,14 +46,6 @@ class ShoppingListDetailViewModelTest {
         Dispatchers.resetMain()
     }
 
-    private val fakeShowDetailAd = ShowDetailAdUseCase(
-        shouldShowAd = ShouldShowAdUseCase(
-            adsRepository = NoOpAdsRepository(),
-            billingRepository = NoOpBillingRepository()
-        ),
-        adsRepository = NoOpAdsRepository()
-    )
-
     private fun createViewModel(
         list: ShoppingList = ShoppingList(1L, "Test List", 1000L, 2000L),
         items: MutableStateFlow<List<ShoppingListItem>> = MutableStateFlow(emptyList()),
@@ -68,8 +54,7 @@ class ShoppingListDetailViewModelTest {
         savedStateHandle = SavedStateHandle(mapOf("listId" to 1L)),
         listRepository = FakeDetailShoppingListRepository(list),
         itemRepository = fakeItemRepo,
-        addItemToList = AddItemToList { _, _ -> },
-        showDetailAd = fakeShowDetailAd
+        addItemToList = AddItemToList { _, _ -> }
     )
 
     @Test
@@ -167,8 +152,7 @@ class ShoppingListDetailViewModelTest {
             savedStateHandle = SavedStateHandle(mapOf("listId" to 1L)),
             listRepository = fakeListRepo,
             itemRepository = FakeShoppingListItemRepository(MutableStateFlow(emptyList())),
-            addItemToList = AddItemToList { _, _ -> },
-            showDetailAd = fakeShowDetailAd
+            addItemToList = AddItemToList { _, _ -> }
         )
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.uiState.collect {}
@@ -203,21 +187,6 @@ private class FakeDetailShoppingListRepository(
     override suspend fun renameShoppingList(id: Long, name: String) { renamedLists.add(id to name) }
     override suspend fun deleteShoppingList(id: Long) {}
     override suspend fun touchUpdatedAt(id: Long) {}
-}
-
-private class NoOpAdsRepository : AdsRepository {
-    override suspend fun preload(context: android.content.Context) {}
-    override fun isAdAvailable() = false
-    override suspend fun showInterstitial(activity: Activity) = AdResult.NotAvailable
-    override suspend fun shouldShowAd() = false
-    override suspend fun markAdShown() {}
-}
-
-private class NoOpBillingRepository : BillingRepository {
-    override val adFreeEntitlement: Flow<Boolean> = flowOf(false)
-    override suspend fun connect(): Boolean = true
-    override suspend fun refreshEntitlements() {}
-    override suspend fun launchRemoveAdsPurchase(activity: Activity) {}
 }
 
 private class FakeShoppingListItemRepository(

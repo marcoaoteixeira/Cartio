@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+// Direct re-export of BackupPreferences.backupEnabled (already a StateFlow).
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,8 +30,7 @@ class SettingsViewModel @Inject constructor(
     val adFreeEntitlement: StateFlow<Boolean> = hasAdFreeEntitlement()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), false)
 
-    private val _syncEnabled = MutableStateFlow(backupPreferences.isBackupEnabled)
-    val syncEnabled: StateFlow<Boolean> = _syncEnabled.asStateFlow()
+    val syncEnabled: StateFlow<Boolean> = backupPreferences.backupEnabled
 
     private val _showClearDialog = MutableStateFlow(false)
     val showClearDialog: StateFlow<Boolean> = _showClearDialog.asStateFlow()
@@ -39,7 +39,6 @@ class SettingsViewModel @Inject constructor(
     val clearDataError: StateFlow<Boolean> = _clearDataError.asStateFlow()
 
     fun toggleSync(enabled: Boolean) {
-        _syncEnabled.value = enabled
         backupPreferences.isBackupEnabled = enabled
         if (enabled) backupManager.requestBackup()
     }

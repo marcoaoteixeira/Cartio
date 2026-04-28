@@ -54,6 +54,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import android.app.Activity
+import com.minicore.cartio.di.AdEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -88,9 +90,13 @@ fun ShoppingListDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val activity = LocalContext.current as Activity
+    val showDetailAd = EntryPointAccessors.fromApplication(
+        activity.applicationContext,
+        AdEntryPoint::class.java
+    ).showDetailAdUseCase()
 
     LaunchedEffect(Unit) {
-        viewModel.onScreenEntered(activity)
+        showDetailAd(activity)
     }
 
     LaunchedEffect(Unit) {
