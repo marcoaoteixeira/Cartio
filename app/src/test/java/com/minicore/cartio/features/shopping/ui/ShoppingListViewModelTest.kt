@@ -87,6 +87,7 @@ private class FakeShoppingListRepository(
     private var nextId: Long = 100L
 ) : ShoppingListRepository {
     override fun getShoppingLists() = flowOf(lists)
+    override fun getShoppingListsPaged(limit: Int, offset: Int) = flowOf(lists)
     override fun getShoppingListById(id: Long) = flowOf(lists.find { it.id == id })
     override suspend fun createShoppingList(name: String) = nextId++
     override suspend fun renameShoppingList(id: Long, name: String) {}

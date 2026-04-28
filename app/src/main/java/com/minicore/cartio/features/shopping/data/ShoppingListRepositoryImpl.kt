@@ -14,6 +14,9 @@ class ShoppingListRepositoryImpl @Inject constructor(
     override fun getShoppingLists(): Flow<List<ShoppingList>> =
         localDataSource.getShoppingListsWithCount().map { list -> list.map { it.toDomain() } }
 
+    override fun getShoppingListsPaged(limit: Int, offset: Int): Flow<List<ShoppingList>> =
+        localDataSource.getShoppingListsWithCountPaged(limit, offset).map { list -> list.map { it.toDomain() } }
+
     override fun getShoppingListById(id: Long): Flow<ShoppingList?> =
         localDataSource.getShoppingListByIdFlow(id).map { it?.toDomain() }
 

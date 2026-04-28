@@ -20,6 +20,9 @@ class ShoppingListItemRepositoryImpl @Inject constructor(
         localDataSource.insert(listId, productId)
     }
 
+    override suspend fun addOrIncrement(listId: Long, productId: Long) =
+        localDataSource.addOrIncrement(listId, productId)
+
     override suspend fun updateQuantity(itemId: Long, quantity: Int) =
         localDataSource.updateQuantity(itemId, quantity)
 

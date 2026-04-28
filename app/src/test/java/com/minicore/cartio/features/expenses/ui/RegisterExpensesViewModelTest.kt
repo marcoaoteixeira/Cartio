@@ -163,6 +163,7 @@ private class FakeItemRepo(private val flow: MutableStateFlow<List<ShoppingListI
     override fun getItemsForList(listId: Long): Flow<List<ShoppingListItem>> = flow
     override suspend fun findActiveItemByProduct(listId: Long, productId: Long) = null
     override suspend fun insertItem(listId: Long, productId: Long) {}
+    override suspend fun addOrIncrement(listId: Long, productId: Long) {}
     override suspend fun updateQuantity(itemId: Long, quantity: Int) {}
     override suspend fun checkItem(itemId: Long, checked: Boolean) {}
     override suspend fun deleteItem(itemId: Long) {}
@@ -170,6 +171,7 @@ private class FakeItemRepo(private val flow: MutableStateFlow<List<ShoppingListI
 
 private class FakeListRepo : ShoppingListRepository {
     override fun getShoppingLists(): Flow<List<ShoppingList>> = flowOf(emptyList())
+    override fun getShoppingListsPaged(limit: Int, offset: Int): Flow<List<ShoppingList>> = flowOf(emptyList())
     override fun getShoppingListById(id: Long): Flow<ShoppingList?> =
         flowOf(ShoppingList(id, "Test List", 0L, 0L))
     override suspend fun createShoppingList(name: String): Long = 0L

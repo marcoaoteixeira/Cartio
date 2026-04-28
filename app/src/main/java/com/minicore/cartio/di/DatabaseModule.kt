@@ -2,7 +2,7 @@ package com.minicore.cartio.di
 
 import android.content.Context
 import androidx.room.Room
-import com.minicore.cartio.BuildConfig
+import com.minicore.cartio.core.config.AppConfig
 import com.minicore.cartio.core.database.CartioDatabase
 import com.minicore.cartio.core.database.dao.ProductDao
 import com.minicore.cartio.core.database.dao.ShoppingListDao
@@ -78,7 +78,11 @@ abstract class DatabaseModule {
         fun provideDatabase(@ApplicationContext context: Context): CartioDatabase =
             Room.databaseBuilder(context, CartioDatabase::class.java, DATABASE_NAME)
                 .addMigrations(*ALL_MIGRATIONS)
-                .apply { if (BuildConfig.DEBUG) fallbackToDestructiveMigration(dropAllTables = true) }
+                .apply {
+                    if (AppConfig.DROP_DB_ON_MIGRATION_FAILURE) {
+                        fallbackToDestructiveMigration(dropAllTables = true)
+                    }
+                }
                 .build()
 
         @Provides

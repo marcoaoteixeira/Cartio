@@ -8,7 +8,9 @@ enum class MeasureUnit(val abbreviation: String) {
     Liter("L");
 
     companion object {
+        // Falls back to Piece when an unknown abbreviation is read from the DB
+        // (e.g. a downgrade from a future schema that introduced a new unit).
         fun fromAbbreviation(value: String): MeasureUnit =
-            entries.first { it.abbreviation == value }
+            entries.firstOrNull { it.abbreviation == value } ?: Piece
     }
 }

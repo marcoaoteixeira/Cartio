@@ -44,9 +44,14 @@ class BillingClientWrapper @Inject constructor(context: Context) {
 
     suspend fun connect(): Boolean {
         return suspendCancellableCoroutine { continuation ->
+            continuation.invokeOnCancellation {
+                Log.d(TAG, "connect cancelled before billing setup completed")
+            }
             billingClient.startConnection(object : BillingClientStateListener {
                 override fun onBillingSetupFinished(result: BillingResult) {
-                    continuation.resume(result.responseCode == BillingClient.BillingResponseCode.OK)
+                    if (continuation.isActive) {
+                        continuation.resume(result.responseCode == BillingClient.BillingResponseCode.OK)
+                    }
                 }
 
                 override fun onBillingServiceDisconnected() {
@@ -62,6 +67,9 @@ class BillingClientWrapper @Inject constructor(context: Context) {
             .build()
 
         suspendCancellableCoroutine { continuation ->
+            continuation.invokeOnCancellation {
+                Log.d(TAG, "refreshEntitlements cancelled while query in flight")
+            }
             billingClient.queryPurchasesAsync(params) { _, purchases ->
                 val hasEntitlement = purchases.any { purchase ->
                     purchase.products.contains(MonetizationConfig.REMOVE_ADS_PRODUCT_ID) &&
@@ -69,7 +77,7 @@ class BillingClientWrapper @Inject constructor(context: Context) {
                 }
                 _adFreeEntitlement.value = hasEntitlement
                 purchases.forEach { handlePurchase(it) }
-                continuation.resume(Unit)
+                if (continuation.isActive) continuation.resume(Unit)
             }
         }
     }
@@ -86,6 +94,9 @@ class BillingClientWrapper @Inject constructor(context: Context) {
             .build()
 
         suspendCancellableCoroutine { continuation ->
+            continuation.invokeOnCancellation {
+                Log.d(TAG, "launchPurchase cancelled before product details returned")
+            }
             billingClient.queryProductDetailsAsync(
                 detailsParams,
                 object : ProductDetailsResponseListener {
@@ -104,7 +115,7 @@ class BillingClientWrapper @Inject constructor(context: Context) {
                                 .build()
                             billingClient.launchBillingFlow(activity, billingFlowParams)
                         }
-                        continuation.resume(Unit)
+                        if (continuation.isActive) continuation.resume(Unit)
                     }
                 }
             )

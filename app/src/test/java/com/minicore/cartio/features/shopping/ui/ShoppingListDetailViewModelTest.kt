@@ -197,6 +197,7 @@ private class FakeDetailShoppingListRepository(
     val renamedLists = mutableListOf<Pair<Long, String>>()
 
     override fun getShoppingLists() = flowOf(listOf(list))
+    override fun getShoppingListsPaged(limit: Int, offset: Int) = flowOf(listOf(list))
     override fun getShoppingListById(id: Long) = flowOf(list.takeIf { it.id == id })
     override suspend fun createShoppingList(name: String) = 0L
     override suspend fun renameShoppingList(id: Long, name: String) { renamedLists.add(id to name) }
@@ -229,6 +230,7 @@ private class FakeShoppingListItemRepository(
     override fun getItemsForList(listId: Long) = itemsFlow
     override suspend fun findActiveItemByProduct(listId: Long, productId: Long): Pair<Long, Int>? = null
     override suspend fun insertItem(listId: Long, productId: Long) {}
+    override suspend fun addOrIncrement(listId: Long, productId: Long) {}
     override suspend fun updateQuantity(itemId: Long, quantity: Int) { updatedQuantities.add(itemId to quantity) }
     override suspend fun checkItem(itemId: Long, checked: Boolean) { checkedItems.add(itemId to checked) }
     override suspend fun deleteItem(itemId: Long) { deletedIds.add(itemId) }
