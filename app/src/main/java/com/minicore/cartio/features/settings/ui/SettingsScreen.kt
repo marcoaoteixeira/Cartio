@@ -193,8 +193,8 @@ fun SettingsScreen(
                                 )
                             }
                         },
-                        title = "Cartio",
-                        subtitle = "Version ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})",
+                        title = stringResource(R.string.app_name),
+                        subtitle = stringResource(R.string.settings_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE),
                         showDivider = true,
                         onClick = { openPlayStore(context) }
                     )
@@ -221,7 +221,7 @@ fun SettingsScreen(
             item {
                 Column(modifier = Modifier.fillParentMaxWidth()) {
                     Text(
-                        text = "made with care · cartio v${BuildConfig.VERSION_NAME}",
+                        text = stringResource(R.string.settings_made_with_care, BuildConfig.VERSION_NAME),
                         style = MaterialTheme.typography.bodySmall,
                         fontStyle = FontStyle.Italic,
                         color = MaterialTheme.colorScheme.outline,

@@ -1,5 +1,6 @@
 package com.minicore.cartio.features.reports.domain
 
+import com.minicore.cartio.core.time.Clock
 import com.minicore.cartio.features.expenses.data.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -7,10 +8,11 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class GetSpendingReportUseCase @Inject constructor(
-    private val repository: ExpenseRepository
+    private val repository: ExpenseRepository,
+    private val clock: Clock
 ) {
-    operator fun invoke(clock: () -> Long = System::currentTimeMillis): Flow<SpendingReport> {
-        val since = clock() - TimeUnit.DAYS.toMillis(30)
+    operator fun invoke(): Flow<SpendingReport> {
+        val since = clock.now() - TimeUnit.DAYS.toMillis(30)
         return repository.getRecordsSince(since).map { records ->
             val total = records.sumOf { it.unitPrice * it.quantity }
             val top10 = records

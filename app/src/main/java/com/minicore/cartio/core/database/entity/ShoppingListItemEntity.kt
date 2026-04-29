@@ -23,7 +23,8 @@ import androidx.room.PrimaryKey
     ],
     indices = [
         Index("shoppingListId"),
-        Index("productId")
+        Index("productId"),
+        Index(value = ["shoppingListId", "productId", "checked"])
     ]
 )
 data class ShoppingListItemEntity(
@@ -31,7 +32,7 @@ data class ShoppingListItemEntity(
     val id: Long = 0,
     val shoppingListId: Long,
     val productId: Long,
-    val quantity: Float? = null,
+    val quantity: Int = 1,
     val checked: Boolean = false,
     val note: String? = null
 )

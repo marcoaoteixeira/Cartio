@@ -23,7 +23,7 @@ import com.minicore.cartio.features.expenses.data.ExpenseRecordEntity
         PriceHistoryEntity::class,
         ExpenseRecordEntity::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 @TypeConverters(CustomConverters::class)

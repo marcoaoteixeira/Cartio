@@ -1,21 +1,22 @@
 package com.minicore.cartio.features.shopping.ui
 
-import android.app.Activity
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.minicore.cartio.features.monetization.domain.ShowDetailAdUseCase
-import com.minicore.cartio.features.shopping.data.ShoppingListItem
 import com.minicore.cartio.features.shopping.data.ShoppingListItemRepository
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
 import com.minicore.cartio.features.shopping.domain.AddItemToList
+import com.minicore.cartio.features.shopping.domain.ShoppingListItem
 import com.minicore.cartio.navigation.CartioDestinations
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,8 +37,7 @@ class ShoppingListDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val listRepository: ShoppingListRepository,
     private val itemRepository: ShoppingListItemRepository,
-    private val addItemToList: AddItemToList,
-    private val showDetailAd: ShowDetailAdUseCase
+    private val addItemToList: AddItemToList
 ) : ViewModel() {
 
     private val listId: Long = checkNotNull(savedStateHandle[CartioDestinations.ShoppingListDetail.ARG_LIST_ID]) {
@@ -46,19 +46,26 @@ class ShoppingListDetailViewModel @Inject constructor(
 
     private val _sortOrder = MutableStateFlow(SortOrder.DEFAULT)
 
-    private val _listDeleted = MutableStateFlow(false)
-    val listDeleted: StateFlow<Boolean> = _listDeleted.asStateFlow()
+    private val _events = Channel<ShoppingListDetailEvent>(Channel.BUFFERED)
+    val events: Flow<ShoppingListDetailEvent> = _events.receiveAsFlow()
 
-    val uiState: StateFlow<ShoppingListDetailUiState> = combine(
-        listRepository.getShoppingListById(listId),
+    // Sort step is split out and `distinctUntilChanged` so a check toggle (which
+    // does not change the order) does not re-sort the whole list.
+    private val sortedItems = combine(
         itemRepository.getItemsForList(listId),
         _sortOrder
-    ) { list, items, sortOrder ->
-        val sorted = when (sortOrder) {
+    ) { items, sortOrder ->
+        when (sortOrder) {
             SortOrder.DEFAULT -> items
             SortOrder.ALPHA_ASC -> items.sortedBy { it.productName.lowercase() }
             SortOrder.ALPHA_DESC -> items.sortedByDescending { it.productName.lowercase() }
-        }
+        } to sortOrder
+    }.distinctUntilChanged()
+
+    val uiState: StateFlow<ShoppingListDetailUiState> = combine(
+        listRepository.getShoppingListById(listId),
+        sortedItems
+    ) { list, (sorted, sortOrder) ->
         ShoppingListDetailUiState(
             listId = listId,
             listName = list?.name ?: "",
@@ -68,10 +75,6 @@ class ShoppingListDetailViewModel @Inject constructor(
             isLoading = false
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), ShoppingListDetailUiState())
-
-    fun onScreenEntered(activity: Activity) {
-        viewModelScope.launch { showDetailAd(activity) }
-    }
 
     fun toggleSort() {
         _sortOrder.value = when (_sortOrder.value) {
@@ -93,8 +96,15 @@ class ShoppingListDetailViewModel @Inject constructor(
         viewModelScope.launch { itemRepository.updateQuantity(itemId, quantity) }
     }
 
-    fun deleteItem(itemId: Long) {
-        viewModelScope.launch { itemRepository.deleteItem(itemId) }
+    fun deleteItem(item: ShoppingListItem) {
+        viewModelScope.launch {
+            itemRepository.deleteItem(item.id)
+            _events.send(ShoppingListDetailEvent.ItemDeleted(item))
+        }
+    }
+
+    fun restoreItem(item: ShoppingListItem) {
+        viewModelScope.launch { itemRepository.restoreItem(item) }
     }
 
     fun renameList(name: String) {
@@ -104,7 +114,7 @@ class ShoppingListDetailViewModel @Inject constructor(
     fun deleteList() {
         viewModelScope.launch {
             listRepository.deleteShoppingList(listId)
-            _listDeleted.value = true
+            _events.send(ShoppingListDetailEvent.NavigateUp)
         }
     }
 }

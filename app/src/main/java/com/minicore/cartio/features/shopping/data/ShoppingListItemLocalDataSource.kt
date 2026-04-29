@@ -8,7 +8,9 @@ interface ShoppingListItemLocalDataSource {
     fun getItemsForList(listId: Long): Flow<List<ShoppingListItemWithProduct>>
     suspend fun findActiveByProduct(listId: Long, productId: Long): ShoppingListItemEntity?
     suspend fun insert(listId: Long, productId: Long): Long
-    suspend fun updateQuantity(id: Long, quantity: Float)
+    suspend fun insertEntity(entity: ShoppingListItemEntity): Long
+    suspend fun addOrIncrement(listId: Long, productId: Long)
+    suspend fun updateQuantity(id: Long, quantity: Int)
     suspend fun updateChecked(id: Long, checked: Boolean)
     suspend fun deleteById(id: Long)
 }

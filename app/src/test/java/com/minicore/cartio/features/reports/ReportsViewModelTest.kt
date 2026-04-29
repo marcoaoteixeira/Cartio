@@ -1,5 +1,6 @@
 package com.minicore.cartio.features.reports
 
+import com.minicore.cartio.core.time.Clock
 import com.minicore.cartio.features.expenses.data.FakeExpenseRepository
 import com.minicore.cartio.features.reports.domain.GetSpendingReportUseCase
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +29,7 @@ class ReportsViewModelTest {
 
     private fun createViewModel() = ReportsViewModel(
         expenseRepository = repository,
-        getSpendingReport = GetSpendingReportUseCase(repository)
+        getSpendingReport = GetSpendingReportUseCase(repository, Clock { System.currentTimeMillis() })
     )
 
     @Test

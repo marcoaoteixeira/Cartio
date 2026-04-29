@@ -1,4 +1,4 @@
-package com.minicore.cartio.features.shopping.data
+package com.minicore.cartio.features.shopping.domain
 
 data class ShoppingListItem(
     val id: Long,

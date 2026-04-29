@@ -23,6 +23,9 @@ class ReportsViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), null)
 
     init {
+        // Purge runs concurrently with the report Flow read. Safe under Room's
+        // default WAL journaling: writes don't block reads, and getRecordsSince
+        // already filters to the same cutoff so a deleted row is irrelevant.
         viewModelScope.launch {
             val cutoff = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(30)
             expenseRepository.purgeOlderThan(cutoff)

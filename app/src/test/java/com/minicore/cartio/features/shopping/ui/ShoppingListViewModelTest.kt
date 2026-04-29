@@ -1,8 +1,8 @@
 package com.minicore.cartio.features.shopping.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.minicore.cartio.features.shopping.data.ShoppingList
 import com.minicore.cartio.features.shopping.data.ShoppingListRepository
+import com.minicore.cartio.features.shopping.domain.ShoppingList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -66,35 +66,19 @@ class ShoppingListViewModelTest {
     }
 
     @Test
-    fun `createShoppingList emits new list id`() = runTest {
+    fun `createShoppingList emits NavigateToDetail event with new id`() = runTest {
         val fakeRepository = FakeShoppingListRepository(emptyList())
         val viewModel = ShoppingListViewModel(fakeRepository)
 
+        val received = mutableListOf<ShoppingListEvent>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            viewModel.createdListId.collect {}
+            viewModel.events.collect { received.add(it) }
         }
 
         viewModel.createShoppingList("Groceries")
         advanceUntilIdle()
 
-        assertEquals(100L, viewModel.createdListId.value)
-    }
-
-    @Test
-    fun `onNavigationHandled clears createdListId`() = runTest {
-        val fakeRepository = FakeShoppingListRepository(emptyList())
-        val viewModel = ShoppingListViewModel(fakeRepository)
-
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
-            viewModel.createdListId.collect {}
-        }
-
-        viewModel.createShoppingList("Groceries")
-        advanceUntilIdle()
-        viewModel.onNavigationHandled()
-        advanceUntilIdle()
-
-        assertEquals(null, viewModel.createdListId.value)
+        assertEquals(listOf(ShoppingListEvent.NavigateToDetail(100L)), received)
     }
 }
 
@@ -103,6 +87,7 @@ private class FakeShoppingListRepository(
     private var nextId: Long = 100L
 ) : ShoppingListRepository {
     override fun getShoppingLists() = flowOf(lists)
+    override fun getShoppingListsPaged(limit: Int, offset: Int) = flowOf(lists)
     override fun getShoppingListById(id: Long) = flowOf(lists.find { it.id == id })
     override suspend fun createShoppingList(name: String) = nextId++
     override suspend fun renameShoppingList(id: Long, name: String) {}

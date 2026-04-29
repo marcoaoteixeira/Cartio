@@ -10,6 +10,8 @@ class LocalShoppingListDataSource @Inject constructor(
     private val dao: ShoppingListDao
 ) : ShoppingListLocalDataSource {
     override fun getShoppingListsWithCount(): Flow<List<ShoppingListWithCount>> = dao.getAllWithItemCount()
+    override fun getShoppingListsWithCountPaged(limit: Int, offset: Int): Flow<List<ShoppingListWithCount>> =
+        dao.getAllWithItemCountPaged(limit, offset)
     override fun getShoppingListByIdFlow(id: Long): Flow<ShoppingListEntity?> = dao.getByIdFlow(id)
     override suspend fun insert(entity: ShoppingListEntity): Long = dao.insert(entity)
     override suspend fun updateName(id: Long, name: String, updatedAt: Long) = dao.updateName(id, name, updatedAt)

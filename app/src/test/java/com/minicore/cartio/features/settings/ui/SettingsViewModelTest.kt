@@ -8,6 +8,9 @@ import com.minicore.cartio.features.monetization.domain.BillingRepository
 import com.minicore.cartio.features.monetization.domain.HasAdFreeEntitlementUseCase
 import com.minicore.cartio.features.settings.domain.ClearAllData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -221,7 +224,11 @@ class SettingsViewModelTest {
     }
 
     private class FakeBackupPreferences(initial: Boolean = false) : BackupPreferences {
-        override var isBackupEnabled: Boolean = initial
+        private val flow = MutableStateFlow(initial)
+        override var isBackupEnabled: Boolean
+            get() = flow.value
+            set(value) { flow.value = value }
+        override val backupEnabled: StateFlow<Boolean> = flow.asStateFlow()
     }
 
     private class FakeBillingRepository(private val entitlement: Boolean = false) : BillingRepository {

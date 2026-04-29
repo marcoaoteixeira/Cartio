@@ -17,17 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Canvas
 import com.minicore.cartio.R
+import com.minicore.cartio.core.ui.theme.AutolovaFamily
 import com.minicore.cartio.core.ui.theme.BrandYellow
 import kotlinx.coroutines.delay
 
-private const val SPLASH_DURATION_MS = 2000L
-private val AutolovaFamily = FontFamily(Font(R.font.autolova))
+// Minimum-visible time so the brand splash registers but doesn't feel
+// artificially slow on warm starts. Was 2000ms; trimmed to the 600ms
+// suggested by Material guidelines for branded splashes.
+private const val SPLASH_DURATION_MS = 600L
 
 @Composable
 fun CartioSplashScreen(onComplete: () -> Unit) {

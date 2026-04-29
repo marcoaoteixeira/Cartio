@@ -46,25 +46,39 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.lifecycleScope
 import com.minicore.cartio.R
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.minicore.cartio.BuildConfig
 import com.minicore.cartio.core.ui.theme.Alpha
+import com.minicore.cartio.core.ui.theme.AutolovaFamily
 import com.minicore.cartio.core.ui.theme.CartioTheme
+import com.minicore.cartio.features.monetization.domain.BillingRepository
 import com.minicore.cartio.features.splash.ui.CartioSplashScreen
 import com.minicore.cartio.navigation.CartioDestinations
 import com.minicore.cartio.navigation.CartioNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject lateinit var billingRepository: BillingRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                lifecycleScope.launch { billingRepository.refreshEntitlements() }
+            }
+        })
         setContent {
             CartioTheme {
                 var splashCompleted by rememberSaveable { mutableStateOf(false) }
@@ -112,9 +126,9 @@ class MainActivity : ComponentActivity() {
                                         }
                                         Spacer(modifier = Modifier.height(16.dp))
                                         Text(
-                                            text = "Cartio",
-                                            style = MaterialTheme.typography.headlineSmall,
-                                            fontWeight = FontWeight.Bold,
+                                            text = stringResource(R.string.app_name),
+                                            style = MaterialTheme.typography.headlineMedium,
+                                            fontFamily = AutolovaFamily,
                                             color = MaterialTheme.colorScheme.onPrimary
                                         )
                                         Text(
@@ -147,7 +161,7 @@ class MainActivity : ComponentActivity() {
 
                                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                                 Text(
-                                    text = "cartio · v${BuildConfig.VERSION_NAME}",
+                                    text = stringResource(R.string.app_version_footer, BuildConfig.VERSION_NAME),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.outline,
                                     modifier = Modifier
@@ -226,7 +240,7 @@ private fun DrawerNavItem(
             Text(
                 text = item.subtitle,
                 style = MaterialTheme.typography.bodySmall,
-                color = outlineColor
+                color = outlineColor.copy(alpha = 0.7f)
             )
         }
     }

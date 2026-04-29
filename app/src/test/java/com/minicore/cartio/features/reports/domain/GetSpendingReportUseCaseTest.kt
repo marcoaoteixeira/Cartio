@@ -1,6 +1,7 @@
 package com.minicore.cartio.features.reports.domain
 
 import com.minicore.cartio.core.database.entity.MeasureUnit
+import com.minicore.cartio.core.time.Clock
 import com.minicore.cartio.features.expenses.data.FakeExpenseRepository
 import com.minicore.cartio.features.expenses.domain.ExpenseRecord
 import kotlinx.coroutines.flow.first
@@ -12,10 +13,8 @@ import java.util.concurrent.TimeUnit
 class GetSpendingReportUseCaseTest {
 
     private val repository = FakeExpenseRepository()
-    private val useCase = GetSpendingReportUseCase(repository)
-
     private val now = System.currentTimeMillis()
-    private val clock: () -> Long = { now }
+    private val useCase = GetSpendingReportUseCase(repository, Clock { now })
 
     private fun record(name: String, price: Double, qty: Int = 1, daysAgo: Long = 0L) = ExpenseRecord(
         productName = name,
@@ -27,7 +26,7 @@ class GetSpendingReportUseCaseTest {
 
     @Test
     fun `empty repository returns zero total and empty top items`() = runTest {
-        val report = useCase(clock).first()
+        val report = useCase().first()
         assertEquals(0.0, report.totalSpent, 0.001)
         assertEquals(emptyList<ItemSpending>(), report.topItems)
     }
@@ -35,7 +34,7 @@ class GetSpendingReportUseCaseTest {
     @Test
     fun `records within 30 days are included`() = runTest {
         repository.seedRecords(record("Milk", 2.0, daysAgo = 0))
-        val report = useCase(clock).first()
+        val report = useCase().first()
         assertEquals(2.0, report.totalSpent, 0.001)
     }
 
@@ -45,7 +44,7 @@ class GetSpendingReportUseCaseTest {
             record("Milk", 2.0, daysAgo = 0),
             record("Eggs", 5.0, daysAgo = 31)
         )
-        val report = useCase(clock).first()
+        val report = useCase().first()
         assertEquals(2.0, report.totalSpent, 0.001)
         assertEquals(1, report.topItems.size)
         assertEquals("Milk", report.topItems[0].productName)
@@ -54,7 +53,7 @@ class GetSpendingReportUseCaseTest {
     @Test
     fun `total correctly multiplies unit price by quantity`() = runTest {
         repository.seedRecords(record("Milk", 1.50, qty = 3, daysAgo = 0))
-        val report = useCase(clock).first()
+        val report = useCase().first()
         assertEquals(4.50, report.totalSpent, 0.001)
     }
 
@@ -65,7 +64,7 @@ class GetSpendingReportUseCaseTest {
             record("Milk", 5.0, qty = 1),
             record("Eggs", 2.0, qty = 3)
         )
-        val report = useCase(clock).first()
+        val report = useCase().first()
         assertEquals("Eggs", report.topItems[0].productName)  // 6.0
         assertEquals("Milk", report.topItems[1].productName)  // 5.0
         assertEquals("Bread", report.topItems[2].productName) // 2.0
@@ -78,7 +77,7 @@ class GetSpendingReportUseCaseTest {
             record("Milk", 2.0),
             record("Milk", 3.0)
         )
-        val report = useCase(clock).first()
+        val report = useCase().first()
         assertEquals(1, report.topItems.size)
         assertEquals("Milk", report.topItems[0].productName)
         assertEquals(3, report.topItems[0].purchaseCount)
@@ -88,7 +87,7 @@ class GetSpendingReportUseCaseTest {
     @Test
     fun `top items limited to 10`() = runTest {
         (1..15).forEach { i -> repository.seedRecords(record("Item$i", i.toDouble())) }
-        val report = useCase(clock).first()
+        val report = useCase().first()
         assertEquals(10, report.topItems.size)
     }
 }

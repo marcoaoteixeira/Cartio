@@ -14,6 +14,9 @@ interface ShoppingListDao {
     @Query("SELECT sl.id, sl.name, sl.createdAt, sl.updatedAt, COUNT(sli.id) AS itemCount, COUNT(CASE WHEN sli.checked = 1 THEN 1 END) AS checkedCount FROM shopping_lists sl LEFT JOIN shopping_list_items sli ON sli.shoppingListId = sl.id GROUP BY sl.id ORDER BY sl.updatedAt DESC")
     fun getAllWithItemCount(): Flow<List<ShoppingListWithCount>>
 
+    @Query("SELECT sl.id, sl.name, sl.createdAt, sl.updatedAt, COUNT(sli.id) AS itemCount, COUNT(CASE WHEN sli.checked = 1 THEN 1 END) AS checkedCount FROM shopping_lists sl LEFT JOIN shopping_list_items sli ON sli.shoppingListId = sl.id GROUP BY sl.id ORDER BY sl.updatedAt DESC LIMIT :limit OFFSET :offset")
+    fun getAllWithItemCountPaged(limit: Int, offset: Int): Flow<List<ShoppingListWithCount>>
+
     @Query("SELECT * FROM shopping_lists WHERE id = :id")
     fun getByIdFlow(id: Long): Flow<ShoppingListEntity?>
 

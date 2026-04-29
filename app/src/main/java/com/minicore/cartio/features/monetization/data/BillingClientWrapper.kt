@@ -1,19 +1,16 @@
 package com.minicore.cartio.features.monetization.data
 
 import android.app.Activity
-import android.content.Context
 import android.util.Log
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.ProductDetailsResponseListener
 import com.android.billingclient.api.QueryProductDetailsResult
 import com.android.billingclient.api.Purchase
-import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.minicore.cartio.features.monetization.MonetizationConfig
@@ -24,29 +21,23 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
-class BillingClientWrapper @Inject constructor(context: Context) {
+class BillingClientWrapper @Inject constructor(
+    private val facade: BillingClientFacade
+) {
 
     private val _adFreeEntitlement = MutableStateFlow(false)
     val adFreeEntitlement: StateFlow<Boolean> = _adFreeEntitlement.asStateFlow()
 
-    private val purchasesUpdatedListener = PurchasesUpdatedListener { result, purchases ->
-        if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-            purchases?.forEach { handlePurchase(it) }
-        }
-    }
-
-    private val billingClient = BillingClient.newBuilder(context)
-        .enablePendingPurchases(
-            PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()
-        )
-        .setListener(purchasesUpdatedListener)
-        .build()
-
     suspend fun connect(): Boolean {
         return suspendCancellableCoroutine { continuation ->
-            billingClient.startConnection(object : BillingClientStateListener {
+            continuation.invokeOnCancellation {
+                Log.d(TAG, "connect cancelled before billing setup completed")
+            }
+            facade.startConnection(object : BillingClientStateListener {
                 override fun onBillingSetupFinished(result: BillingResult) {
-                    continuation.resume(result.responseCode == BillingClient.BillingResponseCode.OK)
+                    if (continuation.isActive) {
+                        continuation.resume(result.responseCode == BillingClient.BillingResponseCode.OK)
+                    }
                 }
 
                 override fun onBillingServiceDisconnected() {
@@ -62,14 +53,17 @@ class BillingClientWrapper @Inject constructor(context: Context) {
             .build()
 
         suspendCancellableCoroutine { continuation ->
-            billingClient.queryPurchasesAsync(params) { _, purchases ->
+            continuation.invokeOnCancellation {
+                Log.d(TAG, "refreshEntitlements cancelled while query in flight")
+            }
+            facade.queryPurchasesAsync(params) { _, purchases ->
                 val hasEntitlement = purchases.any { purchase ->
                     purchase.products.contains(MonetizationConfig.REMOVE_ADS_PRODUCT_ID) &&
                         purchase.purchaseState == Purchase.PurchaseState.PURCHASED
                 }
                 _adFreeEntitlement.value = hasEntitlement
                 purchases.forEach { handlePurchase(it) }
-                continuation.resume(Unit)
+                if (continuation.isActive) continuation.resume(Unit)
             }
         }
     }
@@ -86,14 +80,17 @@ class BillingClientWrapper @Inject constructor(context: Context) {
             .build()
 
         suspendCancellableCoroutine { continuation ->
-            billingClient.queryProductDetailsAsync(
+            continuation.invokeOnCancellation {
+                Log.d(TAG, "launchPurchase cancelled before product details returned")
+            }
+            facade.queryProductDetailsAsync(
                 detailsParams,
                 object : ProductDetailsResponseListener {
                     override fun onProductDetailsResponse(
                         billingResult: BillingResult,
                         result: QueryProductDetailsResult
                     ) {
-                        val productDetails = result.productDetailsList.firstOrNull()
+                        val productDetails: ProductDetails? = result.productDetailsList.firstOrNull()
                         if (productDetails != null) {
                             val productDetailsParams = BillingFlowParams.ProductDetailsParams
                                 .newBuilder()
@@ -102,20 +99,16 @@ class BillingClientWrapper @Inject constructor(context: Context) {
                             val billingFlowParams = BillingFlowParams.newBuilder()
                                 .setProductDetailsParamsList(listOf(productDetailsParams))
                                 .build()
-                            billingClient.launchBillingFlow(activity, billingFlowParams)
+                            facade.launchBillingFlow(activity, billingFlowParams)
                         }
-                        continuation.resume(Unit)
+                        if (continuation.isActive) continuation.resume(Unit)
                     }
                 }
             )
         }
     }
 
-    companion object {
-        private const val TAG = "BillingClientWrapper"
-    }
-
-    private fun handlePurchase(purchase: Purchase) {
+    fun handlePurchase(purchase: Purchase) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED &&
             purchase.products.contains(MonetizationConfig.REMOVE_ADS_PRODUCT_ID)
         ) {
@@ -124,12 +117,16 @@ class BillingClientWrapper @Inject constructor(context: Context) {
                 val params = AcknowledgePurchaseParams.newBuilder()
                     .setPurchaseToken(purchase.purchaseToken)
                     .build()
-                billingClient.acknowledgePurchase(params) { result ->
+                facade.acknowledgePurchase(params) { result ->
                     if (result.responseCode != BillingClient.BillingResponseCode.OK) {
                         Log.w(TAG, "Acknowledge failed (${result.responseCode}): ${result.debugMessage}")
                     }
                 }
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "BillingClientWrapper"
     }
 }

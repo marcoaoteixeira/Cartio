@@ -56,6 +56,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -63,7 +64,7 @@ import com.minicore.cartio.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.minicore.cartio.core.ui.theme.Alpha
-import com.minicore.cartio.features.shopping.data.ShoppingList
+import com.minicore.cartio.features.shopping.domain.ShoppingList
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -78,7 +79,6 @@ fun ShoppingListScreen(
     viewModel: ShoppingListViewModel = hiltViewModel()
 ) {
     val shoppingLists by viewModel.shoppingLists.collectAsStateWithLifecycle()
-    val createdListId by viewModel.createdListId.collectAsStateWithLifecycle()
     val dashboardSort by viewModel.dashboardSort.collectAsStateWithLifecycle()
 
     var showCreateDialog by rememberSaveable { mutableStateOf(false) }
@@ -91,10 +91,11 @@ fun ShoppingListScreen(
 
     val inProgressList = remember(shoppingLists) { shoppingLists.maxByOrNull { it.updatedAt } }
 
-    LaunchedEffect(createdListId) {
-        createdListId?.let { id ->
-            viewModel.onNavigationHandled()
-            onNavigateToDetail(id)
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is ShoppingListEvent.NavigateToDetail -> onNavigateToDetail(event.listId)
+            }
         }
     }
 
@@ -129,9 +130,9 @@ fun ShoppingListScreen(
                 },
                 actions = {
                     val sortDescription = when (dashboardSort) {
-                        DashboardSort.RECENT -> "Sort A to Z"
-                        DashboardSort.ALPHA_ASC -> "Sort Z to A"
-                        DashboardSort.ALPHA_DESC -> "Remove sort"
+                        DashboardSort.RECENT -> stringResource(R.string.shopping_dashboard_sort_a_to_z)
+                        DashboardSort.ALPHA_ASC -> stringResource(R.string.shopping_dashboard_sort_z_to_a)
+                        DashboardSort.ALPHA_DESC -> stringResource(R.string.shopping_dashboard_remove_sort)
                     }
                     IconButton(onClick = { viewModel.toggleDashboardSort() }) {
                         Icon(
@@ -177,12 +178,15 @@ fun ShoppingListScreen(
         ) {
             Spacer(modifier = Modifier.height(12.dp))
 
-            SearchBar(
-                query = searchQuery,
-                onQueryChange = { searchQuery = it }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
+            // Hide the search bar for small libraries — it's a distraction
+            // until the user has built up a real list to filter through.
+            if (shoppingLists.size >= 5) {
+                SearchBar(
+                    query = searchQuery,
+                    onQueryChange = { searchQuery = it }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
             if (shoppingLists.isEmpty()) {
                 EmptyState(modifier = Modifier.weight(1f))
@@ -252,7 +256,7 @@ private fun ShoppingInProgressCard(list: ShoppingList, onClick: () -> Unit) {
                     color = MaterialTheme.colorScheme.onPrimary
                 )
                 Text(
-                    text = "${list.checkedCount} of ${list.itemCount} picked up",
+                    text = stringResource(R.string.shopping_in_progress_progress, list.checkedCount, list.itemCount),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Secondary)
                 )
@@ -390,11 +394,11 @@ private fun ShoppingListCard(list: ShoppingList, onClick: () -> Unit, onDelete: 
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .size(10.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary)
+            ListProgressDot(
+                checked = list.checkedCount,
+                total = list.itemCount,
+                primary = MaterialTheme.colorScheme.primary,
+                track = MaterialTheme.colorScheme.outlineVariant
             )
             Spacer(modifier = Modifier.size(12.dp))
             Column(modifier = Modifier.weight(1f)) {
@@ -403,9 +407,11 @@ private fun ShoppingListCard(list: ShoppingList, onClick: () -> Unit, onDelete: 
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium
                 )
-                val itemWord = if (list.itemCount == 1) "item" else "items"
-                val subtitle = if (list.itemCount == 0) "Empty · Updated ${formatDate(list.updatedAt)}"
-                else "${list.itemCount} $itemWord · Updated ${formatDate(list.updatedAt)}"
+                val countLabel = pluralStringResource(R.plurals.shopping_list_item_count, list.itemCount, list.itemCount)
+                val subtitle = if (list.itemCount == 0)
+                    stringResource(R.string.shopping_card_subtitle_empty, formatDate(list.updatedAt))
+                else
+                    stringResource(R.string.shopping_card_subtitle, countLabel, formatDate(list.updatedAt))
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
@@ -440,6 +446,45 @@ private fun ShoppingListCard(list: ShoppingList, onClick: () -> Unit, onDelete: 
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ListProgressDot(
+    checked: Int,
+    total: Int,
+    primary: Color,
+    track: Color,
+    modifier: Modifier = Modifier
+) {
+    val fraction = if (total > 0) checked.toFloat() / total else 0f
+    androidx.compose.foundation.Canvas(
+        modifier = modifier.size(14.dp)
+    ) {
+        val stroke = 2.dp.toPx()
+        // Outer ring (track) shows the size of the list at a glance,
+        // inner arc is a CSS-progress-bar-style fill of how much is done.
+        drawCircle(
+            color = track,
+            radius = (size.minDimension - stroke) / 2,
+            style = androidx.compose.ui.graphics.drawscope.Stroke(width = stroke)
+        )
+        if (fraction > 0f) {
+            drawArc(
+                color = primary,
+                startAngle = -90f,
+                sweepAngle = 360f * fraction.coerceIn(0f, 1f),
+                useCenter = false,
+                style = androidx.compose.ui.graphics.drawscope.Stroke(width = stroke)
+            )
+        }
+        if (total == 0) {
+            // Empty state: gentle filled center to differentiate from "ring of zero".
+            drawCircle(
+                color = track,
+                radius = stroke
+            )
         }
     }
 }

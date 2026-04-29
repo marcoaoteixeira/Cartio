@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.minicore.cartio.R
+import com.minicore.cartio.core.format.CurrencyFormat
 import com.minicore.cartio.features.reports.domain.ItemSpending
 import com.minicore.cartio.features.reports.domain.SpendingReport
 
@@ -69,7 +70,7 @@ fun ReportsScreen(
                 },
                 title = {
                     Text(
-                        text = "Reports",
+                        text = stringResource(R.string.nav_item_reports),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -147,14 +148,18 @@ private fun SpendingSummaryCard(report: SpendingReport) {
                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.75f)
             )
             Spacer(modifier = Modifier.height(4.dp))
+            // Use the M3 typography scale so font-scale settings affect this
+            // headline; previously hard-coded sp ignored accessibility prefs.
+            val wholeStyle = MaterialTheme.typography.displaySmall
+            val centsStyle = MaterialTheme.typography.titleLarge
             val wholePart = report.totalSpent.toLong()
             val centsPart = ((report.totalSpent - wholePart) * 100).toLong()
             Text(
                 text = buildAnnotatedString {
-                    withStyle(SpanStyle(fontSize = 40.sp, fontWeight = FontWeight.Bold)) {
+                    withStyle(wholeStyle.toSpanStyle().copy(fontWeight = FontWeight.Bold)) {
                         append("$$wholePart")
                     }
-                    withStyle(SpanStyle(fontSize = 22.sp, fontWeight = FontWeight.SemiBold)) {
+                    withStyle(centsStyle.toSpanStyle().copy(fontWeight = FontWeight.SemiBold)) {
                         append(".%02d".format(centsPart))
                     }
                 },
@@ -177,7 +182,7 @@ private fun TopItemRow(item: ItemSpending, maxSpent: Double) {
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = "$${"%.2f".format(item.totalSpent)}",
+                text = CurrencyFormat.format(item.totalSpent),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold
             )

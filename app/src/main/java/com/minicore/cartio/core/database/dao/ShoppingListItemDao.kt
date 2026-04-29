@@ -11,23 +11,36 @@ import com.minicore.cartio.core.database.entity.ShoppingListItemWithProduct
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ShoppingListItemDao {
+abstract class ShoppingListItemDao {
     @Transaction
     @Query("SELECT * FROM shopping_list_items WHERE shoppingListId = :listId ORDER BY checked ASC, id ASC")
-    fun getByListWithProduct(listId: Long): Flow<List<ShoppingListItemWithProduct>>
+    abstract fun getByListWithProduct(listId: Long): Flow<List<ShoppingListItemWithProduct>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(item: ShoppingListItemEntity): Long
+    abstract suspend fun insert(item: ShoppingListItemEntity): Long
 
     @Query("UPDATE shopping_list_items SET quantity = :quantity WHERE id = :id")
-    suspend fun updateQuantity(id: Long, quantity: Float)
+    abstract suspend fun updateQuantity(id: Long, quantity: Int)
+
+    @Query("UPDATE shopping_list_items SET quantity = quantity + 1 WHERE id = :id")
+    abstract suspend fun incrementQuantity(id: Long)
 
     @Query("UPDATE shopping_list_items SET checked = :checked WHERE id = :id")
-    suspend fun updateChecked(id: Long, checked: Boolean)
+    abstract suspend fun updateChecked(id: Long, checked: Boolean)
 
     @Query("SELECT * FROM shopping_list_items WHERE shoppingListId = :listId AND productId = :productId AND checked = 0 LIMIT 1")
-    suspend fun findActiveByProduct(listId: Long, productId: Long): ShoppingListItemEntity?
+    abstract suspend fun findActiveByProduct(listId: Long, productId: Long): ShoppingListItemEntity?
 
     @Query("DELETE FROM shopping_list_items WHERE id = :id")
-    suspend fun deleteById(id: Long)
+    abstract suspend fun deleteById(id: Long)
+
+    @Transaction
+    open suspend fun addOrIncrement(listId: Long, productId: Long) {
+        val existing = findActiveByProduct(listId, productId)
+        if (existing != null) {
+            incrementQuantity(existing.id)
+        } else {
+            insert(ShoppingListItemEntity(shoppingListId = listId, productId = productId, quantity = 1))
+        }
+    }
 }

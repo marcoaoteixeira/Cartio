@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Cartio</string>
+    <string name="app_version_footer">cartio · v%1$s</string>
+    <string name="settings_made_with_care">made with care · cartio v%1$s</string>
 
     <!-- Shopping List Screen -->
     <string name="shopping_screen_title">My Shopping Lists</string>
@@ -9,6 +11,17 @@
     <string name="shopping_no_search_results">No lists match your search.</string>
     <string name="shopping_empty_title">No lists yet</string>
     <string name="shopping_empty_subtitle">Tap + to create your first shopping list</string>
+    <string name="shopping_in_progress_progress">%1$d of %2$d picked up</string>
+    <string name="shopping_card_subtitle_empty">Empty · Updated %1$s</string>
+    <string name="shopping_card_subtitle">%1$s · Updated %2$s</string>
+    <string name="shopping_dashboard_sort_a_to_z">Sort A to Z</string>
+    <string name="shopping_dashboard_sort_z_to_a">Sort Z to A</string>
+    <string name="shopping_dashboard_remove_sort">Remove sort</string>
+
+    <plurals name="shopping_list_item_count">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
 
     <!-- Shopping List Detail Screen -->
     <string name="detail_empty_title">Nothing here yet</string>
@@ -24,6 +37,12 @@
     <string name="detail_sort_z_to_a">Sort Z to A</string>
     <string name="detail_remove_sort">Remove sort</string>
     <string name="detail_more_options">More options</string>
+    <string name="detail_empty_list">Empty list</string>
+    <string name="detail_progress_summary">%1$d of %2$d picked up</string>
+    <string name="detail_item_deleted">"%s" deleted</string>
+    <string name="detail_register_expenses_cta">Register expenses</string>
+    <string name="action_save">Save</string>
+    <string name="action_undo">Undo</string>
 
     <!-- Settings Screen -->
     <string name="settings_screen_title">Settings</string>
@@ -37,6 +56,7 @@
     <string name="settings_clear_data_subtitle">Removes every list, item and price history</string>
     <string name="settings_section_about">ABOUT</string>
     <string name="settings_licenses_title">Open-source licenses</string>
+    <string name="settings_version">Version %1$s (Build %2$d)</string>
     <string name="settings_clear_dialog_title">Clear all data?</string>
     <string name="settings_clear_dialog_body">This removes every list, item and price history permanently.</string>
     <string name="settings_clear_dialog_confirm">Delete All</string>
@@ -60,7 +80,6 @@
     <string name="expenses_empty">No checked items to register.</string>
 
     <!-- Reports Screen -->
-    <string name="reports_coming_soon">Reports — Coming Soon</string>
     <string name="reports_last_30_days">LAST 30 DAYS</string>
     <string name="reports_most_bought">MOST BOUGHT · LAST 30 DAYS</string>
     <string name="reports_bought_count">bought %d×</string>
