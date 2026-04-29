@@ -55,6 +55,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.minicore.cartio.BuildConfig
 import com.minicore.cartio.core.ui.theme.Alpha
+import com.minicore.cartio.core.ui.theme.AutolovaFamily
 import com.minicore.cartio.core.ui.theme.CartioTheme
 import com.minicore.cartio.features.monetization.domain.BillingRepository
 import com.minicore.cartio.features.splash.ui.CartioSplashScreen
@@ -126,8 +127,8 @@ class MainActivity : ComponentActivity() {
                                         Spacer(modifier = Modifier.height(16.dp))
                                         Text(
                                             text = stringResource(R.string.app_name),
-                                            style = MaterialTheme.typography.headlineSmall,
-                                            fontWeight = FontWeight.Bold,
+                                            style = MaterialTheme.typography.headlineMedium,
+                                            fontFamily = AutolovaFamily,
                                             color = MaterialTheme.colorScheme.onPrimary
                                         )
                                         Text(
@@ -239,7 +240,7 @@ private fun DrawerNavItem(
             Text(
                 text = item.subtitle,
                 style = MaterialTheme.typography.bodySmall,
-                color = outlineColor
+                color = outlineColor.copy(alpha = 0.7f)
             )
         }
     }

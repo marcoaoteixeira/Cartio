@@ -24,7 +24,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.minicore.cartio.core.database.entity.MeasureUnit
@@ -36,6 +38,7 @@ fun ExpenseItemRow(
     row: ExpenseRowState,
     onPriceChange: (String) -> Unit,
     onMeasureUnitChange: (MeasureUnit) -> Unit,
+    isLastRow: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val unitPrice = row.unitPrice.toDoubleOrNull() ?: 0.0
@@ -86,9 +89,19 @@ fun ExpenseItemRow(
                     onValueChange = { if (isValidMonetaryInput(it)) onPriceChange(it) },
                     prefix = { Text("$") },
                     placeholder = { Text("0.00") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal,
+                        imeAction = if (isLastRow) ImeAction.Done else ImeAction.Next
+                    ),
                     singleLine = true,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
+                        .onFocusChanged { state ->
+                            if (!state.isFocused) {
+                                val normalised = normalisePrice(row.unitPrice)
+                                if (normalised != row.unitPrice) onPriceChange(normalised)
+                            }
+                        }
                 )
             }
         }
@@ -99,6 +112,19 @@ private val monetaryInputRegex = Regex("""^\d*\.?\d{0,2}$""")
 
 private fun isValidMonetaryInput(input: String): Boolean =
     input.isEmpty() || input.matches(monetaryInputRegex)
+
+/**
+ * Strips leading zeros so user input "005.50" becomes "5.50" on blur, while
+ * preserving "0", "0.50" and the empty string. Pure string transform — no
+ * locale concerns since we already constrain input to ASCII digits + dot.
+ */
+private fun normalisePrice(raw: String): String {
+    if (raw.isEmpty() || raw == "0") return raw
+    if (raw.startsWith(".")) return "0$raw"
+    val (whole, frac) = raw.split('.', limit = 2).let { it[0] to it.getOrNull(1) }
+    val trimmedWhole = whole.trimStart('0').ifEmpty { "0" }
+    return if (frac == null) trimmedWhole else "$trimmedWhole.$frac"
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

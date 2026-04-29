@@ -95,7 +95,6 @@ fun ShoppingListScreen(
         viewModel.events.collect { event ->
             when (event) {
                 is ShoppingListEvent.NavigateToDetail -> onNavigateToDetail(event.listId)
-                is ShoppingListEvent.ListDeleted -> Unit // reserved for Phase G2 (undo)
             }
         }
     }
@@ -179,12 +178,15 @@ fun ShoppingListScreen(
         ) {
             Spacer(modifier = Modifier.height(12.dp))
 
-            SearchBar(
-                query = searchQuery,
-                onQueryChange = { searchQuery = it }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
+            // Hide the search bar for small libraries — it's a distraction
+            // until the user has built up a real list to filter through.
+            if (shoppingLists.size >= 5) {
+                SearchBar(
+                    query = searchQuery,
+                    onQueryChange = { searchQuery = it }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
             if (shoppingLists.isEmpty()) {
                 EmptyState(modifier = Modifier.weight(1f))
@@ -392,11 +394,11 @@ private fun ShoppingListCard(list: ShoppingList, onClick: () -> Unit, onDelete: 
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .size(10.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary)
+            ListProgressDot(
+                checked = list.checkedCount,
+                total = list.itemCount,
+                primary = MaterialTheme.colorScheme.primary,
+                track = MaterialTheme.colorScheme.outlineVariant
             )
             Spacer(modifier = Modifier.size(12.dp))
             Column(modifier = Modifier.weight(1f)) {
@@ -444,6 +446,45 @@ private fun ShoppingListCard(list: ShoppingList, onClick: () -> Unit, onDelete: 
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ListProgressDot(
+    checked: Int,
+    total: Int,
+    primary: Color,
+    track: Color,
+    modifier: Modifier = Modifier
+) {
+    val fraction = if (total > 0) checked.toFloat() / total else 0f
+    androidx.compose.foundation.Canvas(
+        modifier = modifier.size(14.dp)
+    ) {
+        val stroke = 2.dp.toPx()
+        // Outer ring (track) shows the size of the list at a glance,
+        // inner arc is a CSS-progress-bar-style fill of how much is done.
+        drawCircle(
+            color = track,
+            radius = (size.minDimension - stroke) / 2,
+            style = androidx.compose.ui.graphics.drawscope.Stroke(width = stroke)
+        )
+        if (fraction > 0f) {
+            drawArc(
+                color = primary,
+                startAngle = -90f,
+                sweepAngle = 360f * fraction.coerceIn(0f, 1f),
+                useCenter = false,
+                style = androidx.compose.ui.graphics.drawscope.Stroke(width = stroke)
+            )
+        }
+        if (total == 0) {
+            // Empty state: gentle filled center to differentiate from "ring of zero".
+            drawCircle(
+                color = track,
+                radius = stroke
+            )
         }
     }
 }

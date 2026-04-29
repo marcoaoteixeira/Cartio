@@ -164,6 +164,7 @@ private class FakeItemRepo(private val flow: MutableStateFlow<List<ShoppingListI
     override suspend fun findActiveItemByProduct(listId: Long, productId: Long) = null
     override suspend fun insertItem(listId: Long, productId: Long) {}
     override suspend fun addOrIncrement(listId: Long, productId: Long) {}
+    override suspend fun restoreItem(item: ShoppingListItem) {}
     override suspend fun updateQuantity(itemId: Long, quantity: Int) {}
     override suspend fun checkItem(itemId: Long, checked: Boolean) {}
     override suspend fun deleteItem(itemId: Long) {}

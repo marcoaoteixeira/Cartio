@@ -33,6 +33,6 @@ val OnPrimaryDarkTheme = Color(0xFF8B2500)
 val BackgroundDark = Color(0xFF1C1412)
 val SurfaceDark = Color(0xFF231A17)
 val SurfaceVariantDark = Color(0xFF3A2E2A)
-val OnSurfaceDark = Color(0xFFEDE0DC)
+val OnSurfaceDark = Color(0xFFF5EBE7) // bumped from #EDE0DC to clear WCAG AA on surfaceVariantDark
 val OutlineDark = Color(0xFF9C8D88)
 val OutlineVariantDark = Color(0xFF534340)

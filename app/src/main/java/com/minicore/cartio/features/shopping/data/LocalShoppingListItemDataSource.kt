@@ -19,6 +19,8 @@ class LocalShoppingListItemDataSource @Inject constructor(
     override suspend fun insert(listId: Long, productId: Long): Long =
         dao.insert(ShoppingListItemEntity(shoppingListId = listId, productId = productId, quantity = 1))
 
+    override suspend fun insertEntity(entity: ShoppingListItemEntity): Long = dao.insert(entity)
+
     override suspend fun addOrIncrement(listId: Long, productId: Long) =
         dao.addOrIncrement(listId, productId)
 

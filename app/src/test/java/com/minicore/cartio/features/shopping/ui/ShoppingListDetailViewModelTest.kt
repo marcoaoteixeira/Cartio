@@ -139,7 +139,8 @@ class ShoppingListDetailViewModelTest {
             viewModel.uiState.collect {}
         }
 
-        viewModel.deleteItem(itemId = 7L)
+        val item = ShoppingListItem(7L, 1L, 70L, "Bread", 2, false, null)
+        viewModel.deleteItem(item)
         advanceUntilIdle()
 
         assertEquals(listOf(7L), fakeItemRepo.deletedIds)
@@ -200,6 +201,7 @@ private class FakeShoppingListItemRepository(
     override suspend fun findActiveItemByProduct(listId: Long, productId: Long): Pair<Long, Int>? = null
     override suspend fun insertItem(listId: Long, productId: Long) {}
     override suspend fun addOrIncrement(listId: Long, productId: Long) {}
+    override suspend fun restoreItem(item: ShoppingListItem) {}
     override suspend fun updateQuantity(itemId: Long, quantity: Int) { updatedQuantities.add(itemId to quantity) }
     override suspend fun checkItem(itemId: Long, checked: Boolean) { checkedItems.add(itemId to checked) }
     override suspend fun deleteItem(itemId: Long) { deletedIds.add(itemId) }

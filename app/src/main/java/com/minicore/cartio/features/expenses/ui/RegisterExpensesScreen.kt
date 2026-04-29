@@ -1,6 +1,5 @@
 package com.minicore.cartio.features.expenses.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.CheckCircle
@@ -27,12 +26,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -52,12 +55,21 @@ fun RegisterExpensesScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val savedMessage = stringResource(R.string.expenses_saved_toast)
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
                 RegisterExpensesEvent.SavedAndUp -> {
-                    Toast.makeText(context, context.getString(R.string.expenses_saved_toast), Toast.LENGTH_SHORT).show()
+                    // Show the confirmation inline, then navigate up so the
+                    // snackbar finishes its enter animation before the screen
+                    // tears down. Toast was the previous mechanism but reads
+                    // as fire-and-forget for a financial action.
+                    snackbarHostState.showSnackbar(
+                        message = savedMessage,
+                        duration = SnackbarDuration.Short
+                    )
                     onNavigateUp()
                 }
             }
@@ -66,13 +78,16 @@ fun RegisterExpensesScreen(
 
     Scaffold(
         topBar = {
+            // Deep-screen surface treatment (M3 surfaceContainer): visually
+            // distinguishes Register Expenses from the top-level destinations
+            // that use the orange primary bar.
             TopAppBar(
                 navigationIcon = {
                     IconButton(onClick = onNavigateUp) {
                         Icon(
                             Icons.AutoMirrored.Rounded.ArrowBack,
                             contentDescription = stringResource(R.string.action_back),
-                            tint = MaterialTheme.colorScheme.onPrimary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 },
@@ -82,23 +97,24 @@ fun RegisterExpensesScreen(
                             text = stringResource(R.string.expenses_screen_title),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         if (uiState.listName.isNotEmpty()) {
                             Text(
                                 text = uiState.listName,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.75f)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background
     ) { scaffoldPadding ->
@@ -139,11 +155,12 @@ fun RegisterExpensesScreen(
                     }
                 }
 
-                items(uiState.rows, key = { it.itemId }) { row ->
+                itemsIndexed(uiState.rows, key = { _, row -> row.itemId }) { index, row ->
                     ExpenseItemRow(
                         row = row,
                         onPriceChange = { viewModel.updatePrice(row.itemId, it) },
-                        onMeasureUnitChange = { viewModel.updateMeasureUnit(row.itemId, it) }
+                        onMeasureUnitChange = { viewModel.updateMeasureUnit(row.itemId, it) },
+                        isLastRow = index == uiState.rows.lastIndex
                     )
                 }
             }

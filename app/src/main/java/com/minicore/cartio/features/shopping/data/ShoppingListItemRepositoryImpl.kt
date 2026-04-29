@@ -1,5 +1,6 @@
 package com.minicore.cartio.features.shopping.data
 
+import com.minicore.cartio.core.database.entity.ShoppingListItemEntity
 import com.minicore.cartio.features.shopping.domain.ShoppingListItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -23,6 +24,18 @@ class ShoppingListItemRepositoryImpl @Inject constructor(
 
     override suspend fun addOrIncrement(listId: Long, productId: Long) =
         localDataSource.addOrIncrement(listId, productId)
+
+    override suspend fun restoreItem(item: ShoppingListItem) {
+        localDataSource.insertEntity(
+            ShoppingListItemEntity(
+                shoppingListId = item.listId,
+                productId = item.productId,
+                quantity = item.quantity,
+                checked = item.checked,
+                note = item.note
+            )
+        )
+    }
 
     override suspend fun updateQuantity(itemId: Long, quantity: Int) =
         localDataSource.updateQuantity(itemId, quantity)

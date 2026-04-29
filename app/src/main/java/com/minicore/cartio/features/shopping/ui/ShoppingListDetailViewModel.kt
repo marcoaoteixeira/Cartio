@@ -96,8 +96,15 @@ class ShoppingListDetailViewModel @Inject constructor(
         viewModelScope.launch { itemRepository.updateQuantity(itemId, quantity) }
     }
 
-    fun deleteItem(itemId: Long) {
-        viewModelScope.launch { itemRepository.deleteItem(itemId) }
+    fun deleteItem(item: ShoppingListItem) {
+        viewModelScope.launch {
+            itemRepository.deleteItem(item.id)
+            _events.send(ShoppingListDetailEvent.ItemDeleted(item))
+        }
+    }
+
+    fun restoreItem(item: ShoppingListItem) {
+        viewModelScope.launch { itemRepository.restoreItem(item) }
     }
 
     fun renameList(name: String) {

@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,8 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.ExpandLess
+import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PointOfSale
 import androidx.compose.material.icons.rounded.ShoppingCart
@@ -46,6 +49,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
@@ -53,6 +61,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberSwipeToDismissBoxState
+import androidx.compose.runtime.remember
 import com.minicore.cartio.core.ui.findActivity
 import com.minicore.cartio.di.AdEntryPoint
 import dagger.hilt.android.EntryPointAccessors
@@ -67,6 +76,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -91,6 +101,9 @@ fun ShoppingListDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val activity = context.findActivity()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val undoLabel = stringResource(R.string.action_undo)
+    val itemDeletedTemplate = stringResource(R.string.detail_item_deleted)
 
     LaunchedEffect(Unit) {
         val current = activity ?: return@LaunchedEffect
@@ -104,8 +117,16 @@ fun ShoppingListDetailScreen(
         viewModel.events.collect { event ->
             when (event) {
                 ShoppingListDetailEvent.NavigateUp -> onNavigateUp()
-                is ShoppingListDetailEvent.ItemDeleted -> Unit // reserved for Phase G2 (undo)
-                ShoppingListDetailEvent.ExpensesRecorded -> Unit // reserved for Phase G14
+                is ShoppingListDetailEvent.ItemDeleted -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = itemDeletedTemplate.format(event.item.productName),
+                        actionLabel = undoLabel,
+                        duration = SnackbarDuration.Short
+                    )
+                    if (result == SnackbarResult.ActionPerformed) {
+                        viewModel.restoreItem(event.item)
+                    }
+                }
             }
         }
     }
@@ -113,6 +134,7 @@ fun ShoppingListDetailScreen(
     var showRenameDialog by rememberSaveable { mutableStateOf(false) }
     var showMoreMenu by rememberSaveable { mutableStateOf(false) }
     var itemInputText by rememberSaveable { mutableStateOf("") }
+    var doneCollapsed by rememberSaveable { mutableStateOf(false) }
 
     val totalCount = uiState.activeItems.size + uiState.checkedItems.size
     val progressFraction = if (totalCount > 0) uiState.checkedItems.size.toFloat() / totalCount else 0f
@@ -150,15 +172,18 @@ fun ShoppingListDetailScreen(
                                     fontWeight = FontWeight.SemiBold,
                                     color = MaterialTheme.colorScheme.onPrimary
                                 )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Icon(
-                                    Icons.Rounded.Edit,
-                                    contentDescription = stringResource(R.string.detail_rename_list),
-                                    tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Secondary),
-                                    modifier = Modifier
-                                        .size(16.dp)
-                                        .clickable { showRenameDialog = true }
-                                )
+                                Spacer(modifier = Modifier.width(2.dp))
+                                IconButton(
+                                    onClick = { showRenameDialog = true },
+                                    modifier = Modifier.size(36.dp)
+                                ) {
+                                    Icon(
+                                        Icons.Rounded.Edit,
+                                        contentDescription = stringResource(R.string.detail_rename_list),
+                                        tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Secondary),
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                }
                             }
                             Text(
                                 text = if (totalCount == 0) stringResource(R.string.detail_empty_list)
@@ -235,25 +260,34 @@ fun ShoppingListDetailScreen(
                     progress = { progressFraction },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(3.dp),
+                        .height(5.dp),
                     color = MaterialTheme.colorScheme.tertiary,
                     trackColor = MaterialTheme.colorScheme.primary,
-                    strokeCap = StrokeCap.Square
+                    strokeCap = StrokeCap.Round
                 )
             }
         },
         bottomBar = {
-            AddItemBar(
-                text = itemInputText,
-                onTextChange = { itemInputText = it },
-                onAdd = {
-                    if (itemInputText.isNotBlank()) {
-                        viewModel.addItem(itemInputText)
-                        itemInputText = ""
-                    }
+            Column {
+                if (uiState.checkedItems.isNotEmpty()) {
+                    RegisterExpensesCta(
+                        count = uiState.checkedItems.size,
+                        onClick = { onNavigateToRegisterExpenses(uiState.listId) }
+                    )
                 }
-            )
+                AddItemBar(
+                    text = itemInputText,
+                    onTextChange = { itemInputText = it },
+                    onAdd = {
+                        if (itemInputText.isNotBlank()) {
+                            viewModel.addItem(itemInputText)
+                            itemInputText = ""
+                        }
+                    }
+                )
+            }
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         contentWindowInsets = WindowInsets(0)
     ) { scaffoldPadding ->
         if (!uiState.isLoading && totalCount == 0) {
@@ -272,12 +306,12 @@ fun ShoppingListDetailScreen(
                     SwipeableItemRow(
                         item = item,
                         onCheck = { viewModel.checkItem(item.id, true) },
-                        onDelete = { viewModel.deleteItem(item.id) },
+                        onDelete = { viewModel.deleteItem(item) },
                         onCheckboxTap = { viewModel.checkItem(item.id, true) },
                         onIncrement = { viewModel.updateQuantity(item.id, item.quantity + 1) },
                         onDecrement = {
                             if (item.quantity > 1) viewModel.updateQuantity(item.id, item.quantity - 1)
-                            else viewModel.deleteItem(item.id)
+                            else viewModel.deleteItem(item)
                         }
                     )
 
@@ -286,14 +320,20 @@ fun ShoppingListDetailScreen(
 
                 if (uiState.checkedItems.isNotEmpty()) {
                     item(key = "done_header") {
-                        DoneSectionHeader(count = uiState.checkedItems.size)
-                    }
-                    items(uiState.checkedItems, key = { it.id }) { item ->
-                        DoneItemRow(
-                            item = item,
-                            onUncheck = { viewModel.checkItem(item.id, false) }
+                        DoneSectionHeader(
+                            count = uiState.checkedItems.size,
+                            collapsed = doneCollapsed,
+                            onToggle = { doneCollapsed = !doneCollapsed }
                         )
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    }
+                    if (!doneCollapsed) {
+                        items(uiState.checkedItems, key = { it.id }) { item ->
+                            DoneItemRow(
+                                item = item,
+                                onUncheck = { viewModel.checkItem(item.id, false) }
+                            )
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        }
                     }
                 }
             }
@@ -434,26 +474,36 @@ private fun DoneItemRow(item: ShoppingListItem, onUncheck: () -> Unit) {
 private fun CircleCheckbox(checked: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .size(24.dp)
-            .clip(CircleShape)
-            .background(
-                if (checked) MaterialTheme.colorScheme.primary else Color.Transparent
-            )
-            .border(
-                width = if (checked) 0.dp else 1.5.dp,
-                color = if (checked) Color.Transparent else MaterialTheme.colorScheme.outline,
-                shape = CircleShape
-            )
-            .clickable(onClick = onClick),
+            .size(48.dp)
+            .toggleable(
+                value = checked,
+                role = Role.Checkbox,
+                onValueChange = { onClick() }
+            ),
         contentAlignment = Alignment.Center
     ) {
-        if (checked) {
-            Icon(
-                Icons.Rounded.Check,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(14.dp)
-            )
+        Box(
+            modifier = Modifier
+                .size(24.dp)
+                .clip(CircleShape)
+                .background(
+                    if (checked) MaterialTheme.colorScheme.primary else Color.Transparent
+                )
+                .border(
+                    width = if (checked) 0.dp else 1.5.dp,
+                    color = if (checked) Color.Transparent else MaterialTheme.colorScheme.outline,
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            if (checked) {
+                Icon(
+                    Icons.Rounded.Check,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(14.dp)
+                )
+            }
         }
     }
 }
@@ -465,59 +515,72 @@ private fun QuantityStepper(
     onDecrement: () -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = Modifier
-                .size(28.dp)
-                .clip(CircleShape)
-                .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
-                .clickable(onClick = onDecrement),
-            contentAlignment = Alignment.Center
+        IconButton(
+            onClick = onDecrement,
+            modifier = Modifier.size(40.dp)
         ) {
-            if (quantity == 1) {
-                Icon(
-                    Icons.Rounded.Delete,
-                    contentDescription = stringResource(R.string.remove_item),
-                    tint = SwipeDeleteColor,
-                    modifier = Modifier.size(14.dp),
-                )
-            } else {
+            Box(
+                modifier = Modifier
+                    .size(28.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                if (quantity == 1) {
+                    Icon(
+                        Icons.Rounded.Delete,
+                        contentDescription = stringResource(R.string.remove_item),
+                        tint = SwipeDeleteColor,
+                        modifier = Modifier.size(14.dp),
+                    )
+                } else {
+                    Text(
+                        "−",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+            }
+        }
+        Text(
+            text = "$quantity",
+            modifier = Modifier.padding(horizontal = 4.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        IconButton(
+            onClick = onIncrement,
+            modifier = Modifier.size(40.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(28.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
-                    "−",
+                    "+",
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
-        Text(
-            text = "$quantity",
-            modifier = Modifier.padding(horizontal = 8.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        Box(
-            modifier = Modifier
-                .size(28.dp)
-                .clip(CircleShape)
-                .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
-                .clickable(onClick = onIncrement),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                "+",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-        }
     }
 }
 
 @Composable
-private fun DoneSectionHeader(count: Int) {
+private fun DoneSectionHeader(
+    count: Int,
+    collapsed: Boolean,
+    onToggle: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .clickable(onClick = onToggle)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -528,6 +591,51 @@ private fun DoneSectionHeader(count: Int) {
         )
         Spacer(modifier = Modifier.width(8.dp))
         HorizontalDivider(modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.outlineVariant)
+        Spacer(modifier = Modifier.width(8.dp))
+        Icon(
+            imageVector = if (collapsed) Icons.Rounded.ExpandMore else Icons.Rounded.ExpandLess,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.outline,
+            modifier = Modifier.size(18.dp)
+        )
+    }
+}
+
+@Composable
+private fun RegisterExpensesCta(count: Int, onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        color = MaterialTheme.colorScheme.surfaceVariant
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.Rounded.PointOfSale,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = stringResource(R.string.detail_register_expenses_cta),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "$count",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     }
 }
 
@@ -597,10 +705,12 @@ private fun AddItemBar(
 
 @Composable
 private fun EmptyShoppingListState(modifier: Modifier = Modifier) {
+    // Anchored toward the top so opening the IME (which raises AddItemBar)
+    // doesn't snap the empty state into a thin strip.
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(top = 80.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
         Icon(
             Icons.Rounded.ShoppingCart,

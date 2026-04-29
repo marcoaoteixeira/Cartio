@@ -148,14 +148,18 @@ private fun SpendingSummaryCard(report: SpendingReport) {
                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.75f)
             )
             Spacer(modifier = Modifier.height(4.dp))
+            // Use the M3 typography scale so font-scale settings affect this
+            // headline; previously hard-coded sp ignored accessibility prefs.
+            val wholeStyle = MaterialTheme.typography.displaySmall
+            val centsStyle = MaterialTheme.typography.titleLarge
             val wholePart = report.totalSpent.toLong()
             val centsPart = ((report.totalSpent - wholePart) * 100).toLong()
             Text(
                 text = buildAnnotatedString {
-                    withStyle(SpanStyle(fontSize = 40.sp, fontWeight = FontWeight.Bold)) {
+                    withStyle(wholeStyle.toSpanStyle().copy(fontWeight = FontWeight.Bold)) {
                         append("$$wholePart")
                     }
-                    withStyle(SpanStyle(fontSize = 22.sp, fontWeight = FontWeight.SemiBold)) {
+                    withStyle(centsStyle.toSpanStyle().copy(fontWeight = FontWeight.SemiBold)) {
                         append(".%02d".format(centsPart))
                     }
                 },
