@@ -2,6 +2,20 @@ package com.minicore.cartio.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+/*
+ * Cartio brand palette.
+ *
+ * The orange/cream system is the product's identity, not a placeholder.
+ * Primary `#E65100` is warm without being shouty against the cream
+ * `#FFF8F0` background. Tertiary yellow accents promo surfaces and
+ * sort indicators. Swipe-action greens/reds are tuned for green=safe /
+ * red=destructive at-a-glance.
+ *
+ * If you change a value here, audit `CartioTheme` light + dark mappings
+ * and the brand cards in `SettingsComponents.kt` (PromoCard,
+ * PurchasedCard) which paint with these directly.
+ */
+
 // Light palette (from prototype design tokens)
 val Primary = Color(0xFFE65100)
 val PrimaryDark = Color(0xFFBF360C)

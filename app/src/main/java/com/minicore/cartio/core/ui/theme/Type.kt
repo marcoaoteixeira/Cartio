@@ -8,6 +8,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.minicore.cartio.R
 
+/*
+ * Cartio typography.
+ *
+ * The brand wordmark uses the custom Autolova script font, applied via
+ * `AutolovaFamily` — used in the splash and the navigation drawer header.
+ * Body and label scales otherwise follow Material 3 defaults so dynamic
+ * text scaling remains predictable.
+ */
 val AutolovaFamily = FontFamily(Font(R.font.autolova))
 
 val CartioTypography = Typography(

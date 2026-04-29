@@ -62,6 +62,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.remember
+import com.minicore.cartio.core.ui.components.CircleCheckbox
+import com.minicore.cartio.core.ui.components.QuantityStepper
 import com.minicore.cartio.core.ui.findActivity
 import com.minicore.cartio.di.AdEntryPoint
 import dagger.hilt.android.EntryPointAccessors
@@ -438,7 +440,9 @@ private fun ShoppingListItemRow(
         QuantityStepper(
             quantity = item.quantity,
             onIncrement = onIncrement,
-            onDecrement = onDecrement
+            onDecrement = onDecrement,
+            deleteColor = SwipeDeleteColor,
+            removeContentDescription = stringResource(R.string.remove_item)
         )
     }
 }
@@ -470,105 +474,6 @@ private fun DoneItemRow(item: ShoppingListItem, onUncheck: () -> Unit) {
     }
 }
 
-@Composable
-private fun CircleCheckbox(checked: Boolean, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .size(48.dp)
-            .toggleable(
-                value = checked,
-                role = Role.Checkbox,
-                onValueChange = { onClick() }
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .size(24.dp)
-                .clip(CircleShape)
-                .background(
-                    if (checked) MaterialTheme.colorScheme.primary else Color.Transparent
-                )
-                .border(
-                    width = if (checked) 0.dp else 1.5.dp,
-                    color = if (checked) Color.Transparent else MaterialTheme.colorScheme.outline,
-                    shape = CircleShape
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            if (checked) {
-                Icon(
-                    Icons.Rounded.Check,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.size(14.dp)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun QuantityStepper(
-    quantity: Int,
-    onIncrement: () -> Unit,
-    onDecrement: () -> Unit
-) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        IconButton(
-            onClick = onDecrement,
-            modifier = Modifier.size(40.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(28.dp)
-                    .clip(CircleShape)
-                    .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                if (quantity == 1) {
-                    Icon(
-                        Icons.Rounded.Delete,
-                        contentDescription = stringResource(R.string.remove_item),
-                        tint = SwipeDeleteColor,
-                        modifier = Modifier.size(14.dp),
-                    )
-                } else {
-                    Text(
-                        "−",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                }
-            }
-        }
-        Text(
-            text = "$quantity",
-            modifier = Modifier.padding(horizontal = 4.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        IconButton(
-            onClick = onIncrement,
-            modifier = Modifier.size(40.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(28.dp)
-                    .clip(CircleShape)
-                    .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    "+",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
-        }
-    }
-}
 
 @Composable
 private fun DoneSectionHeader(
