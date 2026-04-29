@@ -125,7 +125,7 @@ class MainActivity : ComponentActivity() {
                                         }
                                         Spacer(modifier = Modifier.height(16.dp))
                                         Text(
-                                            text = "Cartio",
+                                            text = stringResource(R.string.app_name),
                                             style = MaterialTheme.typography.headlineSmall,
                                             fontWeight = FontWeight.Bold,
                                             color = MaterialTheme.colorScheme.onPrimary
@@ -160,7 +160,7 @@ class MainActivity : ComponentActivity() {
 
                                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                                 Text(
-                                    text = "cartio · v${BuildConfig.VERSION_NAME}",
+                                    text = stringResource(R.string.app_version_footer, BuildConfig.VERSION_NAME),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.outline,
                                     modifier = Modifier

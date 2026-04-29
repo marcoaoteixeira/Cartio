@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.minicore.cartio.core.database.entity.MeasureUnit
+import com.minicore.cartio.core.format.CurrencyFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +58,7 @@ fun ExpenseItemRow(
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "$${"%.2f".format(lineTotal)}",
+                    text = CurrencyFormat.format(lineTotal),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.primary

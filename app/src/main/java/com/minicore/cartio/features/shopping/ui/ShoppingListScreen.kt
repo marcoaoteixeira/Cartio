@@ -56,6 +56,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -130,9 +131,9 @@ fun ShoppingListScreen(
                 },
                 actions = {
                     val sortDescription = when (dashboardSort) {
-                        DashboardSort.RECENT -> "Sort A to Z"
-                        DashboardSort.ALPHA_ASC -> "Sort Z to A"
-                        DashboardSort.ALPHA_DESC -> "Remove sort"
+                        DashboardSort.RECENT -> stringResource(R.string.shopping_dashboard_sort_a_to_z)
+                        DashboardSort.ALPHA_ASC -> stringResource(R.string.shopping_dashboard_sort_z_to_a)
+                        DashboardSort.ALPHA_DESC -> stringResource(R.string.shopping_dashboard_remove_sort)
                     }
                     IconButton(onClick = { viewModel.toggleDashboardSort() }) {
                         Icon(
@@ -253,7 +254,7 @@ private fun ShoppingInProgressCard(list: ShoppingList, onClick: () -> Unit) {
                     color = MaterialTheme.colorScheme.onPrimary
                 )
                 Text(
-                    text = "${list.checkedCount} of ${list.itemCount} picked up",
+                    text = stringResource(R.string.shopping_in_progress_progress, list.checkedCount, list.itemCount),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Secondary)
                 )
@@ -404,9 +405,11 @@ private fun ShoppingListCard(list: ShoppingList, onClick: () -> Unit, onDelete: 
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium
                 )
-                val itemWord = if (list.itemCount == 1) "item" else "items"
-                val subtitle = if (list.itemCount == 0) "Empty · Updated ${formatDate(list.updatedAt)}"
-                else "${list.itemCount} $itemWord · Updated ${formatDate(list.updatedAt)}"
+                val countLabel = pluralStringResource(R.plurals.shopping_list_item_count, list.itemCount, list.itemCount)
+                val subtitle = if (list.itemCount == 0)
+                    stringResource(R.string.shopping_card_subtitle_empty, formatDate(list.updatedAt))
+                else
+                    stringResource(R.string.shopping_card_subtitle, countLabel, formatDate(list.updatedAt))
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,

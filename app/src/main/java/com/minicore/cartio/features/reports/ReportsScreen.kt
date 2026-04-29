@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.minicore.cartio.R
+import com.minicore.cartio.core.format.CurrencyFormat
 import com.minicore.cartio.features.reports.domain.ItemSpending
 import com.minicore.cartio.features.reports.domain.SpendingReport
 
@@ -69,7 +70,7 @@ fun ReportsScreen(
                 },
                 title = {
                     Text(
-                        text = "Reports",
+                        text = stringResource(R.string.nav_item_reports),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -177,7 +178,7 @@ private fun TopItemRow(item: ItemSpending, maxSpent: Double) {
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = "$${"%.2f".format(item.totalSpent)}",
+                text = CurrencyFormat.format(item.totalSpent),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold
             )

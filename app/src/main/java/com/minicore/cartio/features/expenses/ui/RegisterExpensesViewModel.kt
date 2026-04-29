@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -58,9 +59,14 @@ class RegisterExpensesViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             runCatching {
-                val listName = listRepository.getShoppingListById(listId).first()?.name ?: ""
-                val checkedItems = itemRepository.getItemsForList(listId).first()
-                    .filter { it.checked }
+                // Combine list + items into a single first() so the screen
+                // doesn't flicker when one stream lands before the other.
+                val (list, items) = combine(
+                    listRepository.getShoppingListById(listId),
+                    itemRepository.getItemsForList(listId)
+                ) { l, i -> l to i }.first()
+
+                val checkedItems = items.filter { it.checked }
                     .map { item ->
                         ExpenseRowState(
                             itemId = item.id,
@@ -69,7 +75,7 @@ class RegisterExpensesViewModel @Inject constructor(
                         )
                     }
                 _uiState.value = RegisterExpensesUiState(
-                    listName = listName,
+                    listName = list?.name ?: "",
                     rows = checkedItems,
                     isLoading = false
                 )

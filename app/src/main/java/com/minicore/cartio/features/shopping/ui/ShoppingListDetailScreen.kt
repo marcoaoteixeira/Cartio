@@ -53,7 +53,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberSwipeToDismissBoxState
-import android.app.Activity
+import com.minicore.cartio.core.ui.findActivity
 import com.minicore.cartio.di.AdEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import androidx.compose.runtime.Composable
@@ -89,14 +89,15 @@ fun ShoppingListDetailScreen(
     viewModel: ShoppingListDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val activity = LocalContext.current as Activity
-    val showDetailAd = EntryPointAccessors.fromApplication(
-        activity.applicationContext,
-        AdEntryPoint::class.java
-    ).showDetailAdUseCase()
+    val context = LocalContext.current
+    val activity = context.findActivity()
 
     LaunchedEffect(Unit) {
-        showDetailAd(activity)
+        val current = activity ?: return@LaunchedEffect
+        EntryPointAccessors.fromApplication(
+            current.applicationContext,
+            AdEntryPoint::class.java
+        ).showDetailAdUseCase()(current)
     }
 
     LaunchedEffect(Unit) {
@@ -160,18 +161,15 @@ fun ShoppingListDetailScreen(
                                 )
                             }
                             Text(
-                                text = if (totalCount == 0) "Empty list"
-                                else "${uiState.checkedItems.size} of $totalCount picked up",
+                                text = if (totalCount == 0) stringResource(R.string.detail_empty_list)
+                                else stringResource(R.string.detail_progress_summary, uiState.checkedItems.size, totalCount),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Secondary)
                             )
                         }
                     },
                     actions = {
-                        val sortIcon = when (uiState.sortOrder) {
-                            SortOrder.ALPHA_DESC -> Icons.AutoMirrored.Rounded.Sort
-                            else -> Icons.AutoMirrored.Rounded.Sort
-                        }
+                        val sortIcon = Icons.AutoMirrored.Rounded.Sort
                         val sortDescription = when (uiState.sortOrder) {
                             SortOrder.DEFAULT -> stringResource(R.string.detail_sort_a_to_z)
                             SortOrder.ALPHA_ASC -> stringResource(R.string.detail_sort_z_to_a)
@@ -645,11 +643,11 @@ private fun RenameListDialog(
         },
         confirmButton = {
             TextButton(onClick = { onConfirm(text) }, enabled = text.isNotBlank()) {
-                Text("Save")
+                Text(stringResource(R.string.action_save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) }
         }
     )
 }

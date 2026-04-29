@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.minicore.cartio.R
+import com.minicore.cartio.core.format.CurrencyFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -180,7 +181,7 @@ private fun TotalAndRecordBar(
                 color = MaterialTheme.colorScheme.outline
             )
             Text(
-                text = "$${"%.2f".format(total)}",
+                text = CurrencyFormat.format(total),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
