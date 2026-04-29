@@ -16,4 +16,7 @@ interface ExpenseRecordDao {
 
     @Query("DELETE FROM expense_records WHERE recordedAt < :before")
     suspend fun deleteOlderThan(before: Long)
+
+    @Query("DELETE FROM expense_records")
+    suspend fun clearAll()
 }

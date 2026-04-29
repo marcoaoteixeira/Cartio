@@ -36,8 +36,8 @@ class ShoppingListDaoTest {
 
     @Test
     fun emptyDatabaseReturnsEmptyList() = runTest {
-        val result = dao.getAll().first()
-        assertEquals(emptyList<ShoppingListEntity>(), result)
+        val result = dao.getAllWithItemCount().first()
+        assertEquals(emptyList<ShoppingListWithCount>(), result)
     }
 
     @Test

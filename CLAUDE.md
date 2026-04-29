@@ -64,25 +64,26 @@ Navigation Compose is used from the start. Initial routes: Shopping (home), Repo
 
 ## Domain Model
 
-Four core entities with deliberate normalization (ADR-015):
+Three core entities with deliberate normalization (ADR-015, revised by ADR-017):
 
 | Entity | Key fields |
 |---|---|
 | `Product` | id, name, barcode?, defaultUnit?, createdAt |
 | `ShoppingList` | id, name, createdAt, updatedAt |
 | `ShoppingListItem` | id, shoppingListId, productId, quantity?, checked, note? |
-| `PriceHistory` | id, productId, price, store?, recordedAt |
 
-**Product identity is ID-based, not name-based** (ADR-016). Names can change; IDs must not. This matters for price history integrity and future barcode integration.
+Plus `ExpenseRecord` (id, productName, quantity, unitPrice, measureUnit, recordedAt) — denormalized log used by Reports (FEAT-011).
 
-Relationships: ShoppingList → many ShoppingListItems → each references one Product → each Product → many PriceHistory entries.
+**Product identity is ID-based, not name-based** (ADR-016). Names can change; IDs must not. This matters for future barcode integration and report integrity across renames.
+
+Relationships: ShoppingList → many ShoppingListItems → each references one Product.
 
 ---
 
 ## Key Architectural Constraints
 
 - **Repository interfaces must support two data sources** from day one: `LocalDataSource` (Room) and `SyncDataSource` (future Google Drive). Do not skip this abstraction — retrofitting it later is deliberate technical debt avoidance (ADR-004).
-- **Domain use cases are recommended**, not optional. With Product as a richer domain object, use cases like `AddProductToList`, `RecordProductPrice`, `GetPriceTrend` justify the layer.
+- **Domain use cases are recommended**, not optional. With Product as a richer domain object, use cases like `AddProductToList` and the spending-report aggregation justify the layer.
 - **Offline-first**: Room is always the source of truth. Sync is optional and user-controlled (manual first, no background sync).
 - **State management**: ViewModel + StateFlow + unidirectional data flow. Screen state models selected list, items, checked state, totals, and sync state.
 
@@ -108,11 +109,12 @@ Pragmatic coverage only: ViewModel unit tests, Repository tests, light DAO tests
 
 ## Roadmap Phases
 
-1. **MVP** (v0.1–v0.3): Lists → Product catalog → Price tracking
-2. **Intelligence** (v0.4): Reports (price trends, monthly spend)
-3. **Sync + Scanning** (v0.5–v0.6): Google Drive JSON sync → Barcode scanning (ML Kit)
+1. **MVP** (v0.1–v0.3): Lists → Product catalog → Expenses & Reports
+2. **Sync + Scanning** (v0.4–v0.5): Google Drive JSON sync → Barcode scanning (ML Kit)
 
-Feature flags (simple local toggles) should gate Reports, Sync, and Scanner modules to keep unfinished work isolated.
+Price-history tracking was scoped out of the MVP (ADR-017). Reports run off the `expense_records` log instead.
+
+Feature flags (simple local toggles) should gate Sync and Scanner modules to keep unfinished work isolated.
 
 Full ADR history: `docs/cartio_app_adr.md` | Roadmap: `docs/cartio_app_implementation_roadmap.md`
 

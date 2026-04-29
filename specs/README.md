@@ -14,3 +14,4 @@
 | FEAT-010 | Buy Me A Coffee (Ads + Billing) | Done | feature/CARTIO-010-buy-me-a-coffee |
 | FEAT-011 | Register Expenses + Reports | Done | feature/CARTIO-011-register-expenses |
 | FEAT-012 | Improvements (Engineering & UX Hardening) | Done | feature/CARTIO-012-improvements |
+| FEAT-013 | Clear All Data fully wipes the database | Done | feature/CARTIO-013-clear-all-fix |
