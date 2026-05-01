@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -43,6 +44,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -55,7 +58,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.minicore.cartio.BuildConfig
 import com.minicore.cartio.core.ui.theme.Alpha
-import com.minicore.cartio.core.ui.theme.AutolovaFamily
 import com.minicore.cartio.core.ui.theme.CartioTheme
 import com.minicore.cartio.features.monetization.domain.BillingRepository
 import com.minicore.cartio.features.splash.ui.CartioSplashScreen
@@ -102,34 +104,35 @@ class MainActivity : ComponentActivity() {
                         drawerState = drawerState,
                         drawerContent = {
                             ModalDrawerSheet {
-                                Box(
+                                Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .background(MaterialTheme.colorScheme.primary)
                                         .statusBarsPadding()
-                                        .padding(24.dp)
+                                        .padding(24.dp),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(56.dp)
+                                            .clip(RoundedCornerShape(14.dp))
+                                            .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Subtle)),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            Icons.Rounded.ShoppingCart,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.onPrimary,
+                                            modifier = Modifier.size(28.dp)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(16.dp))
                                     Column {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(56.dp)
-                                                .clip(RoundedCornerShape(14.dp))
-                                                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = Alpha.Subtle)),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Icon(
-                                                Icons.Rounded.ShoppingCart,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onPrimary,
-                                                modifier = Modifier.size(28.dp)
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.height(16.dp))
-                                        Text(
-                                            text = stringResource(R.string.app_name),
-                                            style = MaterialTheme.typography.headlineMedium,
-                                            fontFamily = AutolovaFamily,
-                                            color = MaterialTheme.colorScheme.onPrimary
+                                        Image(
+                                            painter = painterResource(R.drawable.cartio),
+                                            contentDescription = stringResource(R.string.app_name),
+                                            modifier = Modifier.height(36.dp),
+                                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
                                         )
                                         Text(
                                             text = stringResource(R.string.nav_drawer_tagline),
