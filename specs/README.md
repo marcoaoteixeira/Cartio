@@ -15,3 +15,5 @@
 | FEAT-011 | Register Expenses + Reports | Done | feature/CARTIO-011-register-expenses |
 | FEAT-012 | Improvements (Engineering & UX Hardening) | Done | feature/CARTIO-012-improvements |
 | FEAT-013 | Clear All Data fully wipes the database | Done | feature/CARTIO-013-clear-all-fix |
+| FEAT-014 | Developer Log Screen | Done | feature/CARTIO-014-developer-logs |
+| FEAT-015 | Debug Ad Unit ID Selection | Done | feature/CARTIO-015-ad-debug-unit |

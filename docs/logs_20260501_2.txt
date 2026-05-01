@@ -1,0 +1,300 @@
+--------- beginning of main
+2026-05-01 13:26:49.186  2572-2572  BoundBrokerSvc          com.google.android.gms.persistent    D  onUnbind: Intent { act=com.google.android.gms.clearcut.bootcount.service.START dat=chimera-action: cmp=com.google.android.gms/.chimera.PersistentBoundBrokerService }
+2026-05-01 13:26:55.947  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:56.084  2161-2490  chatty                  com.android.systemui                 I  uid=10116(com.android.systemui) RenderThread identical 16 lines
+2026-05-01 13:26:56.089  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+--------- beginning of system
+2026-05-01 13:26:56.981  1749-3893  audio_hw_generic        android.hardware.audio@2.0-service   W  Not supplying enough data to HAL, expected position 3711535 , only wrote 3711515
+2026-05-01 13:26:56.982  2014-4824  ActivityTaskManager     system_server                        I  START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.minicore.cartio.debug/com.minicore.cartio.MainActivity bnds=[841,281][1043,592]} from uid 10102
+2026-05-01 13:26:56.988  2014-2014  ActivityManager         system_server                        W  Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+2026-05-01 13:26:56.988  2014-2014  RemoteAppP...ionService system_server                        W  could not bind to Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } using flags 67108865
+2026-05-01 13:26:56.994  2014-2858  InputReader             system_server                        W  Device has associated, but no associated display id.
+2026-05-01 13:26:56.994  2014-2858  chatty                  system_server                        I  uid=1000(system) Binder:2014_D identical 8 lines
+2026-05-01 13:26:56.994  2014-2858  InputReader             system_server                        W  Device has associated, but no associated display id.
+2026-05-01 13:26:57.041  2014-2036  system_server           system_server                        E  Invalid ID 0x00000000.
+2026-05-01 13:26:57.061  1743-1743  Zygote                  pid-1743                             D  Forked child process 10822
+2026-05-01 13:26:57.065  1761-1848  gralloc_ranchu          and...raphics.allocator@2.0-service  D  gralloc_alloc: Creating ashmem region of size 9850880
+2026-05-01 13:26:57.066  2014-2042  ActivityManager         system_server                        W  Slow operation: 55ms so far, now at startProcess: returned from zygote!
+2026-05-01 13:26:57.066  2014-2042  ActivityManager         system_server                        W  Slow operation: 55ms so far, now at startProcess: done updating battery stats
+2026-05-01 13:26:57.066  2014-2042  ActivityManager         system_server                        W  Slow operation: 55ms so far, now at startProcess: building log message
+2026-05-01 13:26:57.066  2014-2042  ActivityManager         system_server                        I  Start proc 10822:com.minicore.cartio.debug/u0a155 for activity {com.minicore.cartio.debug/com.minicore.cartio.MainActivity}
+2026-05-01 13:26:57.067  2014-2042  ActivityManager         system_server                        W  Slow operation: 55ms so far, now at startProcess: starting to update pids map
+2026-05-01 13:26:57.067  2014-2042  ActivityManager         system_server                        W  Slow operation: 55ms so far, now at startProcess: done updating pids map
+2026-05-01 13:26:57.084 10822-10822 re.cartio.debu          pid-10822                            I  Late-enabling -Xcheck:jni
+2026-05-01 13:26:57.095  3131-3131  bqwu                    com....android.googlequicksearchbox  I  onPause
+2026-05-01 13:26:57.115 10822-10822 re.cartio.debu          pid-10822                            E  Unknown bits set in runtime_flags: 0x8000
+2026-05-01 13:26:57.116 10822-10822 re.cartio.debu          pid-10822                            W  Unexpected CPU variant for X86 using defaults: x86
+2026-05-01 13:26:57.169  2014-2858  InputReader             system_server                        W  Device has associated, but no associated display id.
+2026-05-01 13:26:57.176  2014-2858  chatty                  system_server                        I  uid=1000(system) Binder:2014_D identical 28 lines
+2026-05-01 13:26:57.176  2014-2858  InputReader             system_server                        W  Device has associated, but no associated display id.
+2026-05-01 13:26:57.238  2014-2036  InputReader             system_server                        W  Device has associated, but no associated display id.
+2026-05-01 13:26:57.238  2014-2036  chatty                  system_server                        I  uid=1000(system) android.anim identical 8 lines
+2026-05-01 13:26:57.238  2014-2036  InputReader             system_server                        W  Device has associated, but no associated display id.
+2026-05-01 13:26:57.245  1761-1848  gralloc_ranchu          and...raphics.allocator@2.0-service  D  gralloc_alloc: Creating ashmem region of size 9850880
+2026-05-01 13:26:57.330  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.332  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf06514e0
+2026-05-01 13:26:57.345  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.353  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651420
+2026-05-01 13:26:57.361  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.367  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651480
+2026-05-01 13:26:57.377  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.379  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf06514e0
+2026-05-01 13:26:57.393  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.396  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651420
+2026-05-01 13:26:57.410  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.413  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651480
+2026-05-01 13:26:57.427  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.429  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf06514e0
+2026-05-01 13:26:57.444  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.447  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651420
+2026-05-01 13:26:57.460  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.463  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651480
+2026-05-01 13:26:57.477  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.479  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf06514e0
+2026-05-01 13:26:57.481  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.487  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.494  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.496  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651420
+2026-05-01 13:26:57.500  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.505  2161-2490  chatty                  com.android.systemui                 I  uid=10116(com.android.systemui) RenderThread identical 1 line
+2026-05-01 13:26:57.513  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.514  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.516  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651480
+2026-05-01 13:26:57.525  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.527  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.530  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf06514e0
+2026-05-01 13:26:57.537  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.542  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.545  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.547  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651420
+2026-05-01 13:26:57.555  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.560  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.561  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.564  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651480
+2026-05-01 13:26:57.571  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.577  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.580  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf06514e0
+2026-05-01 13:26:57.580  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.589  2161-2490  chatty                  com.android.systemui                 I  uid=10116(com.android.systemui) RenderThread identical 1 line
+2026-05-01 13:26:57.594  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.595  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.598  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651420
+2026-05-01 13:26:57.605  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.608  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.610  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.613  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651480
+2026-05-01 13:26:57.619  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.623  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:26:57.628  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.629  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf06514e0
+2026-05-01 13:26:57.645  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.648  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651420
+2026-05-01 13:26:57.661  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  validate: layer 94 CompositionType 1, fallback
+2026-05-01 13:26:57.664  1762-1845  EmuHWC2                 and...graphics.composer@2.1-service  W  No layers, exit, buffer 0xf0651480
+2026-05-01 13:26:57.709  1775-1775  Layer                   surfaceflinger                       E  [Surface(name=AppWindowToken{f16e050 token=Token{a379613 ActivityRecord{8e44d02 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t71}}})/@0x5bb7fd0 - animation-leash#0] No local sync point found
+2026-05-01 13:26:57.710  1775-1775  Layer                   surfaceflinger                       E  [Surface(name=AppWindowToken{f16e050 token=Token{a379613 ActivityRecord{8e44d02 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t71}}})/@0x5bb7fd0 - animation-leash#0] No local sync point found
+2026-05-01 13:26:57.710  1775-1775  Layer                   surfaceflinger                       E  [Surface(name=AppWindowToken{f7db118 token=Token{4f78cfb ActivityRecord{befae8a u0 com.minicore.cartio.debug/com.minicore.cartio.MainActivity t80}}})/@0xe322060 - animation-leash#0] No local sync point found
+2026-05-01 13:26:57.710  1775-1775  Layer                   surfaceflinger                       E  [Surface(name=AppWindowToken{f7db118 token=Token{4f78cfb ActivityRecord{befae8a u0 com.minicore.cartio.debug/com.minicore.cartio.MainActivity t80}}})/@0xe322060 - animation-leash#0] No local sync point found
+2026-05-01 13:26:57.710  3131-3364  EGL_emulation           com....android.googlequicksearchbox  D  eglMakeCurrent: 0xe58aa1e0: ver 2 0 (tinfo 0xb83c42b0)
+2026-05-01 13:26:57.726  1775-1775  Layer                   surfaceflinger                       E  [Surface(name=AppWindowToken{f16e050 token=Token{a379613 ActivityRecord{8e44d02 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t71}}})/@0x5bb7fd0 - animation-leash#0] No local sync point found
+2026-05-01 13:26:57.726  1775-1775  Layer                   surfaceflinger                       E  [Surface(name=AppWindowToken{f7db118 token=Token{4f78cfb ActivityRecord{befae8a u0 com.minicore.cartio.debug/com.minicore.cartio.MainActivity t80}}})/@0xe322060 - animation-leash#0] No local sync point found
+2026-05-01 13:26:57.731  2430-2937  EGL_emulation           com...le.android.apps.nexuslauncher  D  eglMakeCurrent: 0xf0a54460: ver 2 0 (tinfo 0xe58ed440)
+2026-05-01 13:26:58.312 10822-10822 WM-WrkMgrInitializer    com.minicore.cartio.debug            D  Initializing WorkManager with default configuration.
+2026-05-01 13:26:58.493 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getObject(Ljava/lang/Object;J)Ljava/lang/Object; (greylist, linking, allowed)
+2026-05-01 13:26:58.493 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)
+2026-05-01 13:26:58.494 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->objectFieldOffset(Ljava/lang/reflect/Field;)J (greylist,core-platform-api, linking, allowed)
+2026-05-01 13:26:58.495 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getInt(Ljava/lang/Object;J)I (greylist, linking, allowed)
+2026-05-01 13:26:58.496 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getLong(Ljava/lang/Object;J)J (greylist,core-platform-api, linking, allowed)
+2026-05-01 13:26:58.496 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putInt(Ljava/lang/Object;JI)V (greylist, linking, allowed)
+2026-05-01 13:26:58.496 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putLong(Ljava/lang/Object;JJ)V (greylist, linking, allowed)
+2026-05-01 13:26:58.497 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)
+2026-05-01 13:26:58.497 10822-10822 chatty                  com.minicore.cartio.debug            I  uid=10155(com.minicore.cartio.debug) identical 1 line
+2026-05-01 13:26:58.497 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)
+2026-05-01 13:26:58.499 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getObject(Ljava/lang/Object;J)Ljava/lang/Object; (greylist, linking, allowed)
+2026-05-01 13:26:58.500 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->arrayIndexScale(Ljava/lang/Class;)I (greylist, linking, allowed)
+2026-05-01 13:26:58.500 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->allocateInstance(Ljava/lang/Class;)Ljava/lang/Object; (greylist, linking, allowed)
+2026-05-01 13:26:58.501 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->arrayBaseOffset(Ljava/lang/Class;)I (greylist,core-platform-api, linking, allowed)
+2026-05-01 13:26:58.501 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Llibcore/io/Memory;->peekLong(JZ)J (greylist, reflection, allowed)
+2026-05-01 13:26:58.501 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Llibcore/io/Memory;->pokeLong(JJZ)V (greylist, reflection, allowed)
+2026-05-01 13:26:58.501 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Llibcore/io/Memory;->pokeInt(JIZ)V (greylist, reflection, allowed)
+2026-05-01 13:26:58.501 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Llibcore/io/Memory;->peekInt(JZ)I (greylist, reflection, allowed)
+2026-05-01 13:26:58.501 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Llibcore/io/Memory;->pokeByte(JB)V (greylist, reflection, allowed)
+2026-05-01 13:26:58.501 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Llibcore/io/Memory;->peekByte(J)B (greylist, reflection, allowed)
+2026-05-01 13:26:58.501 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Llibcore/io/Memory;->pokeByteArray(J[BII)V (greylist, reflection, allowed)
+2026-05-01 13:26:58.502 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Llibcore/io/Memory;->peekByteArray(J[BII)V (greylist, reflection, allowed)
+2026-05-01 13:26:58.502 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getLong(Ljava/lang/Object;J)J (greylist,core-platform-api, reflection, allowed)
+2026-05-01 13:26:58.502 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden field Ljava/nio/Buffer;->address:J (greylist, reflection, allowed)
+2026-05-01 13:26:58.502 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getInt(Ljava/lang/Object;J)I (greylist, reflection, allowed)
+2026-05-01 13:26:58.502 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putInt(Ljava/lang/Object;JI)V (greylist, reflection, allowed)
+2026-05-01 13:26:58.502 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getLong(Ljava/lang/Object;J)J (greylist,core-platform-api, reflection, allowed)
+2026-05-01 13:26:58.502 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putLong(Ljava/lang/Object;JJ)V (greylist, reflection, allowed)
+2026-05-01 13:26:58.502 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getObject(Ljava/lang/Object;J)Ljava/lang/Object; (greylist, reflection, allowed)
+2026-05-01 13:26:58.502 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, reflection, allowed)
+2026-05-01 13:26:58.690 10822-10822 DynamiteModule          com.minicore.cartio.debug            I  Considering local module com.google.android.gms.ads.dynamite:0 and remote module com.google.android.gms.ads.dynamite:260480602
+2026-05-01 13:26:58.690 10822-10822 DynamiteModule          com.minicore.cartio.debug            I  Selected remote version of com.google.android.gms.ads.dynamite, version >= 260480602
+2026-05-01 13:26:58.690 10822-10822 DynamiteModule          com.minicore.cartio.debug            V  Dynamite loader version >= 2, using loadModule2NoCrashUtils
+2026-05-01 13:26:58.840 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapInt(Ljava/lang/Object;JII)Z (greylist, linking, allowed)
+2026-05-01 13:26:58.840 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapLong(Ljava/lang/Object;JJJ)Z (greylist, linking, allowed)
+2026-05-01 13:26:58.840 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getIntVolatile(Ljava/lang/Object;J)I (greylist, linking, allowed)
+2026-05-01 13:26:58.840 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getObjectVolatile(Ljava/lang/Object;J)Ljava/lang/Object; (greylist, linking, allowed)
+2026-05-01 13:26:58.840 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putObjectVolatile(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)
+2026-05-01 13:26:58.840 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden field Lsun/misc/Unsafe;->theUnsafe:Lsun/misc/Unsafe; (greylist, reflection, allowed)
+2026-05-01 13:26:58.883 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getUnsafe()Lsun/misc/Unsafe; (greylist,core-platform-api, linking, allowed)
+2026-05-01 13:26:58.883 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)
+2026-05-01 13:26:58.890 10822-10861 NetworkSecurityConfig   com.minicore.cartio.debug            D  No Network Security Config specified, using platform default
+2026-05-01 13:26:58.892 10822-10863 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)
+2026-05-01 13:26:58.892 10822-10863 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getObject(Ljava/lang/Object;J)Ljava/lang/Object; (greylist, linking, allowed)
+2026-05-01 13:26:58.902  2014-2394  ConnectivityService     system_server                        D  requestNetwork for uid/pid:10155/10822 NetworkRequest [ TRACK_DEFAULT id=92, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ]
+2026-05-01 13:26:58.904  2014-2125  UntrustedW...orkFactory system_server                        D  got request NetworkRequest [ TRACK_DEFAULT id=92, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ] with score 60 and serial -1
+2026-05-01 13:26:58.904  2315-2315  PhoneSwitc...stListener com.android.phone                    D  got request NetworkRequest [ TRACK_DEFAULT id=92, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ] with score 60 and serial -1
+2026-05-01 13:26:58.904  2014-2125  WifiNetworkFactory      system_server                        D  got request NetworkRequest [ TRACK_DEFAULT id=92, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ] with score 60 and serial -1
+2026-05-01 13:26:58.938 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)
+2026-05-01 13:26:58.938 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getObject(Ljava/lang/Object;J)Ljava/lang/Object; (greylist, linking, allowed)
+2026-05-01 13:26:58.985 10822-10822 DynamiteModule          com.minicore.cartio.debug            I  Considering local module com.google.android.gms.ads.dynamite:0 and remote module com.google.android.gms.ads.dynamite:260480602
+2026-05-01 13:26:58.985 10822-10822 DynamiteModule          com.minicore.cartio.debug            I  Selected remote version of com.google.android.gms.ads.dynamite, version >= 260480602
+2026-05-01 13:26:58.986 10822-10822 DynamiteModule          com.minicore.cartio.debug            V  Dynamite loader version >= 2, using loadModule2NoCrashUtils
+2026-05-01 13:26:59.029  1775-2052  SurfaceFlinger          surfaceflinger                       E  ro.sf.lcd_density must be defined as a build property
+2026-05-01 13:26:59.032 10822-10874 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)
+2026-05-01 13:26:59.033  1775-2052  SurfaceFlinger          surfaceflinger                       E  ro.sf.lcd_density must be defined as a build property
+2026-05-01 13:26:59.033 10822-10874 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)
+2026-05-01 13:26:59.043 10822-10886 libEGL                  com.minicore.cartio.debug            D  Emulator has host GPU support, qemu.gles is set to 1.
+2026-05-01 13:26:59.028 10822-10822 RenderThread            com.minicore.cartio.debug            W  type=1400 audit(0.0:37): avc: denied { write } for name="property_service" dev="tmpfs" ino=7444 scontext=u:r:untrusted_app:s0:c155,c256,c512,c768 tcontext=u:object_r:property_socket:s0 tclass=sock_file permissive=0
+2026-05-01 13:26:59.044 10822-10886 libc                    com.minicore.cartio.debug            W  Unable to set property "qemu.gles" to "1": connection failed; errno=13 (Permission denied)
+2026-05-01 13:26:59.055 10822-10888 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)
+2026-05-01 13:26:59.056 10822-10888 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)
+2026-05-01 13:26:59.080  6040-6040  BoundBrokerSvc          com.google.android.gms               D  onRebind: Intent { act=com.google.android.gms.appset.service.START dat=chimera-action: cmp=com.google.android.gms/.chimera.GmsApiService }
+2026-05-01 13:26:59.101 10822-10822 re.cartio.debu          com.minicore.cartio.debug            E  Invalid ID 0x00000000.
+2026-05-01 13:26:59.121 10822-10822 re.cartio.debu          com.minicore.cartio.debug            I  Waiting for a blocking GC ClassLinker
+2026-05-01 13:26:59.134 10822-10886 libEGL                  com.minicore.cartio.debug            D  loaded /vendor/lib/egl/libEGL_emulation.so
+2026-05-01 13:26:59.146 10822-10886 libEGL                  com.minicore.cartio.debug            D  loaded /vendor/lib/egl/libGLESv1_CM_emulation.so
+2026-05-01 13:26:59.149 10822-10886 libEGL                  com.minicore.cartio.debug            D  loaded /vendor/lib/egl/libGLESv2_emulation.so
+2026-05-01 13:26:59.164 10822-10822 re.cartio.debu          com.minicore.cartio.debug            I  WaitForGcToComplete blocked ClassLinker on ClassLinker for 43.543ms
+2026-05-01 13:26:59.220 10822-10822 Choreographer           com.minicore.cartio.debug            I  Skipped 53 frames!  The application may be doing too much work on its main thread.
+2026-05-01 13:26:59.221 10822-10891 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getInt(Ljava/lang/Object;J)I (greylist, linking, allowed)
+2026-05-01 13:26:59.222 10822-10891 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getObject(Ljava/lang/Object;J)Ljava/lang/Object; (greylist, linking, allowed)
+2026-05-01 13:26:59.222 10822-10891 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)
+2026-05-01 13:26:59.222 10822-10891 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putInt(Ljava/lang/Object;JI)V (greylist, linking, allowed)
+2026-05-01 13:26:59.222 10822-10891 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getLong(Ljava/lang/Object;J)J (greylist,core-platform-api, linking, allowed)
+2026-05-01 13:26:59.222 10822-10891 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putLong(Ljava/lang/Object;JJ)V (greylist, linking, allowed)
+2026-05-01 13:26:59.230 10822-10891 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getObject(Ljava/lang/Object;J)Ljava/lang/Object; (greylist, linking, allowed)
+2026-05-01 13:26:59.232 10822-10891 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getInt(Ljava/lang/Object;J)I (greylist, linking, allowed)
+2026-05-01 13:26:59.233 10822-10891 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->getLong(Ljava/lang/Object;J)J (greylist,core-platform-api, linking, allowed)
+2026-05-01 13:26:59.830 10822-10884 HostConnection          com.minicore.cartio.debug            D  HostConnection::get() New Host Connection established 0xda308c00, tid 10884
+2026-05-01 13:26:59.830 10822-10884 HostConnection          com.minicore.cartio.debug            D  HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_native_sync_v4 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_hwc_color_transform GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_2 
+2026-05-01 13:26:59.837 10822-10884 OpenGLRenderer          com.minicore.cartio.debug            W  Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+2026-05-01 13:26:59.851 10822-10884 EGL_emulation           com.minicore.cartio.debug            D  eglCreateContext: 0xda36fd20: maj 2 min 0 rcv 2
+2026-05-01 13:26:59.881 10822-10884 EGL_emulation           com.minicore.cartio.debug            D  eglMakeCurrent: 0xda36fd20: ver 2 0 (tinfo 0xda34c650)
+2026-05-01 13:26:59.887  1761-1848  gralloc_ranchu          and...raphics.allocator@2.0-service  D  gralloc_alloc: Creating ashmem region of size 9850880
+2026-05-01 13:26:59.904  1648-1648  hwservicemanager        hwservicemanager                     I  getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+2026-05-01 13:26:59.905 10822-10884 Gralloc3                com.minicore.cartio.debug            W  mapper 3.x is not supported
+2026-05-01 13:26:59.907 10822-10884 HostConnection          com.minicore.cartio.debug            D  createUnique: call
+2026-05-01 13:26:59.907 10822-10884 HostConnection          com.minicore.cartio.debug            D  HostConnection::get() New Host Connection established 0xda308cf0, tid 10884
+2026-05-01 13:26:59.908 10822-10884 HostConnection          com.minicore.cartio.debug            D  HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_native_sync_v4 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_hwc_color_transform GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_2 
+2026-05-01 13:26:59.908 10822-10884 eglCodecCommon          com.minicore.cartio.debug            D  allocate: Ask for block of size 0x1000
+2026-05-01 13:26:59.908 10822-10884 eglCodecCommon          com.minicore.cartio.debug            D  allocate: ioctl allocate returned offset 0x3ffff8000 size 0x2000
+2026-05-01 13:26:59.910  1761-1848  gralloc_ranchu          and...raphics.allocator@2.0-service  D  gralloc_alloc: Creating ashmem region of size 9850880
+2026-05-01 13:26:59.928  1761-1846  gralloc_ranchu          and...raphics.allocator@2.0-service  D  gralloc_alloc: Creating ashmem region of size 9850880
+2026-05-01 13:26:59.950 10822-10884 EGL_emulation           com.minicore.cartio.debug            D  eglMakeCurrent: 0xda36fd20: ver 2 0 (tinfo 0xda34c650)
+2026-05-01 13:26:59.969 10822-10884 OpenGLRenderer          com.minicore.cartio.debug            I  Davey! duration=1621ms; Flags=1, IntendedVsync=5662470641783, Vsync=5663353975081, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=5663366664500, AnimationStart=5663366697900, PerformTraversalsStart=5663367093800, DrawStart=5664056687900, SyncQueued=5664073800600, SyncStart=5664096671600, IssueDrawCommandsStart=5664096845100, SwapBuffers=5664112512100, FrameCompleted=5664114783300, DequeueBufferDuration=208000, QueueBufferDuration=629000, 
+2026-05-01 13:26:59.976  2014-2040  ActivityTaskManager     system_server                        I  Displayed com.minicore.cartio.debug/com.minicore.cartio.MainActivity: +2s991ms
+2026-05-01 13:27:00.003 10822-10822 WebViewFactory          com.minicore.cartio.debug            I  Loading com.google.android.webview version 74.0.3729.185 (code 373018518)
+2026-05-01 13:27:00.008 10822-10822 re.cartio.debu          com.minicore.cartio.debug            I  The ClassLoaderContext is a special shared library.
+2026-05-01 13:27:00.014 10822-10822 re.cartio.debu          com.minicore.cartio.debug            I  The ClassLoaderContext is a special shared library.
+2026-05-01 13:27:00.015  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.098 10822-10822 cr_LibraryLoader        com.minicore.cartio.debug            I  Time to load native libraries: 10 ms (timestamps 4233-4243)
+2026-05-01 13:27:00.114 10822-10822 re.cartio.debu          com.minicore.cartio.debug            E  Invalid ID 0x00000000.
+2026-05-01 13:27:00.120 10822-10822 chromium                com.minicore.cartio.debug            I  [INFO:library_loader_hooks.cc(50)] Chromium logging enabled: level = 0, default verbosity = 0
+2026-05-01 13:27:00.120 10822-10822 cr_LibraryLoader        com.minicore.cartio.debug            I  Expected native library version number "74.0.3729.185", actual native library version number "74.0.3729.185"
+2026-05-01 13:27:00.137 10822-10896 cr_ChildProcLH          com.minicore.cartio.debug            W  Create a new ChildConnectionAllocator with package name = com.google.android.webview, sandboxed = true
+2026-05-01 13:27:00.146  1749-1749  audio_hw_generic        android.hardware.audio@2.0-service   W  Not supplying enough data to HAL, expected position 3988809 , only wrote 3850986
+2026-05-01 13:27:00.147 10822-10896 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Landroid/content/Context;->bindServiceAsUser(Landroid/content/Intent;Landroid/content/ServiceConnection;ILandroid/os/Handler;Landroid/os/UserHandle;)Z (greylist, reflection, allowed)
+2026-05-01 13:27:00.149 10822-10822 cr_BrowserStartup       com.minicore.cartio.debug            I  Initializing chromium process, singleProcess=false
+2026-05-01 13:27:00.163  2289-2289  Zygote                  webview_zygote                       D  Forked child process 10899
+2026-05-01 13:27:00.167  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.173 10899-10899 ProcessService          pid-10899                            W  Unexpected CPU variant for X86 using defaults: x86
+2026-05-01 13:27:00.173  2014-2042  ActivityManager         system_server                        I  Start proc 10899:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0/u0i4 for  {com.minicore.cartio.debug/org.chromium.content.app.SandboxedProcessService0}
+2026-05-01 13:27:00.174  6040-6040  BoundBrokerSvc          com.google.android.gms               D  onBind: Intent { act=com.google.android.gms.safetynet.service.START pkg=com.google.android.gms }
+2026-05-01 13:27:00.175  6040-6040  BoundBrokerSvc          com.google.android.gms               D  Loading bound service for intent: Intent { act=com.google.android.gms.safetynet.service.START pkg=com.google.android.gms }
+2026-05-01 13:27:00.180  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.188  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.188 10899-10899 ProcessService          pid-10899                            E  Not starting debugger since process cannot load the jdwp agent.
+2026-05-01 13:27:00.194  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.215  2161-2490  chatty                  com.android.systemui                 I  uid=10116(com.android.systemui) RenderThread identical 2 lines
+2026-05-01 13:27:00.223  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.230 10899-10899 LoadedApk               pid-10899                            I  No resource references to update in package com.google.android.webview
+2026-05-01 13:27:00.230 10899-10899 LoadedApk               pid-10899                            I  No resource references to update in package com.google.android.trichromelibrary
+2026-05-01 13:27:00.231  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.234 10899-10899 cr_ChildProcessService  pid-10899                            I  Creating new ChildProcessService pid=10899
+2026-05-01 13:27:00.246  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.256  2014-2858  ConnectivityService     system_server                        D  requestNetwork for uid/pid:10155/10822 NetworkRequest [ TRACK_DEFAULT id=93, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ]
+2026-05-01 13:27:00.254  2161-2490  chatty                  com.android.systemui                 I  uid=10116(com.android.systemui) RenderThread identical 1 line
+2026-05-01 13:27:00.257  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.258  2315-2315  PhoneSwitc...stListener com.android.phone                    D  got request NetworkRequest [ TRACK_DEFAULT id=93, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ] with score 60 and serial -1
+2026-05-01 13:27:00.259  2014-2125  UntrustedW...orkFactory system_server                        D  got request NetworkRequest [ TRACK_DEFAULT id=93, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ] with score 60 and serial -1
+2026-05-01 13:27:00.259  2014-2125  WifiNetworkFactory      system_server                        D  got request NetworkRequest [ TRACK_DEFAULT id=93, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ] with score 60 and serial -1
+2026-05-01 13:27:00.267  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.273  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.277 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Landroid/view/textclassifier/logging/SmartSelectionEventTracker;-><init>(Landroid/content/Context;I)V (greylist, reflection, allowed)
+2026-05-01 13:27:00.277 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Landroid/view/textclassifier/logging/SmartSelectionEventTracker;->logEvent(Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent;)V (greylist, reflection, allowed)
+2026-05-01 13:27:00.277 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent;->selectionStarted(I)Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent; (greylist, reflection, allowed)
+2026-05-01 13:27:00.277 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent;->selectionModified(II)Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent; (greylist, reflection, allowed)
+2026-05-01 13:27:00.277 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent;->selectionModified(IILandroid/view/textclassifier/TextClassification;)Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent; (greylist, reflection, allowed)
+2026-05-01 13:27:00.277 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent;->selectionModified(IILandroid/view/textclassifier/TextSelection;)Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent; (greylist, reflection, allowed)
+2026-05-01 13:27:00.277 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent;->selectionAction(III)Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent; (greylist, reflection, allowed)
+2026-05-01 13:27:00.277 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent;->selectionAction(IIILandroid/view/textclassifier/TextClassification;)Landroid/view/textclassifier/logging/SmartSelectionEventTracker$SelectionEvent; (greylist, reflection, allowed)
+2026-05-01 13:27:00.282  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.318  2014-2858  ConnectivityService     system_server                        D  requestNetwork for uid/pid:10155/10822 NetworkRequest [ TRACK_DEFAULT id=95, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ]
+2026-05-01 13:27:00.298  2161-2490  chatty                  com.android.systemui                 I  uid=10116(com.android.systemui) RenderThread identical 2 lines
+2026-05-01 13:27:00.302  2161-2490  EGL_emulation           com.android.systemui                 D  eglMakeCurrent: 0xf0a54dc0: ver 2 0 (tinfo 0xc54bd8a0)
+2026-05-01 13:27:00.318  2014-2125  UntrustedW...orkFactory system_server                        D  got request NetworkRequest [ TRACK_DEFAULT id=95, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ] with score 60 and serial -1
+2026-05-01 13:27:00.318  2014-2125  WifiNetworkFactory      system_server                        D  got request NetworkRequest [ TRACK_DEFAULT id=95, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ] with score 60 and serial -1
+2026-05-01 13:27:00.319  2315-2315  PhoneSwitc...stListener com.android.phone                    D  got request NetworkRequest [ TRACK_DEFAULT id=95, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10155] ] with score 60 and serial -1
+2026-05-01 13:27:00.347  2963-3245  Finsky                  com.android.vending                  I  [155] com.minicore.cartio.debug: Account from first account - [puvCHZDh8X1rHs_Ndo1HDEpZy9Skf9ZuINkVW4A4r2g]
+2026-05-01 13:27:00.348  2963-3245  Finsky                  com.android.vending                  I  [155] Billing preferred account via installer for com.minicore.cartio.debug: [puvCHZDh8X1rHs_Ndo1HDEpZy9Skf9ZuINkVW4A4r2g]
+2026-05-01 13:27:00.354  2963-3221  Finsky                  com.android.vending                  I  [148] com.minicore.cartio.debug: Account from first account - [puvCHZDh8X1rHs_Ndo1HDEpZy9Skf9ZuINkVW4A4r2g]
+2026-05-01 13:27:00.355  2963-3221  Finsky                  com.android.vending                  I  [148] Billing preferred account via installer for com.minicore.cartio.debug: [puvCHZDh8X1rHs_Ndo1HDEpZy9Skf9ZuINkVW4A4r2g]
+2026-05-01 13:27:00.360 10822-10931 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->putObject(Ljava/lang/Object;JLjava/lang/Object;)V (greylist, linking, allowed)
+2026-05-01 13:27:00.365  2963-6374  Finsky                  com.android.vending                  I  [298] User is not an active Play Pass subscriber
+2026-05-01 13:27:00.379 10822-10878 CartioApp               com.minicore.cartio.debug            E  Startup initialization failed
+                                                                                                    java.lang.IllegalStateException: #008 Must be called on the main UI thread.
+                                                                                                    	at com.google.android.gms.common.internal.Preconditions.checkMainThread(com.google.android.gms:play-services-basement@@18.3.0:3)
+                                                                                                    	at com.google.android.gms.ads.interstitial.InterstitialAd.load(com.google.android.gms:play-services-ads-api@@24.4.0:5)
+                                                                                                    	at com.minicore.cartio.features.monetization.data.AdMobDataSource.preload(AdMobDataSource.kt:22)
+                                                                                                    	at com.minicore.cartio.features.monetization.data.AdsRepositoryImpl.preload(AdsRepositoryImpl.kt:16)
+                                                                                                    	at com.minicore.cartio.features.monetization.AppStartupInitializer.initialize(AppStartupInitializer.kt:15)
+                                                                                                    	at com.minicore.cartio.features.monetization.AppStartupInitializer$initialize$1.invokeSuspend(Unknown Source:15)
+                                                                                                    	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+                                                                                                    	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:829)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+                                                                                                    	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 13:27:00.411 10822-10822 Choreographer           com.minicore.cartio.debug            I  Skipped 66 frames!  The application may be doing too much work on its main thread.
+2026-05-01 13:27:00.434  2572-3477  FontLog                 com.google.android.gms.persistent    I  (REDACTED) Received query %s, URI %s
+2026-05-01 13:27:00.435  2572-3477  FontLog                 com.google.android.gms.persistent    I  (REDACTED) Query [%s] resolved to %s
+2026-05-01 13:27:00.439  2572-3477  FontLog                 com.google.android.gms.persistent    I  (REDACTED) Fetch %s end status %s
+2026-05-01 13:27:00.447  2572-3477  FontLog                 com.google.android.gms.persistent    I  (REDACTED) Pulling font file for id = %d, cache size = %d
+2026-05-01 13:27:00.454  2572-3477  FontLog                 com.google.android.gms.persistent    I  (REDACTED) Pulling font file for id = %d, cache size = %d
+2026-05-01 13:27:00.456 10822-10921 cr_media                com.minicore.cartio.debug            W  Requires BLUETOOTH permission
+2026-05-01 13:27:00.484  3131-3131  bqwu                    com....android.googlequicksearchbox  I  onStop
+2026-05-01 13:27:00.507 10822-10936 HostConnection          com.minicore.cartio.debug            D  HostConnection::get() New Host Connection established 0xc414a560, tid 10936
+2026-05-01 13:27:00.516 10822-10936 HostConnection          com.minicore.cartio.debug            D  HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_native_sync_v4 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_hwc_color_transform GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_2 
+2026-05-01 13:27:00.517 10822-10936 chromium                com.minicore.cartio.debug            E  [ERROR:gl_surface_egl.cc(342)] eglChooseConfig failed with error EGL_SUCCESS
+2026-05-01 13:27:00.552 10899-10927 cr_LibraryLoader        pid-10899                            I  Time to load native libraries: 1 ms (timestamps 4697-4698)
+2026-05-01 13:27:00.552 10822-10936 EGL_emulation           com.minicore.cartio.debug            D  eglCreateContext: 0xe58abd40: maj 2 min 0 rcv 2
+2026-05-01 13:27:00.555 10899-10927 chromium                pid-10899                            I  [INFO:library_loader_hooks.cc(50)] Chromium logging enabled: level = 0, default verbosity = 0
+2026-05-01 13:27:00.556 10899-10927 cr_LibraryLoader        pid-10899                            I  Expected native library version number "74.0.3729.185", actual native library version number "74.0.3729.185"
+2026-05-01 13:27:00.559 10822-10936 EGL_emulation           com.minicore.cartio.debug            D  eglMakeCurrent: 0xe58abd40: ver 2 0 (tinfo 0xbded65b0)
+2026-05-01 13:27:00.582 10822-10936 chromium                com.minicore.cartio.debug            E  [ERROR:gl_surface_egl.cc(342)] eglChooseConfig failed with error EGL_SUCCESS
+2026-05-01 13:27:00.631 10822-10936 VideoCapabilities       com.minicore.cartio.debug            I  Unsupported profile 4 for video/mp4v-es
+2026-05-01 13:27:00.637 10822-10936 cr_MediaCodecUtil       com.minicore.cartio.debug            W  HW encoder for video/avc is not available on this device.
+2026-05-01 13:27:00.647 10822-10936 EGL_emulation           com.minicore.cartio.debug            D  eglCreateContext: 0xda30a600: maj 2 min 0 rcv 2
+2026-05-01 13:27:00.649 10822-10936 EGL_emulation           com.minicore.cartio.debug            D  eglMakeCurrent: 0xda30a600: ver 2 0 (tinfo 0xbded65b0)
+2026-05-01 13:27:00.819 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)
+2026-05-01 13:27:00.820 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)
+2026-05-01 13:27:00.821 10822-10822 Ads                     com.minicore.cartio.debug            I  JS: The jsLoaded GMSG has been sent (https://googleads.g.doubleclick.net/mads/static/sdk/native/sdk-core-v40.html:1072)
+2026-05-01 13:27:00.822 10822-10822 chromium                com.minicore.cartio.debug            I  [INFO:CONSOLE(1072)] "The jsLoaded GMSG has been sent", source: https://googleads.g.doubleclick.net/mads/static/sdk/native/sdk-core-v40.html (1072)
+2026-05-01 13:27:01.203 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Landroid/view/View;->getViewRootImpl()Landroid/view/ViewRootImpl; (greylist, reflection, allowed)
+2026-05-01 13:27:01.203 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden field Landroid/view/View$AttachInfo;->mVisibleInsets:Landroid/graphics/Rect; (greylist, reflection, allowed)
+2026-05-01 13:27:01.203 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden field Landroid/view/ViewRootImpl;->mAttachInfo:Landroid/view/View$AttachInfo; (greylist, reflection, allowed)
+2026-05-01 13:27:01.539 10822-10822 re.cartio.debu          com.minicore.cartio.debug            W  Accessing hidden method Lsun/misc/Unsafe;->compareAndSwapObject(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z (greylist, linking, allowed)

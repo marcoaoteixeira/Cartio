@@ -1,0 +1,112 @@
+This one is actually pretty straightforward once you read past the noise in the stack trace.
+
+What’s happening
+
+The crash is coming from this line:
+
+java.lang.IllegalStateException: #008 Must be called on the main UI thread.
+
+And specifically:
+
+at com.google.android.gms.ads.interstitial.InterstitialAd.load(...)
+
+So your call chain is:
+
+AppStartupInitializer.initialize()
+ → AdsRepositoryImpl.preload()
+   → AdMobDataSource.preload()
+     → InterstitialAd.load()  ❌ (wrong thread)
+Root cause
+
+InterstitialAd.load() must be invoked on the main (UI) thread, but your initializer is running inside a coroutine that is not on Dispatchers.Main.
+
+From the stack trace:
+
+kotlinx.coroutines.scheduling.CoroutineScheduler
+
+That’s a background thread (likely Dispatchers.Default or IO).
+
+So effectively you're doing something like:
+
+withContext(Dispatchers.IO) {
+    InterstitialAd.load(...) // 💥 crash
+}
+Why this is enforced
+
+Google Mobile Ads SDK interacts with UI-related internals (even for loading), so they enforce main-thread access via:
+
+Preconditions.checkMainThread()
+How to fix it
+
+You need to ensure that the call to InterstitialAd.load() happens on the main thread, even if the rest of your startup work is backgrounded.
+
+✅ Option 1 — switch context locally (recommended)
+
+Keep your initializer async, but hop to Main only where needed:
+
+suspend fun preload(context: Context) {
+    withContext(Dispatchers.Main) {
+        InterstitialAd.load(
+            context,
+            adUnitId,
+            adRequest,
+            callback
+        )
+    }
+}
+
+This is the safest and cleanest fix.
+
+✅ Option 2 — launch on Main from the caller
+
+If initialize() is already in a coroutine:
+
+withContext(Dispatchers.Main) {
+    adsRepository.preload()
+}
+
+⚠️ Option 3 — force everything to Main (not ideal)
+CoroutineScope(Dispatchers.Main).launch {
+    preload()
+}
+
+This works but is less structured (you lose structured concurrency unless scoped properly).
+
+Subtle thing to double-check
+
+If you're using something like App Startup (Initializer), be careful:
+
+create() is called on the main thread
+but if you jump to coroutines, you may accidentally leave it
+
+So this pattern is risky:
+
+override fun create(context: Context) {
+    CoroutineScope(Dispatchers.Default).launch {
+        adsRepository.preload() // now off main thread
+    }
+}
+Clean architecture suggestion
+
+Since you're a senior dev, I'd strongly recommend isolating this constraint:
+
+class AdMobDataSource(
+    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
+) {
+    suspend fun preload(context: Context) = withContext(mainDispatcher) {
+        InterstitialAd.load(...)
+    }
+}
+
+This makes it:
+
+testable (inject dispatcher)
+explicit (UI-bound operation)
+TL;DR
+
+You're calling InterstitialAd.load() from a background coroutine.
+Google Ads SDK requires it on the main thread → hence the crash.
+
+Fix: wrap that specific call in withContext(Dispatchers.Main).
+
+If you want, paste your AdMobDataSource.preload() and AppStartupInitializer — I can point out exactly where the threading leaks.
