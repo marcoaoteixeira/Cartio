@@ -9,7 +9,9 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.minicore.cartio.features.monetization.MonetizationConfig
 import com.minicore.cartio.features.monetization.domain.AdResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
@@ -17,11 +19,11 @@ class AdMobDataSource @Inject constructor() {
 
     @Volatile private var interstitial: InterstitialAd? = null
 
-    suspend fun preload(context: Context) {
+    suspend fun preload(context: Context) = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine { continuation ->
             InterstitialAd.load(
                 context,
-                MonetizationConfig.ADMOB_INTERSTITIAL_UNIT_ID,
+                MonetizationConfig.interstitialUnitId(),
                 AdRequest.Builder().build(),
                 object : InterstitialAdLoadCallback() {
                     override fun onAdLoaded(ad: InterstitialAd) {

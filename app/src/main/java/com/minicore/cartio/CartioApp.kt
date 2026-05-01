@@ -7,7 +7,6 @@ import com.minicore.cartio.di.ApplicationScope
 import com.minicore.cartio.features.monetization.AppStartupInitializer
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,10 +24,11 @@ class CartioApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        MobileAds.initialize(this)
-        applicationScope.launch(Dispatchers.Default) {
-            runCatching { startupInitializer.initialize(applicationContext) }
-                .onFailure { AppLogger.e(TAG, "Startup initialization failed", it) }
+        MobileAds.initialize(this) {
+            applicationScope.launch {
+                runCatching { startupInitializer.initialize(applicationContext) }
+                    .onFailure { AppLogger.e(TAG, "Startup initialization failed", it) }
+            }
         }
     }
 
