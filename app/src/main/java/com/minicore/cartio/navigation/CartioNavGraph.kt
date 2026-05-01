@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.minicore.cartio.features.devlogs.ui.DevLogsScreen
 import com.minicore.cartio.features.expenses.ui.RegisterExpensesScreen
 import com.minicore.cartio.features.reports.ReportsScreen
 import com.minicore.cartio.features.settings.ui.SettingsScreen
@@ -36,7 +37,16 @@ fun CartioNavGraph(
             ReportsScreen(innerPadding = innerPadding, onOpenDrawer = onOpenDrawer)
         }
         composable(CartioDestinations.Settings.route) {
-            SettingsScreen(innerPadding = innerPadding, onOpenDrawer = onOpenDrawer)
+            SettingsScreen(
+                innerPadding = innerPadding,
+                onOpenDrawer = onOpenDrawer,
+                onNavigateToDeveloperLogs = {
+                    navController.navigate(CartioDestinations.DevLogs.route)
+                }
+            )
+        }
+        composable(CartioDestinations.DevLogs.route) {
+            DevLogsScreen(onNavigateUp = { navController.navigateUp() })
         }
         composable(
             route = CartioDestinations.ShoppingListDetail.route,

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +33,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -51,10 +57,12 @@ import androidx.core.net.toUri
 fun SettingsScreen(
     innerPadding: PaddingValues,
     onOpenDrawer: () -> Unit = {},
+    onNavigateToDeveloperLogs: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val activity = context as Activity
+    var developerTapCount by rememberSaveable { mutableIntStateOf(0) }
     val syncEnabled by viewModel.syncEnabled.collectAsStateWithLifecycle()
     val showClearDialog by viewModel.showClearDialog.collectAsStateWithLifecycle()
     val clearDataError by viewModel.clearDataError.collectAsStateWithLifecycle()
@@ -229,11 +237,21 @@ fun SettingsScreen(
                         modifier = Modifier
                             .fillParentMaxWidth()
                             .padding(bottom = 8.dp)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) {
+                                developerTapCount++
+                                if (developerTapCount >= 10) {
+                                    developerTapCount = 0
+                                    onNavigateToDeveloperLogs()
+                                }
+                            }
                     )
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(8.dp)) }
+            item { Spacer(modifier = Modifier.height(24.dp)) }
         }
     }
 }

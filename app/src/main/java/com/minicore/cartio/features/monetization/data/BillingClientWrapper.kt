@@ -1,8 +1,8 @@
 package com.minicore.cartio.features.monetization.data
 
 import android.app.Activity
-import android.util.Log
 import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.minicore.cartio.core.logging.AppLogger
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
@@ -31,7 +31,7 @@ class BillingClientWrapper @Inject constructor(
     suspend fun connect(): Boolean {
         return suspendCancellableCoroutine { continuation ->
             continuation.invokeOnCancellation {
-                Log.d(TAG, "connect cancelled before billing setup completed")
+                AppLogger.d(TAG,"connect cancelled before billing setup completed")
             }
             facade.startConnection(object : BillingClientStateListener {
                 override fun onBillingSetupFinished(result: BillingResult) {
@@ -54,7 +54,7 @@ class BillingClientWrapper @Inject constructor(
 
         suspendCancellableCoroutine { continuation ->
             continuation.invokeOnCancellation {
-                Log.d(TAG, "refreshEntitlements cancelled while query in flight")
+                AppLogger.d(TAG,"refreshEntitlements cancelled while query in flight")
             }
             facade.queryPurchasesAsync(params) { _, purchases ->
                 val hasEntitlement = purchases.any { purchase ->
@@ -81,7 +81,7 @@ class BillingClientWrapper @Inject constructor(
 
         suspendCancellableCoroutine { continuation ->
             continuation.invokeOnCancellation {
-                Log.d(TAG, "launchPurchase cancelled before product details returned")
+                AppLogger.d(TAG,"launchPurchase cancelled before product details returned")
             }
             facade.queryProductDetailsAsync(
                 detailsParams,
@@ -119,7 +119,7 @@ class BillingClientWrapper @Inject constructor(
                     .build()
                 facade.acknowledgePurchase(params) { result ->
                     if (result.responseCode != BillingClient.BillingResponseCode.OK) {
-                        Log.w(TAG, "Acknowledge failed (${result.responseCode}): ${result.debugMessage}")
+                        AppLogger.w(TAG, "Acknowledge failed (${result.responseCode}): ${result.debugMessage}")
                     }
                 }
             }
