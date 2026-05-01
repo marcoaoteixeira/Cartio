@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
+import androidx.core.content.edit
 
 interface BackupPreferences {
     var isBackupEnabled: Boolean
@@ -26,7 +27,7 @@ class BackupPreferencesImpl @Inject constructor(
         get() = state.value
         set(value) {
             state.value = value
-            prefs.edit().putBoolean(KEY_BACKUP_ENABLED, value).apply()
+            prefs.edit { putBoolean(KEY_BACKUP_ENABLED, value) }
         }
 
     override val backupEnabled: StateFlow<Boolean> = state.asStateFlow()
