@@ -39,7 +39,6 @@ Create project skeleton and domain foundations.
   - Product
   - ShoppingList
   - ShoppingListItem
-  - PriceHistory
 - Create Room schema and DAOs
 - Repository interfaces
 
@@ -97,20 +96,17 @@ v0.2
 
 ---
 
-# EPIC 4 — Price Tracking (MVP Slice 3)
+# EPIC 4 — Expenses & Reports (MVP Slice 3) — DELIVERED
+
+Shipped as FEAT-011. Replaces the original "Price Tracking" epic per ADR-017.
 
 Goal
-Introduce grocery intelligence.
+Capture actual purchases and surface monthly spending insights.
 
-## Stories
-- Record item price
-- Save price history entries
-- Show last-paid price while adding item
-- Show cart estimated total
-
-## Optional stories
-- Price changed indicator
-- Cheapest observed price badge
+## Stories (delivered)
+- Record an expense for a purchased item (quantity × unit price × measure unit)
+- 30-day spending report with totals and top items
+- Show running totals per shopping list
 
 ## Milestone 4
 "App tracks shopping spend"
@@ -127,39 +123,27 @@ This is where I’d call MVP complete.
 Includes:
 ✅ Multiple lists
 ✅ Reusable products
-✅ Prices + history
+✅ Expense capture + spending reports (FEAT-011)
 ✅ Offline persistence
 
 Excludes:
 ❌ Sync
 ❌ Scanning
-❌ Reports
+❌ Price-history tracking (descoped, ADR-017)
 
 This is deliberate.
 Strong teams freeze MVP boundaries.
 
 ---
 
-# EPIC 5 — Reports Module
+# EPIC 5 — Reports Module — DELIVERED (FEAT-011)
 
-Goal
-Add insight features.
-
-## Stories
-- Product price trend report
-- Price evolution history view
-- Monthly spend summary
-- Product detail report screen
-
-## Suggested first report
-Start simple:
-Single product timeline view.
-
-## Milestone 5
-"App provides shopping insights"
+Shipped alongside Expenses. Surfaces 30-day spending and top-purchased items
+from `expense_records`. The original price-trend stories (per-product price
+timelines) are descoped per ADR-017.
 
 Release Candidate:
-v0.4
+v0.3
 
 ---
 
@@ -248,7 +232,7 @@ When lists hit large product counts:
 - Query indexing
 - Room optimization
 
-Especially price history queries.
+Especially expense-record aggregation queries used by Reports.
 
 ---
 
@@ -260,10 +244,10 @@ Priority 1
 - CreateShoppingList
 - AddProductToList
 - CheckOffItem
-- RecordProductPrice
+- RecordExpense (delivered, FEAT-011)
 
 Priority 2
-- GetPriceTrend
+- GetSpendingReport (delivered, FEAT-011)
 - GetRecurringProducts
 - SyncListsToDrive
 
@@ -302,7 +286,7 @@ Milestone 3
 ---
 
 ## Sprint 4
-Price history + totals
+Expense capture + spending reports (FEAT-011)
 
 Goal:
 Milestone 4 (MVP)
@@ -310,7 +294,6 @@ Milestone 4 (MVP)
 ---
 
 ## Sprint 5+
-Reports
 Sync
 Scanning
 
@@ -322,7 +305,7 @@ Scanning
 Overmodeling too early.
 
 Mitigation:
-Keep domain simple until price history lands.
+Keep domain simple. Price-history was scoped out (ADR-017); expand only when a feature genuinely needs new entities.
 
 ---
 
@@ -357,7 +340,6 @@ Just parking lot.
 
 # Architecture Decision I’d Make For Implementation
 I would likely use feature flags (even simple local toggles) for:
-- Reports module
 - Sync module
 - Scanning module
 
@@ -373,8 +355,7 @@ I’d call this 1.0:
 Must Have:
 - Core shopping lists
 - Product model
-- Price history
-- Product trend report
+- Expense capture + spending reports
 - Drive sync
 
 Barcode scanning can be 1.1.

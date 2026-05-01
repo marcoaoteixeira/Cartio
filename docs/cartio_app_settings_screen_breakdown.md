@@ -192,7 +192,8 @@ Actions:
 - Clear:
   - Lists
   - Items
-  - Price history
+  - Products
+  - Expense records
   - Optional preferences
 
 ---

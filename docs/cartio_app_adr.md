@@ -553,6 +553,55 @@ That is a meaningful ADR evolution.
 
 ---
 
+# ADR-017: Drop Price Tracking from MVP
+
+## Decision
+Remove price-history tracking from the MVP scope entirely.
+
+The `PriceHistoryEntity`, `PriceHistoryDao`, and `price_history` Room table
+are deleted. Reports source their data from `expense_records` (FEAT-011)
+instead, which captures actual purchases rather than observed prices.
+
+## Status
+Accepted (2026-04-30)
+
+## Supersedes
+- ADR-011 (Pricing History Strategy) — fully superseded
+- ADR-014 (Reporting Feature) — partially: price-trend reports are no longer
+  planned; spending reports stand
+- ADR-015 (Product-Centric Domain Model) — `PriceHistory` removed from the
+  core entity set; the remaining three entities (`Product`, `ShoppingList`,
+  `ShoppingListItem`) still apply
+- ADR-010 — "Price history later" is removed from the reserved extension
+  points list
+
+## Why
+- Price-history scaffolding (entity + DAO + table) shipped through schemas
+  v1–v4 but was never wired into a write path or read path. No feature ever
+  populated or queried it.
+- FEAT-011 (Register Expenses + Reports) covered the actual product need
+  ("how much am I spending?") with `expense_records`, which carries price as
+  part of each captured purchase. That obviates the need for a separate
+  observed-price log.
+- Keeping unused scaffolding around invited bugs (e.g. FEAT-013's clear-all
+  bug, where the unused table would have leaked rows the moment anyone
+  wrote to it) without paying for itself.
+
+## Consequences
+- `CartioDatabase` schema bumped 4 → 5 with `MIGRATION_4_5` dropping the
+  `price_history` table. Existing devices on v4 are migrated cleanly.
+- `ClearAllDataUseCase` no longer needs to reason about price rows.
+- The "Intelligence" roadmap phase collapses into MVP since Reports is
+  already shipped (FEAT-011).
+- ADR-016 (Product Identity Rules) still applies: ID-based identity matters
+  for barcode integration and report consistency across product renames.
+
+If price tracking ever becomes desirable later, it can be re-introduced as
+a feature with its own schema migration. Doing it speculatively was the
+mistake.
+
+---
+
 # ADR Set Status
 Architecture is now coherent enough to begin implementation.
 Major foundational decisions are covered.
