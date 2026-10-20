@@ -24,3 +24,4 @@
 | FEAT-020 | Data Safety Form Mapping | Done | feature/CARTIO-020-data-safety-mapping |
 | FEAT-021 | Feature Graphic Rebuild | Done | feature/CARTIO-021-feature-graphic-rebuild |
 | FEAT-022 | Upload Native Debug Symbols | Done | feature/CARTIO-022-native-debug-symbols |
+| FEAT-023 | Release Bundle (versionCode 2) | Done | feature/CARTIO-023-release-bundle-v2 |
