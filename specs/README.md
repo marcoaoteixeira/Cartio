@@ -21,3 +21,4 @@
 | FEAT-017 | Privacy Policy | Done | feature/CARTIO-017-privacy-policy |
 | FEAT-018 | Play Billing Library 8 -> 9 Migration | Done | feature/CARTIO-018-billing-v9-migration |
 | FEAT-019 | Store Listing Assets | Done | feature/CARTIO-019-store-listing-assets |
+| FEAT-020 | Data Safety Form Mapping | Done | feature/CARTIO-020-data-safety-mapping |
