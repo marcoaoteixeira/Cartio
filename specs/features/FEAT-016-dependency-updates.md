@@ -12,25 +12,30 @@ Out of scope (deferred — see checklist item 6 in project memory): Play Billing
 
 ## Target Versions
 
+All versions below were verified directly against Google Maven / Maven Central `maven-metadata.xml` (not search results — an earlier research pass using web search got the Gradle and AGP targets wrong; corrected here).
+
 | Dependency | Current | Target | Notes |
 |---|---|---|---|
-| Gradle wrapper | 9.4.1 | 9.8.2 | Corrected from initial research (9.7.0 doesn't exist as a final release — 9.8.2 is actual current stable per `services.gradle.org/versions/current`). Bundles Kotlin 2.4.10. |
-| AGP (`com.android.application`) | 9.2.1 | 9.4.1 | Corrected from initial research (9.3.2 was wrong — 9.4.1 is actual latest stable per Google Maven metadata, 9.5.0 still alpha). Minor bump; re-verify compose-compiler/Kotlin pairing after |
-| `compose-compiler` plugin | 2.3.0 | match Kotlin bundled by Gradle 9.8.2 (2.4.10) | Must stay paired per CLAUDE.md build notes |
-| `androidx.core:core-ktx` | 1.18.0 | 1.19.1 | Pulls transitive lifecycle-runtime 2.10.0 |
-| `androidx.compose:compose-bom` | 2025.04.01 | 2026.08.00 | BOM bump, low risk by design |
-| `com.google.dagger:hilt-android` (+compiler) | 2.59.2 | 2.60.1 | Patch/minor |
-| `androidx.hilt:hilt-navigation-compose` | 1.2.0 | 1.4.0 | Tracks Hilt androidx-extensions group |
+| Gradle wrapper | 9.4.1 | 9.8.2 | Actual current stable per `services.gradle.org/versions/current`. Bundles Kotlin 2.4.10 for build scripts (app module's Kotlin compiler comes from AGP, verified separately via a successful build). |
+| AGP (`com.android.application`) | 9.2.1 | 9.4.1 | Actual latest stable per Google Maven metadata (9.5.0 still alpha-only) |
+| `compose-compiler` plugin | 2.3.0 | 2.3.0 (unchanged) | Confirmed compatible — `assembleDebug`/`assembleRelease` both succeeded with AGP 9.4.1 + Gradle 9.8.2 at this version |
+| `androidx.core:core-ktx` | 1.18.0 | 1.19.1 | |
+| `androidx.appcompat:appcompat` | 1.7.1 | 1.8.0 | |
+| `com.google.android.material:material` | 1.12.0 | 1.14.0 | |
+| `androidx.compose:compose-bom` | 2025.04.01 | 2026.09.00 | BOM bump, low risk by design |
+| `com.google.devtools.ksp` | 2.3.7 | 2.3.12 | Standalone versioning; verify it still pairs with the Kotlin version AGP 9.4.1 bundles |
+| `com.google.dagger:hilt-android` (+compiler) | 2.59.2 | 2.60.1 | |
+| `androidx.hilt:hilt-navigation-compose` | 1.2.0 | 1.4.0 | |
 | `androidx.room:room-runtime` (+ktx, +compiler) | 2.7.1 | 2.8.5 | Check schema-export compatibility |
-| `androidx.lifecycle:lifecycle-viewmodel-compose` | 2.9.0 | 2.10.0 | Stable since Nov 2025 |
+| `androidx.navigation:navigation-compose` | 2.9.0 | 2.10.2 | |
+| `org.jetbrains.kotlinx:kotlinx-coroutines-android`/`-test` | 1.10.1 | 1.11.0 | |
+| `androidx.lifecycle:lifecycle-viewmodel-compose` | 2.9.0 | 2.11.0 | |
 | `androidx.core:core-splashscreen` | 1.0.1 | 1.2.0 | |
 | `androidx.activity:activity-compose` | 1.10.1 | 1.13.0 | |
-| `androidx.test.espresso:espresso-core` | 3.6.1 | 3.7.0 | Minor |
-| `com.google.android.gms:play-services-ads` | 24.4.0 | 25.5.0 | Major; verify `InterstitialAdLoadCallback`/`FullScreenContentCallback` call sites still compile (new optional `onInitializationFailed()` callback is additive, not breaking) |
+| `androidx.test.espresso:espresso-core` | 3.6.1 | 3.7.0 | |
+| `com.google.android.gms:play-services-ads` | 24.4.0 | 25.5.0 | Major; verify `InterstitialAdLoadCallback`/`FullScreenContentCallback` call sites still compile |
 
-No change needed (already current, verified against latest stable as of 2026-10-20): `androidx.appcompat:appcompat` (1.7.1), `com.google.android.material:material` (1.12.0), `com.google.devtools.ksp` (2.3.7 — matches Kotlin 2.3 target), `androidx.navigation:navigation-compose` (2.9.0), `androidx.arch.core:core-testing` (2.2.0), `androidx.test.ext:junit` (1.3.0), `junit` (4.13.2).
-
-Not bumped — could not confirm a newer stable release via search: `org.jetbrains.kotlinx:kotlinx-coroutines-android`/`-test` (staying at 1.10.1).
+No change needed (already latest stable, verified 2026-10-20): `androidx.arch.core:core-testing` (2.2.0), `androidx.test.ext:junit` (1.3.0), `junit` (4.13.2).
 
 ## Risk Areas
 

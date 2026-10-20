@@ -17,8 +17,8 @@ val keystoreProps: Map<String, String> = rootProject.file("docs/keystore/keystor
 android {
     namespace = "com.minicore.cartio"
     compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
+        version = release(37) {
+            minorApiLevel = 2
         }
     }
 
