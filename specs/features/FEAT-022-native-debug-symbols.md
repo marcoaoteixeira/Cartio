@@ -20,3 +20,9 @@ Set `ndk { debugSymbolLevel = "FULL" }` inside the `release` build type. This ma
 |---|---|
 | Symbol level | `FULL` — full debugging fidelity, size cost negligible for this app |
 | Scope | `release` build type only — debug builds aren't distributed via Play Console, no need to symbolicate those |
+
+## Verified finding (post-fix)
+
+Built `bundleRelease` and inspected the output. The fix runs correctly (`extractReleaseNativeDebugMetadata` task executes), but Cartio's only bundled native library — `libandroidx.graphics.path.so` (pulled in transitively, likely via Compose) — is shipped **pre-stripped** by its publisher (`file` confirms: `ELF ... stripped`, no DWARF debug sections). AGP's extraction step correctly finds nothing to package, so no `BUNDLE-METADATA/com.android.tools.build.debugsymbols/` entry appears in the AAB, and the Play Console warning may persist specifically for this one library.
+
+This is a characteristic of the upstream artifact, not a fixable app-config issue — no setting here can produce symbols Google didn't publish for their own library. The fix is still correct and necessary: it will capture symbols for any native code that does ship them, now or in a future dependency.
