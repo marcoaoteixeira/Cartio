@@ -7,7 +7,7 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.minicore.cartio.features.monetization.MonetizationConfig
+import com.minicore.cartio.R
 import com.minicore.cartio.features.monetization.domain.AdResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -23,7 +23,7 @@ class AdMobDataSource @Inject constructor() {
         suspendCancellableCoroutine { continuation ->
             InterstitialAd.load(
                 context,
-                MonetizationConfig.interstitialUnitId(),
+                context.getString(R.string.admob_unit_id),
                 AdRequest.Builder().build(),
                 object : InterstitialAdLoadCallback() {
                     override fun onAdLoaded(ad: InterstitialAd) {

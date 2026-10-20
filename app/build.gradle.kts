@@ -5,6 +5,15 @@ plugins {
     alias(libs.plugins.hilt.android)
 }
 
+val keystoreProps: Map<String, String> = rootProject.file("docs/keystore/keystore.properties")
+    .takeIf { it.exists() }
+    ?.readLines()
+    ?.filter { '=' in it && !it.startsWith('#') }
+    ?.associate { line ->
+        val idx = line.indexOf('=')
+        line.substring(0, idx).trim() to line.substring(idx + 1).trim()
+    } ?: emptyMap()
+
 android {
     namespace = "com.minicore.cartio"
     compileSdk {
@@ -28,6 +37,17 @@ android {
         }
     }
 
+    signingConfigs {
+        if (keystoreProps.isNotEmpty()) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProps["storeFile"]!!)
+                storePassword = keystoreProps["storePassword"]
+                keyAlias = keystoreProps["keyAlias"]
+                keyPassword = keystoreProps["keyPassword"]
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -40,8 +60,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // Signing config: add a signingConfigs block reading from keystore.properties
-            // (do NOT commit keystore or passwords to version control)
+            if (keystoreProps.isNotEmpty()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
     testOptions {
