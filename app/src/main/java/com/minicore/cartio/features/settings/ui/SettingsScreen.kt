@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.Article
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Menu
@@ -203,23 +202,7 @@ fun SettingsScreen(
                         },
                         title = stringResource(R.string.app_name),
                         subtitle = stringResource(R.string.settings_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE),
-                        showDivider = true,
                         onClick = { openPlayStore(context) }
-                    )
-                    SettingsListItem(
-                        icon = {
-                            SettingsIconBox(backgroundColor = MaterialTheme.colorScheme.surfaceVariant) {
-                                Icon(
-                                    Icons.AutoMirrored.Rounded.Article,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.outline,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
-                        },
-                        title = stringResource(R.string.settings_licenses_title),
-                        showChevron = true,
-                        onClick = { /* TODO(CARTIO-OSS): open open-source licenses screen */ }
                     )
                 }
             }

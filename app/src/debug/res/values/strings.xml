@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Google's public test interstitial unit — debug builds only, never ships -->
+    <string name="admob_unit_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+</resources>

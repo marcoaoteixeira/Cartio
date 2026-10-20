@@ -19,3 +19,6 @@ local.properties
 
 # Temp
 temp/
+
+# Keystore — never commit keys or passwords
+docs/keystore/
