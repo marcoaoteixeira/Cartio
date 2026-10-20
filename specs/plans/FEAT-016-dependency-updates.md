@@ -5,7 +5,7 @@
 Each stage is built and tested before moving to the next, so a failure is isolated to a small, known cause.
 
 1. **Gradle wrapper**: bump `gradle/wrapper/gradle-wrapper.properties` distributionUrl to 9.8.2 (actual current stable; initial research target of 9.7.0 was wrong — no such final release exists) + matching sha256 from `services.gradle.org/versions/current`. Run `./gradlew wrapper --gradle-version 9.8.2 --gradle-distribution-sha256-sum <sum>`. Verify: `./gradlew -v`.
-2. **AGP**: bump `agp` in `gradle/libs.versions.toml` to 9.3.2. Build. If it fails on a Kotlin/compose-compiler version mismatch, bump `compose-compiler` plugin version in the `[plugins]` block to the version AGP 9.3.2 bundles, then rebuild.
+2. **AGP**: bump `agp` in `gradle/libs.versions.toml` to 9.4.1 (actual latest stable, verified against Google Maven metadata — not 9.3.2 as initially researched). Build. If it fails on a Kotlin/compose-compiler version mismatch, bump `compose-compiler` plugin version in the `[plugins]` block to the version AGP 9.4.1 bundles, then rebuild.
 3. **Independent library bumps** (low risk, batch together): `coreKtx`, `composeBom`, `hilt` (+ `hilt-navigation-compose` pinned version), `lifecycleViewModelCompose`, `coreSplashscreen`, `activity-compose` pinned version, `espressoCore`. Build + run unit tests after this batch.
 4. **Room**: bump `room` to 2.8.5 alone. Build, run unit tests (DAO/repository tests exercise Room codegen), check `app/schemas/` for a new schema file export.
 5. **play-services-ads**: bump `googleAds` to 25.5.0 alone. Build. Confirm `AdMobDataSource.kt` still compiles against `InterstitialAd`, `InterstitialAdLoadCallback`, `FullScreenContentCallback`, `AdRequest.Builder` with no deprecation errors.
