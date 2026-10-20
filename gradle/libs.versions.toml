@@ -15,7 +15,7 @@ coroutines = "1.11.0"
 lifecycleViewModelCompose = "2.11.0"
 archCoreTesting = "2.2.0"
 coreSplashscreen = "1.2.0"
-googleAds = "24.4.0"
+googleAds = "25.5.0"
 playBilling = "8.0.0"
 
 [libraries]
