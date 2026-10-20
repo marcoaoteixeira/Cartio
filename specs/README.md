@@ -18,3 +18,4 @@
 | FEAT-014 | Developer Log Screen | Done | feature/CARTIO-014-developer-logs |
 | FEAT-015 | Debug Ad Unit ID Selection | Done | feature/CARTIO-015-ad-debug-unit |
 | FEAT-016 | Dependency Version Updates | Done | feature/CARTIO-016-dependency-updates |
+| FEAT-017 | Privacy Policy | Done | feature/CARTIO-017-privacy-policy |
