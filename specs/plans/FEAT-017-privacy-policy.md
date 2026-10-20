@@ -20,7 +20,7 @@
 ## Verification
 
 - Open the HTML file locally in a browser — renders cleanly, readable, no broken markup.
-- After user enables GitHub Pages and merges, confirm `https://marcoaoteixeira.github.io/Cartio/privacy-policy.html` resolves (can't verify before merge — Pages only serves from `master`).
+- After user enables GitHub Pages and merges, confirm `https://minicore-software.github.io/Cartio/privacy-policy.html` resolves (can't verify before merge — Pages only serves from `master`).
 
 ## Out of scope (flagged, not done here)
 

@@ -9,7 +9,7 @@ Publish a privacy policy at a public URL, as required by Google Play Console bef
 | Decision | Choice |
 |---|---|
 | Hosting | GitHub Pages, served from `docs/` on `master` |
-| URL | `https://marcoaoteixeira.github.io/Cartio/privacy-policy.html` |
+| URL | `https://minicore-software.github.io/Cartio/privacy-policy.html` (updated 2026-10-20 after repo ownership transfer from `marcoaoteixeira` to `minicore-software`) |
 | Contact email | `minicore.software@gmail.com` |
 | Publisher name | Minicore Software |
 | Format | Standalone static HTML (no build step, no JS dependency) |
