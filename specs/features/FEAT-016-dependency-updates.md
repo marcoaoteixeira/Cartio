@@ -14,9 +14,9 @@ Out of scope (deferred — see checklist item 6 in project memory): Play Billing
 
 | Dependency | Current | Target | Notes |
 |---|---|---|---|
-| Gradle wrapper | 9.4.1 | 9.7.0 | No known breaking change |
+| Gradle wrapper | 9.4.1 | 9.8.2 | Corrected from initial research (9.7.0 doesn't exist as a final release — 9.8.2 is actual current stable per `services.gradle.org/versions/current`). Bundles Kotlin 2.4.10. |
 | AGP (`com.android.application`) | 9.2.1 | 9.3.2 | Minor bump; re-verify compose-compiler/Kotlin pairing after |
-| `compose-compiler` plugin | 2.3.0 | match Kotlin bundled by AGP 9.3.2 | Must stay paired per CLAUDE.md build notes |
+| `compose-compiler` plugin | 2.3.0 | match Kotlin bundled by Gradle 9.8.2 (2.4.10) | Must stay paired per CLAUDE.md build notes |
 | `androidx.core:core-ktx` | 1.18.0 | 1.19.1 | Pulls transitive lifecycle-runtime 2.10.0 |
 | `androidx.compose:compose-bom` | 2025.04.01 | 2026.08.00 | BOM bump, low risk by design |
 | `com.google.dagger:hilt-android` (+compiler) | 2.59.2 | 2.60.1 | Patch/minor |
