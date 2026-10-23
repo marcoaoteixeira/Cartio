@@ -433,7 +433,7 @@ private fun ShoppingListItemRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = 16.dp, vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -460,7 +460,7 @@ private fun DoneItemRow(item: ShoppingListItem, onUncheck: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = 16.dp, vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
