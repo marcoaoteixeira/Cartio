@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.PurchasesUpdatedListener
+import com.minicore.cartio.BuildConfig
 import com.minicore.cartio.core.time.Clock
 import com.minicore.cartio.features.monetization.data.AdFrequencyStore
 import com.minicore.cartio.features.monetization.data.AdMobDataSource
@@ -12,6 +13,7 @@ import com.minicore.cartio.features.monetization.data.AdsRepositoryImpl
 import com.minicore.cartio.features.monetization.data.BillingClientFacade
 import com.minicore.cartio.features.monetization.data.BillingClientWrapper
 import com.minicore.cartio.features.monetization.data.BillingRepositoryImpl
+import com.minicore.cartio.features.monetization.data.NoOpAdsRepository
 import com.minicore.cartio.features.monetization.data.PlayBillingClientFacade
 import com.minicore.cartio.features.monetization.domain.AdsRepository
 import com.minicore.cartio.features.monetization.domain.BillingRepository
@@ -76,7 +78,11 @@ object MonetizationModule {
     fun provideAdsRepository(
         adMob: AdMobDataSource,
         store: AdFrequencyStore
-    ): AdsRepository = AdsRepositoryImpl(adMob, store)
+    ): AdsRepository = if (BuildConfig.ADS_ENABLED) {
+        AdsRepositoryImpl(adMob, store)
+    } else {
+        NoOpAdsRepository()
+    }
 
     @Provides
     fun provideBillingRepository(wrapper: BillingClientWrapper): BillingRepository =

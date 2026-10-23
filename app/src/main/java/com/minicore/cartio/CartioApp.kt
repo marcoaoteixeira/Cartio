@@ -2,6 +2,7 @@ package com.minicore.cartio
 
 import android.app.Application
 import com.google.android.gms.ads.MobileAds
+import com.minicore.cartio.BuildConfig
 import com.minicore.cartio.core.logging.AppLogger
 import com.minicore.cartio.di.ApplicationScope
 import com.minicore.cartio.features.monetization.AppStartupInitializer
@@ -24,11 +25,17 @@ class CartioApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        MobileAds.initialize(this) {
-            applicationScope.launch {
-                runCatching { startupInitializer.initialize(applicationContext) }
-                    .onFailure { AppLogger.e(TAG, "Startup initialization failed", it) }
-            }
+        if (BuildConfig.ADS_ENABLED) {
+            MobileAds.initialize(this) { startInitializer() }
+        } else {
+            startInitializer()
+        }
+    }
+
+    private fun startInitializer() {
+        applicationScope.launch {
+            runCatching { startupInitializer.initialize(applicationContext) }
+                .onFailure { AppLogger.e(TAG, "Startup initialization failed", it) }
         }
     }
 

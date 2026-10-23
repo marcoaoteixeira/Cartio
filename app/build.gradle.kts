@@ -37,6 +37,19 @@ android {
         }
     }
 
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("play") {
+            dimension = "distribution"
+            buildConfigField("boolean", "ADS_ENABLED", "true")
+        }
+        create("personal") {
+            dimension = "distribution"
+            applicationIdSuffix = ".personal"
+            buildConfigField("boolean", "ADS_ENABLED", "false")
+        }
+    }
+
     signingConfigs {
         if (keystoreProps.isNotEmpty()) {
             create("release") {
