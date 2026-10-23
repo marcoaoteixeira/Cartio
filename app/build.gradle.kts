@@ -26,7 +26,7 @@ android {
         applicationId = "com.minicore.cartio"
         minSdk = 29
         targetSdk = 36
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -34,6 +34,19 @@ android {
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
             arg("room.incremental", "true")
+        }
+    }
+
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("play") {
+            dimension = "distribution"
+            buildConfigField("boolean", "ADS_ENABLED", "true")
+        }
+        create("personal") {
+            dimension = "distribution"
+            applicationIdSuffix = ".personal"
+            buildConfigField("boolean", "ADS_ENABLED", "false")
         }
     }
 
