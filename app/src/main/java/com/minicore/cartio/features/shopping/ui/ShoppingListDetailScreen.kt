@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -137,6 +138,12 @@ fun ShoppingListDetailScreen(
     var showMoreMenu by rememberSaveable { mutableStateOf(false) }
     var itemInputText by rememberSaveable { mutableStateOf("") }
     var doneCollapsed by rememberSaveable { mutableStateOf(false) }
+    val listState = rememberLazyListState()
+    LaunchedEffect(uiState.activeItems.size) {
+        if (uiState.activeItems.isNotEmpty()) {
+            listState.animateScrollToItem(uiState.activeItems.lastIndex)
+        }
+    }
 
     val totalCount = uiState.activeItems.size + uiState.checkedItems.size
     val progressFraction = if (totalCount > 0) uiState.checkedItems.size.toFloat() / totalCount else 0f
@@ -300,6 +307,7 @@ fun ShoppingListDetailScreen(
             )
         } else {
             LazyColumn(
+                state = listState,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(scaffoldPadding)
@@ -426,7 +434,7 @@ private fun ShoppingListItemRow(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         CircleCheckbox(checked = false, onClick = onCheckboxTap)
@@ -453,7 +461,7 @@ private fun DoneItemRow(item: ShoppingListItem, onUncheck: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         CircleCheckbox(checked = true, onClick = onUncheck)
@@ -559,7 +567,7 @@ private fun AddItemBar(
             .clip(RoundedCornerShape(36.dp))
             .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(36.dp))
             .background(MaterialTheme.colorScheme.surface)
-            .padding(start = 16.dp, end = 4.dp),
+            .padding(start = 25.dp, end = 15.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
