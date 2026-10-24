@@ -1,5 +1,7 @@
 package com.minicore.cartio.di
 
+import com.minicore.cartio.core.scanner.RecognizeTextFromImage
+import com.minicore.cartio.core.scanner.RecognizeTextFromImageUseCase
 import com.minicore.cartio.features.expenses.domain.RecordExpensesUseCase
 import com.minicore.cartio.features.expenses.domain.RecordExpensesUseCaseImpl
 import com.minicore.cartio.features.settings.domain.ClearAllData
@@ -27,4 +29,8 @@ abstract class UseCaseModule {
     @Binds
     @Singleton
     abstract fun bindRecordExpenses(impl: RecordExpensesUseCaseImpl): RecordExpensesUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindRecognizeTextFromImage(impl: RecognizeTextFromImageUseCase): RecognizeTextFromImage
 }

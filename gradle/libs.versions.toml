@@ -17,6 +17,8 @@ archCoreTesting = "2.2.0"
 coreSplashscreen = "1.2.0"
 googleAds = "25.5.0"
 playBilling = "9.1.0"
+cameraX = "1.6.2"
+mlkitTextRecognition = "16.0.1"
 
 [libraries]
 # Core
@@ -52,6 +54,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 
 # Coroutines
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 
 # Testing
@@ -64,6 +67,13 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 # Monetization
 google-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "googleAds" }
 play-billing = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "playBilling" }
+
+# Scanner (CameraX + ML Kit Text Recognition)
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraX" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraX" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraX" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraX" }
+mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "mlkitTextRecognition" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

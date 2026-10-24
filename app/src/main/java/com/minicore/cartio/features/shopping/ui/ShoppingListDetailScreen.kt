@@ -30,6 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.CameraAlt
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
@@ -89,6 +90,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.minicore.cartio.R
+import com.minicore.cartio.core.config.AppConfig
 import com.minicore.cartio.core.ui.theme.Alpha
 import com.minicore.cartio.core.ui.theme.SwipeCheckColor
 import com.minicore.cartio.core.ui.theme.SwipeDeleteColor
@@ -99,6 +101,9 @@ import com.minicore.cartio.features.shopping.domain.ShoppingListItem
 fun ShoppingListDetailScreen(
     onNavigateUp: () -> Unit,
     onNavigateToRegisterExpenses: (Long) -> Unit = {},
+    onNavigateToScanTag: (() -> Unit)? = null,
+    scannedText: String? = null,
+    onScannedTextConsumed: () -> Unit = {},
     viewModel: ShoppingListDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -142,6 +147,17 @@ fun ShoppingListDetailScreen(
     LaunchedEffect(uiState.activeItems.size) {
         if (uiState.activeItems.isNotEmpty()) {
             listState.animateScrollToItem(uiState.activeItems.lastIndex)
+        }
+    }
+
+    LaunchedEffect(scannedText) {
+        if (scannedText != null) {
+            if (AppConfig.SCAN_AUTO_ADD_ENABLED) {
+                viewModel.addItem(scannedText)
+            } else {
+                itemInputText = scannedText
+            }
+            onScannedTextConsumed()
         }
     }
 
@@ -292,7 +308,8 @@ fun ShoppingListDetailScreen(
                             viewModel.addItem(itemInputText)
                             itemInputText = ""
                         }
-                    }
+                    },
+                    onScanTap = if (AppConfig.SCANNER_ENABLED) onNavigateToScanTag else null
                 )
             }
         },
@@ -556,7 +573,8 @@ private fun RegisterExpensesCta(count: Int, onClick: () -> Unit) {
 private fun AddItemBar(
     text: String,
     onTextChange: (String) -> Unit,
-    onAdd: () -> Unit
+    onAdd: () -> Unit,
+    onScanTap: (() -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
@@ -570,12 +588,23 @@ private fun AddItemBar(
             .padding(start = 25.dp, end = 15.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            Icons.Rounded.ShoppingCart,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.outline,
-            modifier = Modifier.size(20.dp)
-        )
+        if (onScanTap != null) {
+            Icon(
+                Icons.Rounded.CameraAlt,
+                contentDescription = stringResource(R.string.action_scan_tag),
+                tint = MaterialTheme.colorScheme.outline,
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable(onClick = onScanTap)
+            )
+        } else {
+            Icon(
+                Icons.Rounded.ShoppingCart,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.outline,
+                modifier = Modifier.size(20.dp)
+            )
+        }
         Spacer(modifier = Modifier.width(8.dp))
         OutlinedTextField(
             value = text,

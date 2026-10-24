@@ -115,4 +115,20 @@
     <string name="dialog_rename_new_name_label">New name</string>
     <string name="list_options">List options</string>
     <string name="remove_item">Remove item</string>
+
+    <!-- Scan tag (FEAT-026) -->
+    <string name="action_scan_tag">Scan tag</string>
+    <string name="scan_title">Scan tag</string>
+    <string name="scan_capture">Capture</string>
+    <string name="scan_processing">Reading tag…</string>
+    <string name="scan_no_text_found">No text found</string>
+    <string name="scan_no_text_found_body">Try again with better lighting, or enter the item manually.</string>
+    <string name="scan_retry">Retry</string>
+    <string name="scan_enter_manually">Enter manually</string>
+    <string name="scan_pick_text">Tap the product name</string>
+    <string name="scan_permission_rationale_title">Camera access needed</string>
+    <string name="scan_permission_rationale_body">Cartio uses the camera only to read text from a tag on the spot. The photo is never saved or sent anywhere.</string>
+    <string name="scan_grant_permission">Grant permission</string>
+    <string name="scan_open_settings">Open app settings</string>
+    <string name="scan_camera_unavailable">Camera unavailable</string>
 </resources>

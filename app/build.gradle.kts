@@ -138,8 +138,16 @@ dependencies {
     implementation(libs.google.ads)
     implementation(libs.play.billing)
 
+    // Scanner (CameraX + ML Kit Text Recognition)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.mlkit.text.recognition)
+
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     // Unit Tests
     testImplementation(libs.junit)
