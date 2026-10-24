@@ -8,16 +8,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material3.AlertDialog
@@ -25,6 +30,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -36,6 +42,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -49,6 +56,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.minicore.cartio.BuildConfig
 import com.minicore.cartio.R
 import com.minicore.cartio.core.config.AppConfig
+import com.minicore.cartio.core.i18n.AppLanguage
 import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,6 +74,8 @@ fun SettingsScreen(
     val showClearDialog by viewModel.showClearDialog.collectAsStateWithLifecycle()
     val clearDataError by viewModel.clearDataError.collectAsStateWithLifecycle()
     val adFreeEntitlement by viewModel.adFreeEntitlement.collectAsStateWithLifecycle()
+    val currentLanguage by viewModel.currentLanguage.collectAsStateWithLifecycle()
+    val showLanguageDialog by viewModel.showLanguageDialog.collectAsStateWithLifecycle()
 
     if (showClearDialog) {
         ClearDataDialog(
@@ -76,6 +86,14 @@ fun SettingsScreen(
 
     if (clearDataError) {
         ClearDataErrorDialog(onDismiss = viewModel::dismissClearDataError)
+    }
+
+    if (showLanguageDialog) {
+        LanguagePickerDialog(
+            current = currentLanguage,
+            onSelect = viewModel::selectLanguage,
+            onDismiss = viewModel::dismissLanguageDialog
+        )
     }
 
     Scaffold(
@@ -157,6 +175,29 @@ fun SettingsScreen(
                     PurchasedCard()
                 } else {
                     PromoCard(onBuyClick = { viewModel.onBuyRemoveAdsClicked(activity) })
+                }
+            }
+
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+
+            item {
+                SettingsSection(label = stringResource(R.string.settings_section_language)) {
+                    SettingsListItem(
+                        icon = {
+                            SettingsIconBox(backgroundColor = MaterialTheme.colorScheme.secondary) {
+                                Icon(
+                                    Icons.Rounded.Language,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSecondary,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        },
+                        title = stringResource(R.string.settings_language_title),
+                        subtitle = stringResource(currentLanguage.labelRes),
+                        showChevron = true,
+                        onClick = viewModel::requestLanguagePicker
+                    )
                 }
             }
 
@@ -257,6 +298,41 @@ private fun ClearDataErrorDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.settings_clear_error_title)) },
         text = { Text(stringResource(R.string.settings_clear_error_body)) },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_ok)) }
+        }
+    )
+}
+
+@Composable
+private fun LanguagePickerDialog(
+    current: AppLanguage,
+    onSelect: (AppLanguage) -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.settings_language_dialog_title)) },
+        text = {
+            Column {
+                AppLanguage.entries.forEach { language ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = language == current,
+                                onClick = { onSelect(language) }
+                            )
+                            .padding(vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(selected = language == current, onClick = { onSelect(language) })
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(stringResource(language.labelRes))
+                    }
+                }
+            }
+        },
         confirmButton = {
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_ok)) }
         }

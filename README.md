@@ -81,12 +81,17 @@ The app is built around a normalized product-centric model:
 - Optional quantity and unit support
 - Estimated total cost per list
 - Product-based structure (not just raw strings)
+- 📷 Scan a shelf tag's text with the camera to add an item (on-device ML Kit OCR — not barcode scanning, see Planned Features)
+- 💰 Expense tracking — log price, quantity and unit per item, auto-totaled
+- 📊 Reports screen — last-30-days spending and most-bought items
+- ☁️ Android Auto Backup — optional, user-controlled backup to the user's own Google Account
+- 🌐 Multi-language UI — English, Português, Español, Italiano, Français, with an in-app language picker (Settings) independent of device locale
+- Ad-supported, free to use, with an optional one-time "Buy Me A Coffee" purchase to remove ads
 
 ### Planned Features
-- 📷 Barcode scanning (ML Kit)
-- ☁️ Google Drive sync (optional, user-controlled)
-- 📊 Price history reporting
-- 📈 Spending trends and analytics
+- 📷 Barcode scanning (ML Kit) — distinct from the OCR text scan already shipped
+- ☁️ Google Drive JSON sync (optional, user-controlled, cross-device — distinct from the Android Auto Backup already shipped)
+- 📊 Per-product price history reporting (explicitly scoped out of MVP — see ADR-017; current Reports screen works off the expense log instead)
 - 🏪 Store-based price comparison (future extension)
 
 ---

@@ -1,0 +1,134 @@
+<resources>
+    <string name="app_name">Cartio</string>
+    <string name="app_version_footer">cartio · v%1$s</string>
+    <string name="settings_made_with_care">fatto con cura · cartio v%1$s</string>
+
+    <!-- Shopping List Screen -->
+    <string name="shopping_screen_title">Le Mie Liste della Spesa</string>
+    <string name="shopping_in_progress_label">SPESA IN CORSO</string>
+    <string name="shopping_search_placeholder">Cerca liste&#8230;</string>
+    <string name="shopping_your_lists_header">Le Tue Liste</string>
+    <string name="shopping_no_search_results">Nessuna lista corrisponde alla ricerca.</string>
+    <string name="shopping_empty_title">Ancora nessuna lista</string>
+    <string name="shopping_empty_subtitle">Tocca + per creare la tua prima lista</string>
+    <string name="shopping_in_progress_progress">%1$d di %2$d presi</string>
+    <string name="shopping_card_subtitle_empty">Vuota · Aggiornata %1$s</string>
+    <string name="shopping_card_subtitle">%1$s · Aggiornata %2$s</string>
+    <string name="shopping_dashboard_sort_a_to_z">Ordina dalla A alla Z</string>
+    <string name="shopping_dashboard_sort_z_to_a">Ordina dalla Z alla A</string>
+    <string name="shopping_dashboard_remove_sort">Rimuovi ordinamento</string>
+
+    <plurals name="shopping_list_item_count">
+        <item quantity="one">%d articolo</item>
+        <item quantity="other">%d articoli</item>
+    </plurals>
+
+    <!-- Shopping List Detail Screen -->
+    <string name="detail_empty_title">Ancora niente qui</string>
+    <string name="detail_empty_subtitle">Digita gli articoli qui sotto per iniziare la tua lista.</string>
+    <string name="detail_swipe_check_label">SPUNTA</string>
+    <string name="detail_swipe_delete_label">ELIMINA</string>
+    <string name="detail_done_header">FATTI · %d</string>
+    <string name="detail_menu_register_expenses">Registra spese</string>
+    <string name="detail_add_item_placeholder">Aggiungi articolo&#8230;</string>
+    <string name="detail_rename_list">Rinomina lista</string>
+    <string name="detail_sort_a_to_z">Ordina dalla A alla Z</string>
+    <string name="detail_sort_z_to_a">Ordina dalla Z alla A</string>
+    <string name="detail_remove_sort">Rimuovi ordinamento</string>
+    <string name="detail_more_options">Altre opzioni</string>
+    <string name="detail_empty_list">Lista vuota</string>
+    <string name="detail_progress_summary">%1$d di %2$d presi</string>
+    <string name="detail_item_deleted">"%s" eliminato</string>
+    <string name="detail_register_expenses_cta">Registra spese</string>
+    <string name="action_save">Salva</string>
+    <string name="action_undo">Annulla</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_screen_title">Impostazioni</string>
+    <string name="settings_section_backup">BACKUP E RIPRISTINO</string>
+    <string name="settings_backup_title">Backup con Account Google</string>
+    <string name="settings_backup_subtitle_on">Attivo · Backup salvato sul tuo Account Google</string>
+    <string name="settings_backup_subtitle_off">Disattivo · Salvato solo su questo dispositivo</string>
+    <string name="settings_backup_hint">Mantieni le tue liste al sicuro su tutti i dispositivi.</string>
+    <string name="settings_section_data">DATI</string>
+    <string name="settings_clear_data_title">Elimina tutti i dati</string>
+    <string name="settings_clear_data_subtitle">Rimuove ogni lista, articolo e cronologia dei prezzi</string>
+    <string name="settings_section_language">LINGUA</string>
+    <string name="settings_language_title">Lingua dell\'app</string>
+    <string name="settings_language_dialog_title">Scegli lingua</string>
+    <string name="language_system_default">Predefinita di sistema</string>
+    <string name="settings_section_about">INFORMAZIONI</string>
+    <string name="settings_version">Versione %1$s (Build %2$d)</string>
+    <string name="settings_clear_dialog_title">Eliminare tutti i dati?</string>
+    <string name="settings_clear_dialog_body">Questo rimuove permanentemente ogni lista, articolo e cronologia dei prezzi.</string>
+    <string name="settings_clear_dialog_confirm">Elimina Tutto</string>
+    <string name="settings_clear_dialog_cancel">Annulla</string>
+    <string name="settings_clear_error_title">Impossibile eliminare i dati</string>
+    <string name="settings_clear_error_body">Si è verificato un errore durante l\'eliminazione dei dati. Riprova.</string>
+    <string name="action_ok">OK</string>
+
+    <!-- Promo Card -->
+    <string name="promo_badge">SOSTIENI CARTIO</string>
+    <string name="promo_title">Offrimi un caffè &amp; rimuovi gli annunci</string>
+    <string name="promo_body">Pagamento unico di $3. Mantiene l\'app senza pubblicità per sempre e aiuta a creare le prossime funzionalità.</string>
+    <string name="promo_button">Offri un caffè · $3</string>
+
+    <!-- Register Expenses Screen -->
+    <string name="expenses_screen_title">Registra spese</string>
+    <string name="expenses_instruction">Imposta un prezzo unitario per ogni articolo acquistato. Il totale della riga viene calcolato automaticamente.</string>
+    <string name="expenses_total_label">TOTALE</string>
+    <string name="expenses_record_button">Registra</string>
+    <string name="expenses_saved_toast">Spese registrate!</string>
+    <string name="expenses_empty">Nessun articolo spuntato da registrare.</string>
+
+    <!-- Reports Screen -->
+    <string name="reports_last_30_days">ULTIMI 30 GIORNI</string>
+    <string name="reports_most_bought">PIÙ ACQUISTATI · ULTIMI 30 GIORNI</string>
+    <string name="reports_bought_count">acquistato %d×</string>
+    <string name="reports_empty">Nessuna spesa registrata ancora.\nUsa \"Registra spese\" dopo una spesa.</string>
+
+    <!-- Navigation Drawer -->
+    <string name="nav_drawer_tagline">La tua intelligenza per la spesa</string>
+    <string name="nav_open_menu">Apri menu</string>
+    <string name="nav_item_shopping">Spesa</string>
+    <string name="nav_item_shopping_subtitle">Liste, articoli, prezzi</string>
+    <string name="nav_item_reports">Report</string>
+    <string name="nav_item_reports_subtitle">Spesa &amp; tendenze</string>
+    <string name="nav_item_settings">Impostazioni</string>
+    <string name="nav_item_settings_subtitle">Sincronizzazione, dati, informazioni</string>
+
+    <!-- Support / Ad-free entitlement -->
+    <string name="settings_support_purchased_title">Senza pubblicità — Grazie!</string>
+    <string name="settings_support_purchased_body">Stai sostenendo Cartio. Gli annunci sono stati rimossi permanentemente.</string>
+
+    <!-- Common -->
+    <string name="action_back">Indietro</string>
+    <string name="action_cancel">Annulla</string>
+    <string name="action_create">Crea</string>
+    <string name="action_delete">Elimina</string>
+    <string name="action_add_list">Aggiungi lista</string>
+    <string name="action_add_item">Aggiungi articolo</string>
+    <string name="dialog_new_list_title">Nuova lista</string>
+    <string name="dialog_new_list_label">Nome della lista</string>
+    <string name="dialog_new_list_placeholder">es.: Spesa Settimanale</string>
+    <string name="dialog_rename_list_title">Rinomina lista</string>
+    <string name="dialog_rename_new_name_label">Nuovo nome</string>
+    <string name="list_options">Opzioni lista</string>
+    <string name="remove_item">Rimuovi articolo</string>
+
+    <!-- Scan tag (FEAT-026) -->
+    <string name="action_scan_tag">Scansiona etichetta</string>
+    <string name="scan_title">Scansiona etichetta</string>
+    <string name="scan_capture">Scatta</string>
+    <string name="scan_processing">Lettura etichetta…</string>
+    <string name="scan_no_text_found">Nessun testo trovato</string>
+    <string name="scan_no_text_found_body">Riprova con una migliore illuminazione, oppure inserisci l\'articolo manualmente.</string>
+    <string name="scan_retry">Riprova</string>
+    <string name="scan_enter_manually">Inserisci manualmente</string>
+    <string name="scan_pick_text">Tocca il nome del prodotto</string>
+    <string name="scan_permission_rationale_title">Accesso alla fotocamera necessario</string>
+    <string name="scan_permission_rationale_body">Cartio usa la fotocamera solo per leggere il testo di un\'etichetta al momento. La foto non viene mai salvata né inviata altrove.</string>
+    <string name="scan_grant_permission">Concedi permesso</string>
+    <string name="scan_open_settings">Apri impostazioni app</string>
+    <string name="scan_camera_unavailable">Fotocamera non disponibile</string>
+</resources>

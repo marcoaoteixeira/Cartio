@@ -28,5 +28,8 @@ Cartio needs no account and no internet connection to work. Your lists and expen
 FREE, WITH AN OPTIONAL THANK-YOU
 Cartio is free to use, supported by occasional ads. If you'd like to remove them, a one-time "Buy Me A Coffee" purchase is available in Settings — entirely optional.
 
+AVAILABLE IN YOUR LANGUAGE
+Cartio speaks English, Português, Español, Italiano, and Français. It follows your device's language automatically, or you can pick one yourself in Settings.
+
 No account. No clutter. Just lists that work, and a clear picture of what you're spending.
 ```

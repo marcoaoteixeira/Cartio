@@ -1,0 +1,134 @@
+<resources>
+    <string name="app_name">Cartio</string>
+    <string name="app_version_footer">cartio · v%1$s</string>
+    <string name="settings_made_with_care">fait avec soin · cartio v%1$s</string>
+
+    <!-- Shopping List Screen -->
+    <string name="shopping_screen_title">Mes Listes de Courses</string>
+    <string name="shopping_in_progress_label">COURSES EN COURS</string>
+    <string name="shopping_search_placeholder">Rechercher des listes&#8230;</string>
+    <string name="shopping_your_lists_header">Vos Listes</string>
+    <string name="shopping_no_search_results">Aucune liste ne correspond à la recherche.</string>
+    <string name="shopping_empty_title">Aucune liste pour l\'instant</string>
+    <string name="shopping_empty_subtitle">Appuyez sur + pour créer votre première liste</string>
+    <string name="shopping_in_progress_progress">%1$d sur %2$d récupérés</string>
+    <string name="shopping_card_subtitle_empty">Vide · Mise à jour %1$s</string>
+    <string name="shopping_card_subtitle">%1$s · Mise à jour %2$s</string>
+    <string name="shopping_dashboard_sort_a_to_z">Trier de A à Z</string>
+    <string name="shopping_dashboard_sort_z_to_a">Trier de Z à A</string>
+    <string name="shopping_dashboard_remove_sort">Supprimer le tri</string>
+
+    <plurals name="shopping_list_item_count">
+        <item quantity="one">%d article</item>
+        <item quantity="other">%d articles</item>
+    </plurals>
+
+    <!-- Shopping List Detail Screen -->
+    <string name="detail_empty_title">Rien ici pour l\'instant</string>
+    <string name="detail_empty_subtitle">Saisissez des articles ci-dessous pour commencer votre liste.</string>
+    <string name="detail_swipe_check_label">COCHER</string>
+    <string name="detail_swipe_delete_label">SUPPRIMER</string>
+    <string name="detail_done_header">TERMINÉS · %d</string>
+    <string name="detail_menu_register_expenses">Enregistrer les dépenses</string>
+    <string name="detail_add_item_placeholder">Ajouter un article&#8230;</string>
+    <string name="detail_rename_list">Renommer la liste</string>
+    <string name="detail_sort_a_to_z">Trier de A à Z</string>
+    <string name="detail_sort_z_to_a">Trier de Z à A</string>
+    <string name="detail_remove_sort">Supprimer le tri</string>
+    <string name="detail_more_options">Plus d\'options</string>
+    <string name="detail_empty_list">Liste vide</string>
+    <string name="detail_progress_summary">%1$d sur %2$d récupérés</string>
+    <string name="detail_item_deleted">"%s" supprimé</string>
+    <string name="detail_register_expenses_cta">Enregistrer les dépenses</string>
+    <string name="action_save">Enregistrer</string>
+    <string name="action_undo">Annuler</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_screen_title">Paramètres</string>
+    <string name="settings_section_backup">SAUVEGARDE ET RESTAURATION</string>
+    <string name="settings_backup_title">Sauvegarde avec un compte Google</string>
+    <string name="settings_backup_subtitle_on">Activée · Sauvegardée sur votre compte Google</string>
+    <string name="settings_backup_subtitle_off">Désactivée · Stockée uniquement sur cet appareil</string>
+    <string name="settings_backup_hint">Gardez vos listes en sécurité sur tous vos appareils.</string>
+    <string name="settings_section_data">DONNÉES</string>
+    <string name="settings_clear_data_title">Effacer toutes les données</string>
+    <string name="settings_clear_data_subtitle">Supprime toutes les listes, articles et l\'historique des prix</string>
+    <string name="settings_section_language">LANGUE</string>
+    <string name="settings_language_title">Langue de l\'app</string>
+    <string name="settings_language_dialog_title">Choisir la langue</string>
+    <string name="language_system_default">Langue du système</string>
+    <string name="settings_section_about">À PROPOS</string>
+    <string name="settings_version">Version %1$s (Build %2$d)</string>
+    <string name="settings_clear_dialog_title">Effacer toutes les données ?</string>
+    <string name="settings_clear_dialog_body">Cette action supprime définitivement toutes les listes, articles et l\'historique des prix.</string>
+    <string name="settings_clear_dialog_confirm">Tout Supprimer</string>
+    <string name="settings_clear_dialog_cancel">Annuler</string>
+    <string name="settings_clear_error_title">Échec de l\'effacement des données</string>
+    <string name="settings_clear_error_body">Une erreur s\'est produite lors de l\'effacement de vos données. Veuillez réessayer.</string>
+    <string name="action_ok">OK</string>
+
+    <!-- Promo Card -->
+    <string name="promo_badge">SOUTENIR CARTIO</string>
+    <string name="promo_title">Offrez-moi un café &amp; supprimez les publicités</string>
+    <string name="promo_body">Paiement unique de 3 $. Garde l\'app sans publicité pour toujours et aide à développer les prochaines fonctionnalités.</string>
+    <string name="promo_button">Offrir un café · 3 $</string>
+
+    <!-- Register Expenses Screen -->
+    <string name="expenses_screen_title">Enregistrer les dépenses</string>
+    <string name="expenses_instruction">Définissez un prix unitaire pour chaque article acheté. Le total de la ligne est calculé automatiquement.</string>
+    <string name="expenses_total_label">TOTAL</string>
+    <string name="expenses_record_button">Enregistrer</string>
+    <string name="expenses_saved_toast">Dépenses enregistrées !</string>
+    <string name="expenses_empty">Aucun article coché à enregistrer.</string>
+
+    <!-- Reports Screen -->
+    <string name="reports_last_30_days">30 DERNIERS JOURS</string>
+    <string name="reports_most_bought">LES PLUS ACHETÉS · 30 DERNIERS JOURS</string>
+    <string name="reports_bought_count">acheté %d×</string>
+    <string name="reports_empty">Aucune dépense enregistrée pour le moment.\nUtilisez \"Enregistrer les dépenses\" après vos courses.</string>
+
+    <!-- Navigation Drawer -->
+    <string name="nav_drawer_tagline">Votre intelligence de courses</string>
+    <string name="nav_open_menu">Ouvrir le menu</string>
+    <string name="nav_item_shopping">Courses</string>
+    <string name="nav_item_shopping_subtitle">Listes, articles, prix</string>
+    <string name="nav_item_reports">Rapports</string>
+    <string name="nav_item_reports_subtitle">Dépenses &amp; tendances</string>
+    <string name="nav_item_settings">Paramètres</string>
+    <string name="nav_item_settings_subtitle">Synchronisation, données, à propos</string>
+
+    <!-- Support / Ad-free entitlement -->
+    <string name="settings_support_purchased_title">Sans publicité — Merci !</string>
+    <string name="settings_support_purchased_body">Vous soutenez Cartio. Les publicités ont été définitivement supprimées.</string>
+
+    <!-- Common -->
+    <string name="action_back">Retour</string>
+    <string name="action_cancel">Annuler</string>
+    <string name="action_create">Créer</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="action_add_list">Ajouter une liste</string>
+    <string name="action_add_item">Ajouter un article</string>
+    <string name="dialog_new_list_title">Nouvelle liste</string>
+    <string name="dialog_new_list_label">Nom de la liste</string>
+    <string name="dialog_new_list_placeholder">ex. : Courses de la Semaine</string>
+    <string name="dialog_rename_list_title">Renommer la liste</string>
+    <string name="dialog_rename_new_name_label">Nouveau nom</string>
+    <string name="list_options">Options de la liste</string>
+    <string name="remove_item">Supprimer l\'article</string>
+
+    <!-- Scan tag (FEAT-026) -->
+    <string name="action_scan_tag">Scanner une étiquette</string>
+    <string name="scan_title">Scanner une étiquette</string>
+    <string name="scan_capture">Capturer</string>
+    <string name="scan_processing">Lecture de l\'étiquette…</string>
+    <string name="scan_no_text_found">Aucun texte trouvé</string>
+    <string name="scan_no_text_found_body">Réessayez avec un meilleur éclairage, ou saisissez l\'article manuellement.</string>
+    <string name="scan_retry">Réessayer</string>
+    <string name="scan_enter_manually">Saisir manuellement</string>
+    <string name="scan_pick_text">Touchez le nom du produit</string>
+    <string name="scan_permission_rationale_title">Accès à la caméra requis</string>
+    <string name="scan_permission_rationale_body">Cartio utilise la caméra uniquement pour lire le texte d\'une étiquette sur le moment. La photo n\'est jamais enregistrée ni envoyée où que ce soit.</string>
+    <string name="scan_grant_permission">Accorder la permission</string>
+    <string name="scan_open_settings">Ouvrir les paramètres de l\'app</string>
+    <string name="scan_camera_unavailable">Caméra indisponible</string>
+</resources>

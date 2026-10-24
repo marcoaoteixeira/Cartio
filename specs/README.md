@@ -28,3 +28,4 @@
 | FEAT-024 | Shopping List Detail UX Tweaks | Done | feature/CARTIO-024-detail-screen-ux-tweaks |
 | FEAT-025 | Shopping List Row Background Contrast | Done | feature/CARTIO-025-row-background-contrast |
 | FEAT-026 | Scan Tag to Add Item | Done | feature/CARTIO-026-scan-tag-to-add-item |
+| FEAT-027 | App Translations (en, pt, es, it, fr) + Language Picker | Done | feature/CARTIO-027-i18n-translations |
