@@ -431,7 +431,7 @@ private fun ShoppingListCard(list: ShoppingList, onClick: () -> Unit, onDelete: 
                     onDismissRequest = { showMenu = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("Delete") },
+                        text = { Text(stringResource(R.string.action_delete)) },
                         leadingIcon = {
                             Icon(
                                 Icons.Rounded.Delete,

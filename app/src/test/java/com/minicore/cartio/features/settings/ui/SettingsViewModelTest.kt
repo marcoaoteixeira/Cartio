@@ -2,10 +2,12 @@ package com.minicore.cartio.features.settings.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import android.app.Activity
+import com.minicore.cartio.core.i18n.AppLanguage
 import com.minicore.cartio.features.backup.data.BackupPreferences
 import com.minicore.cartio.features.backup.domain.CartioBackupManager
 import com.minicore.cartio.features.monetization.domain.BillingRepository
 import com.minicore.cartio.features.monetization.domain.HasAdFreeEntitlementUseCase
+import com.minicore.cartio.features.settings.data.AppLanguagePreferences
 import com.minicore.cartio.features.settings.domain.ClearAllData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +24,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -50,13 +53,15 @@ class SettingsViewModelTest {
         clearAllData: ClearAllData = ClearAllData {},
         backupManager: CartioBackupManager = FakeBackupManager(),
         backupPreferences: BackupPreferences = FakeBackupPreferences(),
-        fakeBillingRepository: BillingRepository = FakeBillingRepository()
+        fakeBillingRepository: BillingRepository = FakeBillingRepository(),
+        languagePreferences: AppLanguagePreferences = FakeAppLanguagePreferences()
     ) = SettingsViewModel(
         clearAllData,
         backupManager,
         backupPreferences,
         HasAdFreeEntitlementUseCase(fakeBillingRepository),
-        fakeBillingRepository
+        fakeBillingRepository,
+        languagePreferences
     )
 
     // region sync toggle
@@ -216,6 +221,52 @@ class SettingsViewModelTest {
 
     // endregion
 
+    // region language picker
+
+    @Test
+    fun `currentLanguage reflects preference`() {
+        val viewModel = createViewModel(
+            languagePreferences = FakeAppLanguagePreferences(initial = AppLanguage.PORTUGUESE)
+        )
+        assertEquals(AppLanguage.PORTUGUESE, viewModel.currentLanguage.value)
+    }
+
+    @Test
+    fun `showLanguageDialog is false by default`() {
+        val viewModel = createViewModel()
+        assertFalse(viewModel.showLanguageDialog.value)
+    }
+
+    @Test
+    fun `requestLanguagePicker shows dialog`() {
+        val viewModel = createViewModel()
+        viewModel.requestLanguagePicker()
+        assertTrue(viewModel.showLanguageDialog.value)
+    }
+
+    @Test
+    fun `dismissLanguageDialog hides dialog`() {
+        val viewModel = createViewModel()
+        viewModel.requestLanguagePicker()
+        viewModel.dismissLanguageDialog()
+        assertFalse(viewModel.showLanguageDialog.value)
+    }
+
+    @Test
+    fun `selectLanguage persists choice and hides dialog`() {
+        val prefs = FakeAppLanguagePreferences()
+        val viewModel = createViewModel(languagePreferences = prefs)
+
+        viewModel.requestLanguagePicker()
+        viewModel.selectLanguage(AppLanguage.FRENCH)
+
+        assertEquals(AppLanguage.FRENCH, viewModel.currentLanguage.value)
+        assertEquals(AppLanguage.FRENCH, prefs.currentLanguage.value)
+        assertFalse(viewModel.showLanguageDialog.value)
+    }
+
+    // endregion
+
     // region fakes
 
     private class FakeBackupManager : CartioBackupManager {
@@ -240,6 +291,14 @@ class SettingsViewModelTest {
     }
 
     private class FakeActivity : Activity()
+
+    private class FakeAppLanguagePreferences(
+        initial: AppLanguage = AppLanguage.SYSTEM_DEFAULT
+    ) : AppLanguagePreferences {
+        private val flow = MutableStateFlow(initial)
+        override val currentLanguage: StateFlow<AppLanguage> = flow.asStateFlow()
+        override fun setLanguage(language: AppLanguage) { flow.value = language }
+    }
 
     // endregion
 }

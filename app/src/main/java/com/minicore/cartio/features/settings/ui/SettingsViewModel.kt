@@ -3,10 +3,12 @@ package com.minicore.cartio.features.settings.ui
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.minicore.cartio.core.i18n.AppLanguage
 import com.minicore.cartio.features.backup.data.BackupPreferences
 import com.minicore.cartio.features.backup.domain.CartioBackupManager
 import com.minicore.cartio.features.monetization.domain.BillingRepository
 import com.minicore.cartio.features.monetization.domain.HasAdFreeEntitlementUseCase
+import com.minicore.cartio.features.settings.data.AppLanguagePreferences
 import com.minicore.cartio.features.settings.domain.ClearAllData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,13 +26,19 @@ class SettingsViewModel @Inject constructor(
     private val backupManager: CartioBackupManager,
     private val backupPreferences: BackupPreferences,
     private val hasAdFreeEntitlement: HasAdFreeEntitlementUseCase,
-    private val billingRepository: BillingRepository
+    private val billingRepository: BillingRepository,
+    private val languagePreferences: AppLanguagePreferences
 ) : ViewModel() {
 
     val adFreeEntitlement: StateFlow<Boolean> = hasAdFreeEntitlement()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), false)
 
     val syncEnabled: StateFlow<Boolean> = backupPreferences.backupEnabled
+
+    val currentLanguage: StateFlow<AppLanguage> = languagePreferences.currentLanguage
+
+    private val _showLanguageDialog = MutableStateFlow(false)
+    val showLanguageDialog: StateFlow<Boolean> = _showLanguageDialog.asStateFlow()
 
     private val _showClearDialog = MutableStateFlow(false)
     val showClearDialog: StateFlow<Boolean> = _showClearDialog.asStateFlow()
@@ -65,5 +73,18 @@ class SettingsViewModel @Inject constructor(
 
     fun onBuyRemoveAdsClicked(activity: Activity) {
         viewModelScope.launch { billingRepository.launchRemoveAdsPurchase(activity) }
+    }
+
+    fun requestLanguagePicker() {
+        _showLanguageDialog.value = true
+    }
+
+    fun dismissLanguageDialog() {
+        _showLanguageDialog.value = false
+    }
+
+    fun selectLanguage(language: AppLanguage) {
+        languagePreferences.setLanguage(language)
+        _showLanguageDialog.value = false
     }
 }
