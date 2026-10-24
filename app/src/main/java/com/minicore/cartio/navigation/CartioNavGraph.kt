@@ -11,6 +11,7 @@ import com.minicore.cartio.features.devlogs.ui.DevLogsScreen
 import com.minicore.cartio.features.expenses.ui.RegisterExpensesScreen
 import com.minicore.cartio.features.reports.ReportsScreen
 import com.minicore.cartio.features.settings.ui.SettingsScreen
+import com.minicore.cartio.features.shopping.ui.ScanTagScreen
 import com.minicore.cartio.features.shopping.ui.ShoppingListDetailScreen
 import com.minicore.cartio.features.shopping.ui.ShoppingListScreen
 
@@ -55,11 +56,28 @@ fun CartioNavGraph(
                     type = NavType.LongType
                 }
             )
-        ) {
+        ) { backStackEntry ->
+            val scannedText = backStackEntry.savedStateHandle
+                .get<String>(CartioDestinations.ScanTag.RESULT_SCANNED_TEXT)
             ShoppingListDetailScreen(
                 onNavigateUp = { navController.navigateUp() },
                 onNavigateToRegisterExpenses = { listId ->
                     navController.navigate(CartioDestinations.RegisterExpenses.routeFor(listId))
+                },
+                onNavigateToScanTag = { navController.navigate(CartioDestinations.ScanTag.route) },
+                scannedText = scannedText,
+                onScannedTextConsumed = {
+                    backStackEntry.savedStateHandle
+                        .remove<String>(CartioDestinations.ScanTag.RESULT_SCANNED_TEXT)
+                }
+            )
+        }
+        composable(CartioDestinations.ScanTag.route) {
+            ScanTagScreen(
+                onNavigateUp = { navController.navigateUp() },
+                onTextSelected = { text ->
+                    navController.previousBackStackEntry?.savedStateHandle
+                        ?.set(CartioDestinations.ScanTag.RESULT_SCANNED_TEXT, text)
                 }
             )
         }

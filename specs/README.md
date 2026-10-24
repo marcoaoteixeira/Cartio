@@ -25,3 +25,6 @@
 | FEAT-021 | Feature Graphic Rebuild | Done | feature/CARTIO-021-feature-graphic-rebuild |
 | FEAT-022 | Upload Native Debug Symbols | Done | feature/CARTIO-022-native-debug-symbols |
 | FEAT-023 | Release Bundle (versionCode 2) | Done | feature/CARTIO-023-release-bundle-v2 |
+| FEAT-024 | Shopping List Detail UX Tweaks | Done | feature/CARTIO-024-detail-screen-ux-tweaks |
+| FEAT-025 | Shopping List Row Background Contrast | Done | feature/CARTIO-025-row-background-contrast |
+| FEAT-026 | Scan Tag to Add Item | Done | feature/CARTIO-026-scan-tag-to-add-item |

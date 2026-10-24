@@ -13,4 +13,7 @@ sealed class CartioDestinations(val route: String) {
         fun routeFor(listId: Long) = "register_expenses/$listId"
     }
     data object DevLogs : CartioDestinations("dev_logs")
+    data object ScanTag : CartioDestinations("scan_tag") {
+        const val RESULT_SCANNED_TEXT = "scanned_text"
+    }
 }
